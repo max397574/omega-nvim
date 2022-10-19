@@ -30,7 +30,7 @@ function utils.view_messages()
         style = "minimal",
     })
     vim.api.nvim_win_set_option(win, "winblend", 20)
-    vim.cmd.put([[=execute('messages')]])
+    vim.cmd([[put =execute('messages')]])
 end
 
 --- Preview latex
