@@ -13,7 +13,7 @@ I've done this here now and in the process optimized many things.
 ## Information
 At the time of writing this the configuration has 55 plugins.
 *4 out of those 55 plugins are loaded at startup.*
-This allows me to get a really low startuptime (4 times less than ignis).
+This allows me to get a really low startup time (4 times less than ignis).
 
 ### Some lazyloading goodies
 Here are some plugins which don't have a obvious way of lazyloading them but I still managed to lazyload.
@@ -75,7 +75,7 @@ The structure is inspired by doom-nvim.
 I have a `core` folder in which files for things like autocommands, commands, setting or utils are.
 Inside this folder there is an `init.lua` file.
 Here is where everything is coordinated.
-From here a `omega` global variable gets created in which the plugins get loaded.
+From here an `omega` global variable gets created in which the plugins get loaded.
 From there they get loaded with packer.
 
 ### Modules folder
