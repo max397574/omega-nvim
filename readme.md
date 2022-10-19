@@ -11,8 +11,9 @@ The biggest change was that I wanted to split up my plugins into modules and not
 I've done this here now and in the process optimized many things.
 
 ## Information
-At the time of writing this the configuration has 55 plugins.
-*4 out of those 55 plugins are loaded at startup.*
+At the time of writing this the configuration has 87 plugins.
+*4 out of those 87 plugins are loaded at startup.*
+(after `nvim` and waiting a few seconds, no `defer_fn` or `BufEnter` tricks)
 This allows me to get a really low startup time (4 times less than ignis).
 
 ### Some lazyloading goodies
