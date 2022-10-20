@@ -51,6 +51,7 @@ function modules.setup()
             "python",
             "rust",
             "swift",
+            "debugging",
         },
         ["completion"] = {
             "annotations",
