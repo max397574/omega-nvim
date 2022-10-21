@@ -65,6 +65,7 @@ local function open_floating_buffer(contents, bufnr)
         border = "rounded",
         style = "minimal",
     })
+    -- TODO: set cursor
     vim.wo[winnr].winbar = nil
     vim.api.nvim_create_autocmd("WinClosed", {
         callback = function()
