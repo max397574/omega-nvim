@@ -2,13 +2,13 @@ local neorg_mod = {}
 
 neorg_mod.plugins = {
     ["neorg"] = {
-        -- "nvim-neorg/neorg",
-        "~/neovim_plugins/neorg",
-        ft = "neorg",
+        "nvim-neorg/neorg",
+        -- "~/neovim_plugins/neorg",
+        ft = "norg",
         setup = function()
             vim.filetype.add({
                 extension = {
-                    norg = "neorg",
+                    norg = "norg",
                 },
             })
         end,

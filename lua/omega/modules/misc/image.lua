@@ -17,6 +17,13 @@ image.plugins = {
                 once = true,
                 callback = function()
                     require("packer").loader("image.nvim")
+                    vim.cmd.PackerLoad("baleia.nvim")
+                    require("image").setup({
+                        render = {
+                            foreground_color = true,
+                            background_color = true,
+                        },
+                    })
                     local async = require("plenary.async")
                     local config = require("image.config")
                     local ui = require("image.ui")
@@ -57,12 +64,10 @@ image.plugins = {
         end,
         opt = true,
     },
-}
-
-image.configs = {
-    ["image.nvim"] = function()
-        require("image").setup()
-    end,
+    ["baleia.nvim"] = {
+        "m00qek/baleia.nvim",
+        opt = true,
+    },
 }
 
 return image

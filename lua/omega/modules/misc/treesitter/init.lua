@@ -17,6 +17,7 @@ local ts_filetypes = {
     "vim",
     "norg",
     "zig",
+    "diff",
 }
 
 ts_mod.plugins = {
