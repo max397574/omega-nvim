@@ -48,7 +48,7 @@ function ca_available.setup(bufnr)
     })
     vim.fn.sign_define(
         "code_action",
-        { text = " ", texthl = "TSField", linehl = "", numhl = "" }
+        { text = " ", texthl = "CodeActionAvailable", linehl = "", numhl = "" }
     )
 end
 
