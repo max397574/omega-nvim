@@ -44,6 +44,15 @@ configs["formatter.nvim"] = function()
                     }
                 end,
             },
+            json = {
+                function()
+                    return {
+                        exe = "jq",
+                        args = {},
+                        stdin = true,
+                    }
+                end,
+            },
         },
     })
 end
