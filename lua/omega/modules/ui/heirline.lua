@@ -226,8 +226,7 @@ heirline_mod.configs = {
                 end
             end,
             hl = function()
-                return conditions.is_active()
-                        and { fg = colors.green, bg = colors.grey }
+                return conditions.is_active() and { fg = colors.green, bg = colors.grey }
                     or {
                         fg = color_utils.blend_colors(colors.green, colors.black, 0.3),
                         bg = color_utils.blend_colors(colors.grey, colors.black, 0.3),
@@ -265,8 +264,7 @@ heirline_mod.configs = {
                     return ""
                 end,
                 hl = function()
-                    return conditions.is_active()
-                            and { fg = colors.grey }
+                    return conditions.is_active() and { fg = colors.grey }
                         or {
                             fg = color_utils.blend_colors(colors.grey, colors.black, 0.3),
                         }
@@ -280,8 +278,7 @@ heirline_mod.configs = {
                     if use_dev_icons then
                         return { fg = self.icon_color }
                     else
-                        return conditions.is_active()
-                                and { fg = colors.green, bg = colors.grey }
+                        return conditions.is_active() and { fg = colors.green, bg = colors.grey }
                             or {
                                 fg = color_utils.blend_colors(colors.green, colors.black, 0.3),
                                 bg = color_utils.blend_colors(colors.grey, colors.black, 0.3),
@@ -302,8 +299,7 @@ heirline_mod.configs = {
                     return filename .. " "
                 end,
                 hl = function()
-                    return conditions.is_active()
-                            and { fg = colors.green, bg = colors.grey }
+                    return conditions.is_active() and { fg = colors.green, bg = colors.grey }
                         or {
                             fg = color_utils.blend_colors(colors.green, colors.black, 0.3),
                             bg = color_utils.blend_colors(colors.grey, colors.black, 0.3),
@@ -317,8 +313,7 @@ heirline_mod.configs = {
                 end,
                 provider = " ",
                 hl = function()
-                    return conditions.is_active()
-                            and { fg = colors.red, bg = colors.grey }
+                    return conditions.is_active() and { fg = colors.red, bg = colors.grey }
                         or {
                             fg = color_utils.blend_colors(colors.red, colors.black, 0.3),
                             bg = color_utils.blend_colors(colors.grey, colors.black, 0.3),
@@ -338,8 +333,7 @@ heirline_mod.configs = {
                     return ""
                 end,
                 hl = function()
-                    return conditions.is_active()
-                            and { fg = colors.grey }
+                    return conditions.is_active() and { fg = colors.grey }
                         or {
                             fg = color_utils.blend_colors(colors.grey, colors.black, 0.3),
                         }
