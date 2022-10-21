@@ -1,3 +1,23 @@
+--[[
+This is what I do with packer + lspconfig.
+{
+  "microsoft/python-type-stubs",
+  opt = true,
+},
+
+Then on lspconfig opts, 
+  before_init = function(_, config)
+    local stub_path = _G.join_paths(
+      _G.get_runtime_dir(),
+      "site",
+      "pack",
+      "packer",
+      "opt",
+      "python-type-stubs"
+    )
+    config.settings.python.analysis.stubPath = stub_path
+  end
+--]]
 local python = {}
 python.plugins = {
     ["nvim-lsp-installer"] = {
