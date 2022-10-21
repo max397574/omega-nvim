@@ -55,6 +55,10 @@ cmp_mod.plugins = {
         "hrsh7th/cmp-nvim-lsp-signature-help",
         after = "nvim-cmp",
     },
+    ["cmp-dap"] = {
+        "rcarriga/cmp-dap",
+        after = "nvim-cmp",
+    },
 }
 
 local function define_highlights()
@@ -317,6 +321,9 @@ cmp_mod.configs = {
                 if vim.bo.ft == "lua" then
                     return true
                 end
+                if require("cmp_dap").is_dap_buffer() then
+                    return true
+                end
                 local lnum, col = vim.fn.line("."), math.min(vim.fn.col("."), #vim.fn.getline("."))
                 for _, syn_id in ipairs(vim.fn.synstack(lnum, col)) do
                     syn_id = vim.fn.synIDtrans(syn_id) -- Resolve :highlight links
@@ -425,6 +432,11 @@ cmp_mod.configs = {
                 end,
             }
         end
+        require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+            sources = {
+                { name = "dap" },
+            },
+        })
         cmp.setup(config)
 
         cmp.setup.cmdline(":", {
