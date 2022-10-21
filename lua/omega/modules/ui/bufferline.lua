@@ -228,7 +228,9 @@ bufferline_mod.keybindings = function()
             ["n"] = { "<cmd>BufferLineCycleNext<CR>", "Next Buffer" },
             ["]"] = { "<cmd>BufferLineCycleNext<CR>", "Next Buffer" },
             ["d"] = {
-                "<cmd>lua require('bufferline').handle_close(vim.fn.bufnr('%'))<cr>",
+                function()
+                    vim.cmd.bdelete(vim.fn.bufnr("%"))
+                end,
                 "Delete Buffer",
             },
             ["g"] = { "<cmd>BufferLinePick<CR>", "Goto Buffer" },
