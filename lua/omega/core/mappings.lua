@@ -3,7 +3,18 @@ local map = vim.keymap.set
 local wk = require("which-key")
 wk.register({
     y = { '"+y', " Yank to clipboard" },
-    ["S"] = { "<cmd>w<cr>", " Save" },
+    ["W"] = {
+        function()
+            vim.cmd.w()
+        end,
+        " Write",
+    },
+    ["S"] = {
+        function()
+           vim.cmd.FormatWrite() 
+        end,
+        " Format",
+    },
     q = {
         name = " Quickfix",
         n = { "<cmd>cnext<CR>", "Next Entry" },
@@ -110,6 +121,7 @@ wk.register({
 }, {
     prefix = "<leader>",
     mode = "n",
+    silent = true,
 })
 
 map("n", ",,", function()
