@@ -1,15 +1,14 @@
 local lua_lsp = {}
 
 lua_lsp.plugins = {
-    ["lua-dev.nvim"] = {
-        "~/neovim_plugins/lua-dev.nvim",
-        opt = true,
+    ["neodev.nvim"] = {
+        "folke/neodev.nvim",
+        ft = "lua",
     },
 }
 
 lua_lsp.configs = {
-    ["lua-dev.nvim"] = function()
-        local lspconfig = require("lspconfig")
+    ["neodev.nvim"] = function()
         local lua_cmd = {
             vim.fn.expand("~") .. "/lua-language-server/bin/lua-language-server",
         }
@@ -35,18 +34,28 @@ lua_lsp.configs = {
                             "neorg",
                         },
                     },
+                    completion = {
+                        callSnippet = "Replace",
+                        displayContext = 5,
+                        showWord = "Enable",
+                    },
                     hint = {
                         enable = true,
                         paramType = true,
                         setType = true,
                         paramName = true,
-                        arrayIndex = {
-                            Enable = true,
-                        },
+                        arrayIndex = "Enable",
+                    },
+                    hover = {
+                        expandAlias = false,
+                    },
+                    type = {
+                        castNumberToInteger = true,
                     },
                     workspace = {
                         -- library = vim.fn.stdpath("config") .. "lua/omega/types",
-                        maxPreload = 100000,
+                        checkThirdParty = false,
+                        maxPreload = 1000,
                         preloadFileSize = 1000,
                     },
                 },
@@ -54,10 +63,10 @@ lua_lsp.configs = {
         }
 
         local lua_dev_plugins = {
-            "selection_popup",
-            "plenary.nvim",
-            "neorg",
-            "nvim-treesitter",
+            -- "selection_popup",
+            -- "plenary.nvim",
+            -- "neorg",
+            -- "nvim-treesitter",
         }
         local runtime_path_completion = true
         if not runtime_path_completion then
@@ -67,8 +76,7 @@ lua_lsp.configs = {
                 vim.fn.expand("~") .. "/.config/neovim_configs/omega/lua/?.lua",
             }
         end
-
-        local luadev = require("lua-dev").setup({
+        require("neodev").setup({
             library = {
                 vimruntime = true,
                 types = true,
@@ -77,8 +85,7 @@ lua_lsp.configs = {
             runtime_path = runtime_path_completion,
             lspconfig = sumneko_lua_server,
         })
-
-        lspconfig.sumneko_lua.setup(luadev)
+        require("lspconfig")["sumneko_lua"].setup(sumneko_lua_server)
     end,
 }
 
