@@ -1,7 +1,12 @@
 local color_viewer = {}
 
 local function get_colors()
-    return require("omega.colors").get()
+    local colors = require("omega.colors").get()
+    local theme = require("omega.colors.base16").themes(vim.g.colors_name)
+    for name, color in pairs(theme) do
+        colors[name] = color
+    end
+    return colors
 end
 
 function color_viewer.view_colors()
