@@ -1,16 +1,16 @@
 local holo = {}
 
-holo.plugins={
-    ["hologram.nvim"]={
+holo.plugins = {
+    ["hologram.nvim"] = {
         "edluffy/hologram.nvim",
-        module="hologram",
-    }
+        module = "hologram",
+    },
 }
 
-holo.configs={
-    ["hologram.nvim"]=function()
-        require"hologram".setup()
-    end
+holo.configs = {
+    ["hologram.nvim"] = function()
+        require("hologram").setup()
+    end,
 }
 
 return holo

@@ -14,7 +14,7 @@ which_key.configs = {
                 height = { max = 20 },
                 spacing = 3, -- spacing between columns
             },
-            ignore_missing=true,
+            ignore_missing = true,
             window = {
                 border = require("omega.utils").border(),
                 margin = { 1, 0, 1, 0 }, -- top right bottom left

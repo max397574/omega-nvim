@@ -1,4 +1,5 @@
 --[[
+--TODO:
 This is what I do with packer + lspconfig.
 {
   "microsoft/python-type-stubs",
