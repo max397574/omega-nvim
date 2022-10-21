@@ -294,3 +294,6 @@ bg("LightspeedShortcut", "#7DB000", {})
 bg("LightspeedOneCharMatch", "#7DB000", {})
 fg("LightspeedUniqueChar", "#FF6000", {})
 fg("LightspeedUnlabeledMatch", "#FF6000", {})
+
+fg_bg("Definition", colors.white, colors.darker_black, {})
+fg_bg("FloatBorder", light_grey, black)
