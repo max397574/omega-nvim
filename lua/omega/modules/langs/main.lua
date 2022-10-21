@@ -47,7 +47,6 @@ lsp_mod.configs = {
         })
     end,
     ["nvim-lspconfig"] = function()
-        require("packer").loader("lua-dev.nvim")
         vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
         vim.api.nvim_create_autocmd("CursorHold", {
             group = vim.api.nvim_create_augroup("lsp_float", {}),
