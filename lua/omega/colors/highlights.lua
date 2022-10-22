@@ -142,7 +142,6 @@ if omega.config.cmp_theme == "no-border" then
     fg_bg("Pmenu", colors.white, colors.darker_black)
 end
 bg("PmenuSbar", one_bg2)
-bg("PmenuSel", blue)
 
 -- misc
 fg("LineNr", grey)
@@ -297,3 +296,5 @@ fg("LightspeedUnlabeledMatch", "#FF6000", {})
 
 fg_bg("Definition", colors.white, colors.darker_black, {})
 fg_bg("FloatBorder", light_grey, black)
+
+fg_bg("PmenuSel", colors.blue, colors.light_grey)

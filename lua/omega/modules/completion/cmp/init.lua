@@ -253,24 +253,24 @@ cmp_mod.configs = {
                         behavior = cmp.ConfirmBehavior.Insert,
                     }),
                 }),
-                ["<tab>"] = cmp.mapping(function()
-                    if cmp.visible() then
-                        cmp.select_next_item({
-                            behavior = cmp.SelectBehavior.Insert,
-                        })
-                    end
-                end, {
-                    "c",
-                }),
-                ["<s-tab>"] = cmp.mapping(function()
-                    if cmp.visible() then
-                        cmp.select_prev_item({
-                            behavior = cmp.SelectBehavior.Insert,
-                        })
-                    end
-                end, {
-                    "c",
-                }),
+                -- ["<tab>"] = cmp.mapping(function()
+                --     if cmp.visible() then
+                --         cmp.select_next_item({
+                --             behavior = cmp.SelectBehavior.Insert,
+                --         })
+                --     end
+                -- end, {
+                --     "c",
+                -- }),
+                -- ["<s-tab>"] = cmp.mapping(function()
+                --     if cmp.visible() then
+                --         cmp.select_prev_item({
+                --             behavior = cmp.SelectBehavior.Insert,
+                --         })
+                --     end
+                -- end, {
+                --     "c",
+                -- }),
                 ["<C-l>"] = cmp.mapping(function(fallback)
                     if luasnip.choice_active() then
                         require("luasnip").change_choice(1)
@@ -439,36 +439,36 @@ cmp_mod.configs = {
         })
         cmp.setup(config)
 
-        cmp.setup.cmdline(":", {
-            sources = {
-                { name = "cmdline", group_index = 1, max_item_count = 5 },
-                -- { name = "cmdline" },
-                { name = "cmdline_history", group_index = 2, max_item_count = 5 },
-            },
-            formatting = {
-                fields = { "abbr" },
-                format = function(entry, item)
-                    item.abbr = get_abbr(item, entry)
-                    item.abbr_hl_group = "Function"
-                    return item
-                end,
-            },
-        })
-
-        cmp.setup.cmdline("/", {
-            sources = {
-                { name = "cmdline_history" },
-                { name = "buffer" },
-            },
-            formatting = {
-                fields = { "abbr" },
-                format = function(entry, item)
-                    item.abbr = get_abbr(item, entry)
-                    item.abbr_hl_group = "Function"
-                    return item
-                end,
-            },
-        })
+        -- cmp.setup.cmdline(":", {
+        --     sources = {
+        --         { name = "cmdline", group_index = 1, max_item_count = 5 },
+        --         -- { name = "cmdline" },
+        --         { name = "cmdline_history", group_index = 2, max_item_count = 5 },
+        --     },
+        --     formatting = {
+        --         fields = { "abbr" },
+        --         format = function(entry, item)
+        --             item.abbr = get_abbr(item, entry)
+        --             item.abbr_hl_group = "Function"
+        --             return item
+        --         end,
+        --     },
+        -- })
+        --
+        -- cmp.setup.cmdline("/", {
+        --     sources = {
+        --         { name = "cmdline_history" },
+        --         { name = "buffer" },
+        --     },
+        --     formatting = {
+        --         fields = { "abbr" },
+        --         format = function(entry, item)
+        --             item.abbr = get_abbr(item, entry)
+        --             item.abbr_hl_group = "Function"
+        --             return item
+        --         end,
+        --     },
+        -- })
 
         vim.api.nvim_set_hl(0, "NormalFloat", {})
     end,
