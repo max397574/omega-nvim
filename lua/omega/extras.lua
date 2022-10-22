@@ -198,4 +198,65 @@ function extras.view_highlights()
     end)
 end
 
+local ns = vim.api.nvim_create_namespace("block_edit")
+function extras.block_edit_operator()
+    local old_func = vim.go.operatorfunc
+    _G.op_func_formatting = function(mode)
+        print(mode)
+        local start = vim.api.nvim_buf_get_mark(0, "[")
+        local finish = vim.api.nvim_buf_get_mark(0, "]")
+        if mode == "line" then
+            start[2] = 0
+            finish[2] = #vim.api.nvim_buf_get_lines(0, finish[1] - 1, finish[1], false)[1]
+        end
+        local text =
+            vim.api.nvim_buf_get_text(0, start[1] - 1, start[2], finish[1] - 1, finish[2] + 1, {})
+        local ft = vim.bo.ft
+        local buf = vim.api.nvim_create_buf(false, true)
+        vim.bo[buf].ft = ft
+        vim.api.nvim_buf_set_text(buf, 0, 0, 0, 0, { string.rep(" ", start[2]) })
+        vim.api.nvim_buf_set_text(buf, 0, start[2], 0, start[2], text)
+        vim.api.nvim_buf_set_extmark(
+            buf,
+            ns,
+            0,
+            0,
+            { virt_text = { { string.rep("x", start[2]), "@comment" } }, virt_text_pos = "overlay" }
+        )
+        local winnr = vim.api.nvim_open_win(buf, true, {
+            relative = "cursor",
+            width = 140,
+            height = #text + 2,
+            col = 0,
+            row = 1,
+            border = "rounded",
+            style = "minimal",
+        })
+        vim.api.nvim_win_set_cursor(winnr, { 1, start[2] })
+        vim.keymap.set("n", "<cr>", function()
+            local new_text = vim.api.nvim_buf_get_text(
+                buf,
+                0,
+                start[2],
+                vim.api.nvim_buf_line_count(buf) - 1,
+                -1,
+                {}
+            )
+            vim.api.nvim_win_close(winnr, true)
+            vim.api.nvim_buf_set_text(
+                0,
+                start[1] - 1,
+                start[2],
+                finish[1] - 1,
+                finish[2] + 1,
+                new_text
+            )
+        end, { noremap = true, buffer = buf })
+
+        _G.op_func_formatting = nil
+    end
+    vim.go.operatorfunc = "v:lua.op_func_formatting"
+    vim.api.nvim_feedkeys("g@", "n", false)
+end
+
 return extras
