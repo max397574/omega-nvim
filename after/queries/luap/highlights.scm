@@ -19,7 +19,7 @@
     (shortest_zero_or_more)
     (one_or_more)
     (zero_or_one)
-] @operator
+] @keyword.operator
 
 (class) @keyword
 
