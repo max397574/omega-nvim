@@ -94,6 +94,7 @@ function modules.setup()
         },
         ["games"] = {
             "vimbegood",
+            "wordle",
         },
     }
     for section, sec_modules in pairs(module_sections) do
