@@ -46,6 +46,7 @@ function modules.setup()
         ["langs"] = {
             "lua",
             "log",
+            "html",
             -- "ntangle",
             "main",
             "python",
@@ -152,6 +153,9 @@ function modules.load()
     end
     for _, section in pairs(omega.modules) do
         for _, mod in pairs(section) do
+            if not mod.plugins then
+                return
+            end
             for plugin, packer_spec in pairs(mod.plugins) do
                 if
                     mod.configs

@@ -116,7 +116,6 @@ lsp_mod.configs = {
             pyright = {},
             jedi_language_server = {},
             dockerls = {},
-            html = { cmd = { "html-languageserver", "--stdio" } },
             tsserver = {},
             cssls = { cmd = { "css-languageserver", "--stdio" } },
             rnix = {},
@@ -256,36 +255,6 @@ lsp_mod.configs = {
             virtual_text = false,
             severity_sort = true,
         })
-
-        configs.emmet_ls = {
-            default_config = {
-                cmd = { "ls_emmet", "--stdio" },
-                filetypes = {
-                    "html",
-                    "css",
-                    "scss",
-                    "javascript",
-                    "javascriptreact",
-                    "typescript",
-                    "typescriptreact",
-                    "haml",
-                    "xml",
-                    "xsl",
-                    "pug",
-                    "slim",
-                    "sass",
-                    "stylus",
-                    "less",
-                    "sss",
-                },
-                root_dir = function(fname)
-                    return vim.loop.cwd()
-                end,
-                settings = {},
-            },
-        }
-
-        -- lspconfig.emmet_ls.setup({ capabilities = capabilities })
     end,
 }
 
