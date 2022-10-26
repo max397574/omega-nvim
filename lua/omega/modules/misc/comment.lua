@@ -25,7 +25,7 @@ comment.configs = {
                 block = "gb",
             },
             mappings = {
-                extended = true,
+                -- extended = true,
             },
         })
     end,
