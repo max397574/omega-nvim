@@ -25,8 +25,15 @@ noice.configs = {
                     search_down = {
                         kind = "Search",
                         pattern = "^/",
-                        ft = "regex",
+                        lang = "regex",
                         view = "cmdline",
+                    },
+                    inspect = {
+                        conceal = true,
+                        icon = " ",
+                        lang = "lua",
+                        pattern = "^:%s*lua =%s*",
+                        -- icon=" "
                     },
                 },
             },
@@ -39,8 +46,13 @@ noice.configs = {
             messages = {
                 enabled = true,
             },
-            lsp_progress = {
-                enabled = false,
+            lsp = {
+                hover = {
+                    enabled = false,
+                },
+                progress = {
+                    enabled = false,
+                },
             },
             views = {
                 cmdline_popup = {
@@ -70,6 +82,16 @@ noice.configs = {
                     win_options = {
                         winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
                     },
+                },
+            },
+            routes = {
+                {
+                    filter = {
+                        event = "msg_show",
+                        kind = "",
+                        find = "written",
+                    },
+                    opts = { skip = true },
                 },
             },
         })
