@@ -1,6 +1,8 @@
 local ts_mod = {}
 local ts_filetypes = {
     "markdown",
+    "css",
+    "scss",
     "typescript",
     "rust",
     "lua",
