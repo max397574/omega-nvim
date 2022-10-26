@@ -52,90 +52,79 @@ tele_mod.plugins = {
     },
 }
 
-tele_mod.keybindings = {
-    {
-        {
-            C = {
-                name = " Colors",
-                p = {
-                    function()
-                        omega.modules.misc.telescope.api.colorscheme_switcher()
-                    end,
-                    "Pick",
-                },
-                s = {
-                    function()
-                        require("telescope.builtin").highlights()
-                    end,
-                    "Search",
-                },
+tele_mod.keybindings = function()
+    require("which-key").register({
+        C = {
+            name = " Colors",
+            p = {
+                function()
+                    omega.modules.misc.telescope.api.colorscheme_switcher()
+                end,
+                "Pick",
             },
+            s = {
+                function()
+                    require("telescope.builtin").highlights()
+                end,
+                "Search",
+            },
+        },
 
+        f = {
+            name = " Find",
             f = {
-                name = " Find",
-                f = {
-                    function()
-                        omega.modules.misc.telescope.api.find_files()
-                    end,
-                    "File",
-                },
-            },
-            ["/"] = {
                 function()
-                    omega.modules.misc.telescope.api.live_grep()
+                    omega.modules.misc.telescope.api.find_files()
                 end,
-                " Live Grep",
-            },
-            ["h"] = {
-                name = " Help",
-                t = {
-                    function()
-                        require("telescope.builtin").builtin()
-                    end,
-                    "Telescope",
-                },
-                c = {
-                    function()
-                        require("telescope.builtin").commands()
-                    end,
-                    "Commands",
-                },
-                h = {
-                    function()
-                        omega.modules.misc.telescope.api.help_tags()
-                    end,
-                    "Tags",
-                },
-            },
-            ["."] = {
-                function()
-                    omega.modules.misc.telescope.api.file_browser()
-                end,
-                " File Browser",
-            },
-            [","] = { "<cmd>Telescope buffers<cr>", "﩯Buffers" },
-
-            i = {
-                e = { "<cmd>Telescope emoji<cr>", "Emoji" },
+                "File",
             },
         },
-        {
-            prefix = "<leader>",
-            mode = "n",
-        },
-    },
-    {
-        {
-            ["<c-s>"] = function()
-                omega.modules.misc.telescope.api.buffer_fuzzy()
+        ["/"] = {
+            function()
+                omega.modules.misc.telescope.api.live_grep()
             end,
+            " Live Grep",
         },
-        {
-            prefix = "",
-            mode = "n",
+        ["h"] = {
+            name = " Help",
+            t = {
+                function()
+                    require("telescope.builtin").builtin()
+                end,
+                "Telescope",
+            },
+            c = {
+                function()
+                    require("telescope.builtin").commands()
+                end,
+                "Commands",
+            },
+            h = {
+                function()
+                    omega.modules.misc.telescope.api.help_tags()
+                end,
+                "Tags",
+            },
         },
-    },
-}
+        ["."] = {
+            function()
+                omega.modules.misc.telescope.api.file_browser()
+            end,
+            " File Browser",
+        },
+        [","] = { "<cmd>Telescope buffers<cr>", "﩯Buffers" },
+
+        i = {
+            e = { "<cmd>Telescope emoji<cr>", "Emoji" },
+        },
+    }, {
+        prefix = "<leader>",
+        mode = "n",
+    })
+    vim.keymap.set("n", "<c-s>", function()
+        omega.modules.misc.telescope.api.buffer_fuzzy()
+    end, { noremap = true })
+end
 
 tele_mod.api = {
     ["colorscheme_switcher"] = function()
@@ -317,7 +306,7 @@ tele_mod.api = {
             results_title = "~ Occurrences ~",
             disable_coordinates = true,
             layout_config = {
-                width = 0.99,
+                width = 0.90,
                 height = 0.5,
                 prompt_position = "top",
             },
