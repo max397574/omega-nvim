@@ -235,8 +235,7 @@ fg_bg("NvimTreeVertSplit", darker_black, darker_black)
 -- bg("NvimTreeVertSplit", darker_black)
 fg_bg("NvimTreeWindowPicker", red, tele_prompt)
 
-if omega.config.telescope_theme == "custom_bottom_no_borders" then
-    -- if true then
+if omega.config.telescope_highlights == "custom_bottom_no_borders" then
     fg_bg("TelescopeBorder", tele_bg, tele_bg)
     fg_bg("TelescopePromptBorder", tele_prompt, tele_prompt)
     fg_bg("TelescopePreviewBorder", tele_bg, tele_bg)
