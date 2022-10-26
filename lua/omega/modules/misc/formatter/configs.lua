@@ -55,6 +55,12 @@ configs["formatter.nvim"] = function()
             },
         },
     })
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "FormatterPost",
+        callback = function()
+            vim.cmd.w()
+        end,
+    })
 end
 
 return configs
