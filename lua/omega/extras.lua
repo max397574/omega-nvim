@@ -202,12 +202,15 @@ local ns = vim.api.nvim_create_namespace("block_edit")
 function extras.block_edit_operator()
     local old_func = vim.go.operatorfunc
     _G.op_func_formatting = function(mode)
-        print(mode)
         local start = vim.api.nvim_buf_get_mark(0, "[")
         local finish = vim.api.nvim_buf_get_mark(0, "]")
+        local select_start = start
+        local select_finish = finish
+        local win_og = vim.api.nvim_get_current_win()
         if mode == "line" then
             start[2] = 0
             finish[2] = #vim.api.nvim_buf_get_lines(0, finish[1] - 1, finish[1], false)[1]
+            select_finish[2] = select_finish[2] - 1
         end
         local text =
             vim.api.nvim_buf_get_text(0, start[1] - 1, start[2], finish[1] - 1, finish[2] + 1, {})
@@ -223,16 +226,19 @@ function extras.block_edit_operator()
             0,
             { virt_text = { { string.rep("x", start[2]), "@comment" } }, virt_text_pos = "overlay" }
         )
+        local col = vim.fn.getwininfo(win_og)[1].textoff
         local winnr = vim.api.nvim_open_win(buf, true, {
-            relative = "cursor",
-            width = 140,
-            height = #text + 2,
-            col = 0,
-            row = 1,
-            border = "rounded",
+            relative = "win",
+            bufpos = { start[1], col },
+            width = vim.o.columns - 10,
+            height = #text,
+            col = col,
+            row = -1,
+            border = "none",
             style = "minimal",
         })
-        vim.api.nvim_win_set_cursor(winnr, { 1, start[2] })
+        vim.wo[winnr].winhighlight = "NormalFloat:NeorgCodeblock"
+        vim.api.nvim_win_set_cursor(winnr, { 1, select_start[2] })
         vim.keymap.set("n", "<cr>", function()
             local new_text = vim.api.nvim_buf_get_text(
                 buf,
@@ -242,13 +248,14 @@ function extras.block_edit_operator()
                 -1,
                 {}
             )
+
             vim.api.nvim_win_close(winnr, true)
             vim.api.nvim_buf_set_text(
                 0,
-                start[1] - 1,
-                start[2],
-                finish[1] - 1,
-                finish[2] + 1,
+                select_start[1] - 1,
+                select_start[2],
+                select_finish[1] - 1,
+                select_finish[2] + 1,
                 new_text
             )
         end, { noremap = true, buffer = buf })
