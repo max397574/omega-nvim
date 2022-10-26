@@ -57,11 +57,11 @@ noice.configs = {
             views = {
                 cmdline_popup = {
                     position = {
-                        row = 5,
+                        row = -3,
                         col = "50%",
                     },
                     size = {
-                        width = 60,
+                        width = math.floor(vim.o.columns * 0.9),
                         height = "auto",
                     },
                 },
