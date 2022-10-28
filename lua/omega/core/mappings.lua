@@ -238,3 +238,10 @@ end, { noremap = true })
 map("v", "gm", function()
     require("omega.extras").block_edit_operator()
 end, { noremap = true })
+map("n", "0", function()
+    if vim.fn.match(vim.fn.getline(vim.fn.line(".")), [[\S]]) == (vim.fn.col(".") - 1) then
+        return "0"
+    else
+        return "^"
+    end
+end, { noremap = true, expr = true })
