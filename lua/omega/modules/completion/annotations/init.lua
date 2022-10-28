@@ -3,20 +3,13 @@ local neogen_mod = {}
 
 neogen_mod.plugins = {
     ["neogen"] = {
-        -- "danymat/neogen",
-        "~/neovim_plugins/neogen",
+        "danymat/neogen",
         module = { "neogen" },
         requires = { "LuaSnip" },
+        config = function()
+            require("omega.modules.completion.annotations.configs")["neogen"]()
+        end,
     },
-}
-
-neogen_mod.configs = {
-    ["neogen"] = function()
-        require("neogen").setup({
-            snippet_engine = "luasnip",
-            enabled = true,
-        })
-    end,
 }
 
 neogen_mod.keybindings = function()
