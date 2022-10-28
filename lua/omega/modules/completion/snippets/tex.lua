@@ -15,35 +15,172 @@ local tex_arrow = [[\$\implies\$]]
 local tex_paragraph = [[
 \paragraph{$1}]]
 
-local tex_template = [[
+local tex_math_envs = [[
+\definecolor{NiceGreen}{RGB}{79,219,0}
+
+\newenvironment{satz}[1]{
+\mdfsetup{
+    leftmargin = {-1em},
+    rightmargin = {-1em},
+    roundcorner = 0pt,
+    middlelinewidth = 1pt,
+    linecolor = blue,
+    innertopmargin = 0.5cm,
+    frametitle= Satz: #1,
+    outerlinewidth=0.5pt,
+    innertopmargin = 10pt
+}
+\begin{mdframed}
+}
+{\end{mdframed}}
+
+\newenvironment{bemerkungen}{
+\mdfsetup{
+    leftmargin = {-1em},
+    rightmargin = {-1em},
+    roundcorner = 0pt,
+    middlelinewidth = 1pt,
+    linecolor = NiceGreen,
+    innertopmargin = 0.5cm,
+    topline=false,
+    rightline=false,
+    bottomline=false,
+    frametitle= Bemerkungen:,
+    outerlinewidth=0.5pt,
+    innertopmargin = 10pt
+}
+\begin{mdframed}
+% \textbf{\color{black}Bemerkungen:}\\
+}
+{\end{mdframed}}
+
+\newenvironment{definition}[1]{
+\mdfsetup{
+    leftmargin = {-1em},
+    rightmargin = {-1em},
+    roundcorner = 5pt,
+    middlelinewidth = 1.2pt,
+    linecolor = orange,
+    innertopmargin = 0.5cm,
+    frametitle= Definition: #1,
+    outerlinewidth=1.5pt,
+    innertopmargin = 10pt
+}
+\begin{mdframed}
+}
+{\end{mdframed}}
+
+\newenvironment{merke}[1]{
+\mdfsetup{
+    leftmargin = {-1em},
+    rightmargin = {-1em},
+    roundcorner = 5pt,
+    middlelinewidth = 1.2pt,
+    linecolor = NiceGreen,
+    innertopmargin = 0.5cm,
+    frametitle= Merke!: #1,
+    outerlinewidth=1.5pt,
+    innertopmargin = 10pt
+}
+\begin{mdframed}
+}
+{\end{mdframed}}
+]]
+
+local tex_template = [=[
 \documentclass[a4paper,12pt]{article}
-\usepackage[a4paper, margin=1in, total={20cm,27cm}]{geometry}
+\usepackage[a4paper, top=3.7cm, left=3cm, total={15.5cm,23cm}]{geometry}
+\usepackage{fancyhdr}
 \usepackage{import}
 \usepackage{pdfpages}
 \usepackage{transparent}
 \usepackage{xcolor}
-\usepackage[labelfont=bf]{caption}
+\usepackage{hyperref}
+\usepackage{pdfpages}
+\hypersetup{pdfborder = {0 0 0}}
 
 \usepackage{textcomp}
 \usepackage[german]{babel}
 \usepackage{amsmath, amssymb}
+\usepackage{ragged2e}
+\usepackage{subcaption}
+\usepackage[framemethod=tikz]{mdframed}
 \usepackage{graphicx}
+\graphicspath{ {./images/} }
 \usepackage{tikz}
-\usetikzlibrary{shapes,positioning}
 \usepackage{wrapfig}
+\usepackage{enumitem}
 
 \title{$1}
 \author{$2}
 
+\DeclareUrlCommand{\url}{%
+    \def\UrlFont{\color{blue}\normalfont}%      Adding a little color 
+    \def\UrlLeft##1\UrlRight{\underline{##1}}%  Underlining the url
+}
+
+\DeclareCaptionFormat{custom}
+{%
+    \textit{#1#2#3}
+}
+\captionsetup{format=custom,font={stretch=1}}
+
+% \parskip=0.1cm
+
 \begin{document}
-\maketitle
+\linespread{1.5}
+
+% \begin{titlepage}
+%     \includepdf{titelblatt}
+% \end{titlepage}
+
+\pagenumbering{Roman}
 \tableofcontents
+\newpage
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyhead[RO]{$3Paper \hfill\nouppercase{\leftmark}}
+\fancyfoot[LE,RO]{$4Author \hfill\thepage}
+
+\newpage
+\pagenumbering{arabic}
 
 $0
-\addcontentsline{toc}{section}{Unnumbered Section}
+
 \end{document}
 % vim:spelllang=de
-]]
+]=]
+-- local tex_template = [[
+-- \documentclass[a4paper,12pt]{article}
+-- \usepackage[a4paper, margin=1in, total={20cm,27cm}]{geometry}
+-- \usepackage{import}
+-- \usepackage{pdfpages}
+-- \usepackage{transparent}
+-- \usepackage{xcolor}
+-- \usepackage[labelfont=bf]{caption}
+--
+-- \usepackage{textcomp}
+-- \usepackage[german]{babel}
+-- \usepackage{amsmath, amssymb}
+-- \usepackage{graphicx}
+-- \usepackage{tikz}
+-- \usetikzlibrary{shapes,positioning}
+-- \usepackage{wrapfig}
+--
+-- \title{$1}
+-- \author{$2}
+--
+-- \begin{document}
+-- \maketitle
+-- \tableofcontents
+--
+-- $0
+-- \addcontentsline{toc}{section}{Unnumbered Section}
+-- \end{document}
+-- % vim:spelllang=de
+-- ]]
 
 local tex_section = [[
 \section{$1}]]
@@ -190,6 +327,7 @@ ls.add_snippets("tex", {
     parse({ trig = "it" }, tex_item),
     parse({ trig = "sec" }, tex_section),
     parse({ trig = "italic" }, tex_italic),
+    parse({ trig = "math_envs" }, tex_math_envs),
     parse({ trig = "enum" }, tex_enumerate),
     parse({ trig = "desc" }, tex_description),
     parse({ trig = "ssec" }, tex_subsection),

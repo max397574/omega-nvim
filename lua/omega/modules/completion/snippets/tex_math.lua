@@ -17,7 +17,7 @@ local in_mathzone = require("omega.utils").in_mathzone
 
 ls.add_snippets("tex", {
     s(
-        "//",
+        { snippetType = "autosnippet", trig = "//" },
         d(1, function()
             if not in_mathzone() then
                 return sn(nil, { t({ "//" }) })
@@ -33,7 +33,7 @@ ls.add_snippets("tex", {
         end)
     ),
     s(
-        { trig = "sr", wordTrig = false },
+        { snippetType = "autosnippet", trig = "sr", wordTrig = false },
         f(function()
             if not in_mathzone() then
                 return "sr"
@@ -42,7 +42,7 @@ ls.add_snippets("tex", {
         end)
     ),
     s(
-        { trig = "cb", wordTrig = false },
+        { snippetType = "autosnippet", trig = "cb", wordTrig = false },
         f(function()
             if not in_mathzone() then
                 return "cb"
@@ -51,7 +51,7 @@ ls.add_snippets("tex", {
         end)
     ),
     s(
-        { trig = "comp", wordTrig = false },
+        { snippetType = "autosnippet", trig = "comp", wordTrig = false },
         f(function()
             if not in_mathzone() then
                 return "comp"
@@ -59,7 +59,7 @@ ls.add_snippets("tex", {
             return "^{c}"
         end)
     ),
-    s({ trig = "(%d+)/", regTrig = true }, {
+    s({ snippetType = "autosnippet", trig = "(%d+)/", regTrig = true }, {
         d(1, function(_, snip, _)
             return sn(nil, { t("\\frac{" .. snip.captures[1] .. "}{"), i(1), t("}") }, i(0))
         end),
@@ -68,7 +68,7 @@ ls.add_snippets("tex", {
             return in_mathzone()
         end,
     }),
-    s({ trig = "(%u%u)vec", regTrig = true }, {
+    s({ snippetType = "autosnippet", trig = "(%u%u)vec", regTrig = true }, {
         d(1, function(_, snip, _)
             return sn(nil, { t("\\overrightarrow{" .. snip.captures[1] .. "}") }, i(0))
         end),
@@ -77,7 +77,7 @@ ls.add_snippets("tex", {
             return in_mathzone()
         end,
     }),
-    s({ trig = "(%a)vec", regTrig = true }, {
+    s({ snippetType = "autosnippet", trig = "(%a)vec", regTrig = true }, {
         d(1, function(_, snip, _)
             return sn(nil, { t("\\vec{" .. snip.captures[1] .. "}") }, i(0))
         end),
@@ -86,7 +86,7 @@ ls.add_snippets("tex", {
             return in_mathzone()
         end,
     }),
-    s({ trig = "(%a)hat", regTrig = true }, {
+    s({ snippetType = "autosnippet", trig = "(%a)hat", regTrig = true }, {
         d(1, function(_, snip, _)
             return sn(nil, { t("\\hat{" .. snip.captures[1] .. "}") }, i(0))
         end),
@@ -95,7 +95,7 @@ ls.add_snippets("tex", {
             return in_mathzone()
         end,
     }),
-    s({ trig = "(%a)bar", regTrig = true }, {
+    s({ snippetType = "autosnippet", trig = "(%a)bar", regTrig = true }, {
         d(1, function(_, snip, _)
             return sn(nil, { t("\\bar{" .. snip.captures[1] .. "}") }, i(0))
         end),
@@ -104,19 +104,17 @@ ls.add_snippets("tex", {
             return in_mathzone()
         end,
     }),
-    s({ trig = "hat" }, { t("\\hat{"), i(1), t("}"), i(0) }, {
+    s({ snippetType = "autosnippet", trig = "hat" }, { t("\\hat{"), i(1), t("}"), i(0) }, {
         condition = function()
             return in_mathzone()
         end,
     }),
-    s({ trig = "bar" }, { t("\\bar{"), i(1), t("}"), i(0) }, {
+    s({ snippetType = "autosnippet", trig = "bar" }, { t("\\bar{"), i(1), t("}"), i(0) }, {
         condition = function()
             return in_mathzone()
         end,
     }),
-}, {
-    type = "autosnippets",
-})
+}, {})
 ls.add_snippets("tex", {
     s({ trig = "*", wordTrig = false }, { t("{\\cdot"), t("}"), i(0) }, {
         condition = function()
