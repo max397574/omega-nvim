@@ -172,7 +172,6 @@ neorg_mod.configs = {
                         extensions = "all",
                     },
                 },
-                -- ["core.promo"] = {},
             },
             logger = {
                 level = "warn",
