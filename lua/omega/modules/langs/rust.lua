@@ -29,6 +29,9 @@ rust_lsp.configs = {
                 standalone = true,
                 settings = {
                     ["rust-analyzer"] = {
+                        editor = {
+                            formatOnType = true,
+                        },
                         checkOnSave = {
                             command = "clippy",
                         },
