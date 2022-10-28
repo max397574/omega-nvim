@@ -83,6 +83,10 @@ ts_mod.plugins = {
         "~/neovim_plugins/nvim-treehopper/",
         module = "tsht",
     },
+    ["query-secretary"] = {
+        "ziontee113/query-secretary",
+        after = "nvim-treesitter",
+    },
 }
 
 ts_mod.configs = {
@@ -282,5 +286,8 @@ ts_mod.keybindings = function()
         ":<C-U>lua require('tsht').nodes()<CR>",
         { noremap = true, silent = true }
     )
+    vim.keymap.set("n", "<leader>qw", function()
+        require("query-secretary").query_window_initiate()
+    end, { desc = "Write Query" })
 end
 return ts_mod
