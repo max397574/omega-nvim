@@ -318,6 +318,9 @@ cmp_mod.configs = {
                 if vim.bo.ft == "TelescopePrompt" then
                     return false
                 end
+                if luasnip.choice_active() then
+                    return false
+                end
                 if vim.bo.ft == "lua" then
                     return true
                 end
