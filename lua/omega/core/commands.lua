@@ -134,3 +134,13 @@ end, {
     nargs = "?",
     complete = colorschemes,
 })
+
+add_cmd("Redir", function(args)
+    local out = vim.fn.execute(args.args)
+    vim.cmd.tabnew()
+    vim.opt_local.buftype = "nofile"
+    vim.opt_local.bufhidden = "wipe"
+    vim.fn.setline(1, vim.fn.split(out, "\n"))
+end, {
+    nargs = "*",
+})
