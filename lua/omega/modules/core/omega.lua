@@ -4,18 +4,9 @@ omega.plugins = {
     ["plenary.nvim"] = { "nvim-lua/plenary.nvim", module = "plenary" },
     ["packer.nvim"] = {
         "wbthomason/packer.nvim",
-        module = "packer",
-        opt = true,
-        cmd = {
-            "PackerSnapshot",
-            "PackerSnapshotRollback",
-            "PackerSnapshotDelete",
-            "PackerSync",
-            "PackerInstall",
-            "PackerUpdate",
-        },
     },
     ["impatient.nvim"] = { "lewis6991/impatient.nvim" },
+    ["plugnplay.nvim"] = { "~/neovim_plugins/plugnplay/plugnplay.nvim/" },
 }
 
 return omega
