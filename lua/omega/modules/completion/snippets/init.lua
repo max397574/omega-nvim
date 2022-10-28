@@ -114,6 +114,9 @@ snippets_mod.configs = {
                 "~/.local/share/nvim/site/pack/packer/opt/friendly-snippets",
             },
         })
+        vim.keymap.set("i", "<c-i>", function()
+            require("luasnip.extras.select_choice")()
+        end, {})
     end,
 }
 
