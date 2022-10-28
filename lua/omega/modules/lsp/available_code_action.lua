@@ -1,7 +1,5 @@
 local ca_available = {}
 
-local old_line
-
 local function place_sign(line, buf)
     vim.fn.sign_place(line, "ca_available", "code_action", buf, { lnum = line + 1 })
 end
@@ -17,6 +15,9 @@ local function update_sign(bufnr)
     params.context = context
     vim.lsp.buf_request_all(bufnr, "textDocument/codeAction", params, function(results)
         remove_sign()
+        if results[1].error then
+            return
+        end
         if not results or not results[1] then
             return
         end
