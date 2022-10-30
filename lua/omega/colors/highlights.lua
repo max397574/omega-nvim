@@ -297,3 +297,61 @@ fg_bg("Definition", colors.white, colors.darker_black, {})
 fg_bg("FloatBorder", light_grey, black)
 
 fg_bg("PmenuSel", colors.blue, colors.light_grey)
+
+fg_bg("LspSignatureActiveParameter", nil, nil, { bold = true, italic = true })
+
+local theme = require("omega.colors.base16").themes(vim.g.colors_name)
+local kind_highlights = {
+    Class = theme.base08,
+    Color = theme.base08,
+    Constant = theme.base09,
+    Constructor = theme.base08,
+    Enum = theme.base08,
+    EnumMember = theme.base08,
+    Event = theme.base0D,
+    Field = theme.base08,
+    File = theme.base09,
+    Folder = theme.base09,
+    Function = theme.base0D,
+    Interface = theme.base0D,
+    Keyword = theme.base0E,
+    Method = theme.base08,
+    Module = theme.base08,
+    Operator = theme.base08,
+    Property = theme.base0A,
+    Reference = theme.base08,
+    Snippet = theme.base0C,
+    Struct = theme.base08,
+    Text = theme.base0B,
+    TypeParameter = theme.base08,
+    Type = theme.base0A,
+    Unit = theme.base08,
+    Value = theme.base08,
+    Variable = theme.base0E,
+    Structure = theme.base0E,
+    Identifier = theme.base08,
+}
+local color_utils = require("omega.utils.colors")
+for kind_name, hl in pairs(kind_highlights) do
+    if highlight then
+        -- TODO: check TS<...>
+        if omega.config.cmp_theme == "border" then
+            vim.api.nvim_set_hl(0, ("CmpItemKind%s"):format(kind_name), {
+                fg = hl,
+            })
+        elseif omega.config.cmp_theme == "no-border" then
+            vim.api.nvim_set_hl(0, ("CmpItemKind%s"):format(kind_name), {
+                fg = hl,
+                bg = color_utils.blend_colors(hl, theme.base00, 0.15),
+                -- fg = theme.base05,
+                -- bg = highlight,
+            })
+            vim.api.nvim_set_hl(0, ("CmpItemKindMenu%s"):format(kind_name), {
+                fg = hl,
+            })
+            vim.api.nvim_set_hl(0, ("CmpItemKindBlock%s"):format(kind_name), {
+                fg = color_utils.blend_colors(hl, theme.base00, 0.15),
+            })
+        end
+    end
+end

@@ -51,73 +51,17 @@ cmp_mod.plugins = {
         "dmitmel/cmp-cmdline-history",
         after = "nvim-cmp",
     },
-    ["cmp-nvim-lsp-signature-help"] = {
-        "hrsh7th/cmp-nvim-lsp-signature-help",
-        after = "nvim-cmp",
-    },
+    -- ["cmp-nvim-lsp-signature-help"] = {
+    --     "hrsh7th/cmp-nvim-lsp-signature-help",
+    --     after = "nvim-cmp",
+    -- },
     ["cmp-dap"] = {
         "rcarriga/cmp-dap",
         after = "nvim-cmp",
     },
 }
 
-local function define_highlights()
-    local theme = require("omega.colors.base16").themes(vim.g.colors_name)
-    local kind_highlights = {
-        Class = theme.base08,
-        Color = theme.base08,
-        Constant = theme.base09,
-        Constructor = theme.base08,
-        Enum = theme.base08,
-        EnumMember = theme.base08,
-        Event = theme.base0D,
-        Field = theme.base08,
-        File = theme.base09,
-        Folder = theme.base09,
-        Function = theme.base0D,
-        Interface = theme.base0D,
-        Keyword = theme.base0E,
-        Method = theme.base08,
-        Module = theme.base08,
-        Operator = theme.base08,
-        Property = theme.base0A,
-        Reference = theme.base08,
-        Snippet = theme.base0C,
-        Struct = theme.base08,
-        Text = theme.base0B,
-        TypeParameter = theme.base08,
-        Type = theme.base0A,
-        Unit = theme.base08,
-        Value = theme.base08,
-        Variable = theme.base0E,
-        Structure = theme.base0E,
-        Identifier = theme.base08,
-    }
-    local color_utils = require("omega.utils.colors")
-    for kind_name, highlight in pairs(kind_highlights) do
-        if highlight then
-            -- TODO: check TS<...>
-            if omega.config.cmp_theme == "border" then
-                vim.api.nvim_set_hl(0, ("CmpItemKind%s"):format(kind_name), {
-                    fg = highlight,
-                })
-            elseif omega.config.cmp_theme == "no-border" then
-                vim.api.nvim_set_hl(0, ("CmpItemKind%s"):format(kind_name), {
-                    fg = highlight,
-                    bg = color_utils.blend_colors(highlight, theme.base00, 0.15),
-                    -- fg = theme.base05,
-                    -- bg = highlight,
-                })
-                vim.api.nvim_set_hl(0, ("CmpItemKindMenu%s"):format(kind_name), {
-                    fg = highlight,
-                })
-                vim.api.nvim_set_hl(0, ("CmpItemKindBlock%s"):format(kind_name), {
-                    fg = color_utils.blend_colors(highlight, theme.base00, 0.15),
-                })
-            end
-        end
-    end
-end
+local function define_highlights() end
 
 cmp_mod.configs = {
     ["nvim-cmp"] = function()
@@ -312,7 +256,7 @@ cmp_mod.configs = {
                 { name = "luasnip", priority = 8 },
                 -- { name = "neorg", priority = 6 },
                 { name = "latex_symbols", priority = 1 },
-                { name = "nvim_lsp_signature_help", priority = 10 },
+                -- { name = "nvim_lsp_signature_help", priority = 10 },
             },
             enabled = function()
                 if vim.bo.ft == "TelescopePrompt" then
