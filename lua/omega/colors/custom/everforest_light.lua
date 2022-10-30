@@ -1,6 +1,5 @@
 -- local colors = require("omega.colors").get()
 --
-vim.opt.background = "light"
 return {
     --     ["Visual"] = { bg = colors.light_grey },
     --     ["CursorLine"] = { bg = colors.light_grey },
