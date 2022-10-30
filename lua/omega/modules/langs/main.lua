@@ -31,20 +31,21 @@ lsp_mod.plugins = {
 
 lsp_mod.configs = {
     ["lsp_signature.nvim"] = function()
-        require("lsp_signature").setup({
-            bind = true,
-            doc_lines = 0,
-            floating_window = false,
-            fix_pos = true, -- set to true, the floating window will not auto-close until finish all parameters
-            hint_enable = true,
-            hint_prefix = " ",
-            hint_scheme = "String",
-            hi_parameter = "TSEmphasis",
-            handler_opts = {
-                border = require("omega.utils").border(),
-            },
-            padding = "|",
-        })
+        -- require("lsp_signature").setup({
+        -- noice = true,
+        -- bind = true,
+        -- doc_lines = 0,
+        -- floating_window = false,
+        -- fix_pos = true, -- set to true, the floating window will not auto-close until finish all parameters
+        -- hint_enable = true,
+        -- hint_prefix = " ",
+        -- hint_scheme = "String",
+        -- hi_parameter = "TSEmphasis",
+        -- handler_opts = {
+        --     border = require("omega.utils").border(),
+        -- },
+        -- padding = "|",
+        -- })
     end,
     ["nvim-lspconfig"] = function()
         vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
@@ -71,10 +72,10 @@ lsp_mod.configs = {
                 numhl = "Diagnostic" .. sign,
             })
         end
-        vim.lsp.handlers["textDocument/hover"] =
-            vim.lsp.with(vim.lsp.handlers.hover, { border = utils.border() })
-        vim.lsp.handlers["textDocument/signatureHelp"] =
-            vim.lsp.with(vim.lsp.handlers.signature_help, { border = utils.border() })
+        -- vim.lsp.handlers["textDocument/hover"] =
+        --     vim.lsp.with(vim.lsp.handlers.hover, { border = utils.border() })
+        -- vim.lsp.handlers["textDocument/signatureHelp"] =
+        --     vim.lsp.with(vim.lsp.handlers.signature_help, { border = utils.border() })
         local lspconfig = require("lspconfig")
         local configs = require("lspconfig.configs")
 
@@ -212,7 +213,7 @@ lsp_mod.configs = {
 
         vim.diagnostic.config({
             float = {
-                focusable = false,
+                focusable = true,
                 border = utils.border(),
                 scope = "line",
                 format = function(diagnostic)

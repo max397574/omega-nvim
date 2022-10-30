@@ -18,9 +18,10 @@ noice.plugins = {
 noice.configs = {
     ["noice.nvim"] = function()
         vim.o.lazyredraw = false
-        require("noice").setup({
+        local config = {
             cmdline = {
                 enabled = true,
+                ---@type table<string, CmdlineFormat>
                 format = {
                     search_down = {
                         kind = "Search",
@@ -33,12 +34,14 @@ noice.configs = {
                         icon = " ",
                         lang = "lua",
                         pattern = "^:%s*lua =%s*",
-                        -- icon=" "
                     },
                 },
+                view = "cmdline",
             },
             popupmenu = {
                 enabled = true,
+                ---@type 'nui'|'cmp'
+                backend = "nui",
             },
             notiy = {
                 enabled = true,
@@ -48,40 +51,24 @@ noice.configs = {
             },
             lsp = {
                 hover = {
-                    enabled = false,
+                    enabled = true,
                 },
                 progress = {
                     enabled = false,
                 },
-            },
-            views = {
-                cmdline_popup = {
-                    position = {
-                        row = -3,
-                        col = "50%",
-                    },
-                    size = {
-                        width = math.floor(vim.o.columns * 0.9),
-                        height = "auto",
-                    },
+                signature = {
+                    enabled = true,
                 },
-                popupmenu = {
-                    relative = "editor",
-                    position = {
-                        row = 8,
-                        col = "50%",
-                    },
-                    size = {
-                        width = 60,
-                        height = 10,
-                    },
-                    border = {
-                        style = "rounded",
-                        padding = { 0, 1 },
-                    },
-                    win_options = {
-                        winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
-                    },
+                message = {
+                    enabled = true,
+                },
+                override = {
+                    -- override the default lsp markdown formatter with Noice
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    -- override the lsp markdown formatter with Noice
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    -- override cmp documentation with Noice (needs the other options to work)
+                    ["cmp.entry.get_documentation"] = true,
                 },
             },
             routes = {
@@ -94,7 +81,47 @@ noice.configs = {
                     opts = { skip = true },
                 },
             },
-        })
+        }
+        if vim.tbl_contains({ "bottom", "top" }, omega.config.noice_cmdline_position) then
+            config.cmdline.view = nil
+            config.views = {
+                cmdline_popup = {
+                    position = {
+                        row = vim.o.lines - 3,
+                        col = "50%",
+                    },
+                    size = {
+                        width = math.floor(vim.o.columns * 0.9),
+                        height = "auto",
+                    },
+                    win_options = {
+                        conceallevel = 0,
+                    },
+                },
+                popupmenu = {
+                    position = {
+                        row = vim.o.lines - 16,
+                        col = "50%",
+                    },
+                    size = {
+                        width = math.floor(vim.o.columns * 0.9),
+                        height = 10,
+                    },
+                    border = {
+                        style = "rounded",
+                        padding = { 0, 1 },
+                    },
+                    win_options = {
+                        winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+                    },
+                },
+            }
+            if omega.config.noice_cmdline_position == "top" then
+                config.views.cmdline_popup.position.row = 2
+                config.views.popupmenu.position.row = 4
+            end
+        end
+        require("noice").setup(config)
     end,
 }
 
