@@ -5,7 +5,7 @@ function config.load()
         use_impatient = true,
         -- "round_colored_bg"|"round_dark_bg"|"round_blended"
         statusline = "round_blended",
-        colorscheme = "onedark",
+        colorscheme = "tokyonight_storm",
         light_colorscheme = "everforest",
         --- string "float_all_borders"|"custom_bottom_no_borders"
         telescope_theme = "float_all_borders",
@@ -14,6 +14,8 @@ function config.load()
         --- String "border"|"no-border"
         cmp_theme = "no-border",
         lsp_definition_context = 10,
+        --- "normal"|"top"|"bottom"
+        noice_cmdline_position = "normal",
     }
 end
 
