@@ -35,6 +35,7 @@ function modules.setup()
             "devicons",
             "heirline",
             "noice",
+            "themes",
             -- "notify",
         },
         ["mappings"] = {
@@ -59,6 +60,7 @@ function modules.setup()
             "autopairs",
             "cmp",
             "snippets",
+            "neocomplete",
         },
         ["misc"] = {
             "colorizer",
