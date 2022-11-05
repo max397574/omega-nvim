@@ -66,3 +66,6 @@ vim.opt.fillchars = {
     verthoriz = "╬",
 }
 vim.opt.laststatus = 3
+
+vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
+vim.opt.grepformat:append("%f:%l:%c:%m")
