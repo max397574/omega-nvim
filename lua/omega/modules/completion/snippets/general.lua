@@ -250,6 +250,18 @@ ls.add_snippets(nil, {
             i(0),
         }),
     },
+    toml = {
+        s("stylua", {
+            t({
+                "column_width = 120",
+                'line_endings = "Unix"',
+                'indent_type = "Spaces"',
+                "indent_width = 4",
+                'quote_style = "AutoPreferDouble"',
+                'call_parentheses = "Always"',
+            }),
+        }),
+    },
     java = {
         parse({ trig = "pus" }, public_string),
         parse({ trig = "puv" }, public_void),
