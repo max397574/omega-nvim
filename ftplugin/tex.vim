@@ -2,7 +2,7 @@ nnoremap <C-p> :call LatexClipboardImage()<CR>
 
 function! LatexClipboardImage() abort
   " Create `img` directory if it doesn't exist
-  let img_dir = getcwd() . '/imgs'
+  let img_dir = getcwd() . '/images'
   if !isdirectory(img_dir)
     silent call mkdir(img_dir)
   endif
@@ -29,7 +29,11 @@ function! LatexClipboardImage() abort
     let caption = getline('.')
     execute "normal!".
     \"i"
-    \"\\includegraphics[width=200px]{./imgs/image" . index . ".png}\r"
+    \"\\begin{figure}[h]\r"
+    \"\\centering\r"
+    \"\\includegraphics[width=200px]{image" . index . ".png}\r"
+    \"\\caption{}\r"
+    \"\\end{figure}\r"
     execute "normal! k4w:w"
   endif
 endfunction
