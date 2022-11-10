@@ -11,6 +11,9 @@ insert_utils.configs = {
                 [","] = {
                     [","] = "<cmd>lua require'omega.utils'.append_comma()<CR>",
                 },
+                [";"] = {
+                    [";"] = "<cmd>lua require'omega.utils'.append_semicolon()<CR>",
+                },
                 j = {
                     k = "<esc>",
                     [","] = "<cmd>lua require'omega.utils'.append_comma()<CR><esc>o",
