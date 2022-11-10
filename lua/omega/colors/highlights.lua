@@ -355,3 +355,5 @@ for kind_name, hl in pairs(kind_highlights) do
         end
     end
 end
+
+bg("NoicePopup", darker_black)
