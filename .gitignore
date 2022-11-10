@@ -20,3 +20,11 @@ queries.lua
 query_test.lua
 nice_colors
 ui_attach.lua
+hl_eol.lua
+indent_bl
+jobs.lua
+nabla_test.lua
+snippets
+traverse.sh
+profiles.lua
+neorg_range_operator.lua
