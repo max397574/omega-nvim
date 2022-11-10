@@ -1,15 +1,16 @@
 local ts_mod = {}
-local ts_filetypes = {
+local ts_parsers = {
     "markdown",
+    "markdown_inline",
     "css",
     "scss",
     "typescript",
     "rust",
     "lua",
     "python",
-    "tex",
     "query",
     "cpp",
+    "yaml",
     "c",
     "vim",
     "latex",
@@ -21,6 +22,8 @@ local ts_filetypes = {
     "zig",
     "diff",
 }
+local ts_filetypes = vim.deepcopy(ts_parsers)
+table.insert(ts_filetypes, "tex")
 
 ts_mod.plugins = {
     ["nvim-treesitter"] = {
@@ -39,33 +42,6 @@ ts_mod.plugins = {
     ["nvim-treesitter-endwise"] = {
         "RRethy/nvim-treesitter-endwise",
         opt = true,
-        setup = function()
-            vim.api.nvim_create_autocmd("InsertEnter", {
-                callback = function()
-                    if
-                        vim.tbl_contains({
-                            "markdown",
-                            "rust",
-                            "lua",
-                            "python",
-                            "cpp",
-                            "c",
-                            "vim",
-                            "latex",
-                            "typescript",
-                            "java",
-                            "help",
-                            "vim",
-                            "norg",
-                            "tex",
-                        }, vim.bo.ft)
-                    then
-                        require("packer").loader("nvim-treesitter")
-                        require("packer").loader("nvim-treesitter-endwise")
-                    end
-                end,
-            })
-        end,
     },
     ["nvim-ts-rainbow"] = {
         "p00f/nvim-ts-rainbow",
@@ -91,6 +67,11 @@ ts_mod.plugins = {
 
 ts_mod.configs = {
     ["nvim-treesitter"] = function()
+        vim.api.nvim_create_autocmd("InsertEnter", {
+            callback = function()
+                require("packer").loader("nvim-treesitter-endwise")
+            end,
+        })
         local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
         local colors = require("omega.colors").get()
 
@@ -114,24 +95,7 @@ ts_mod.configs = {
         vim.cmd.PackerLoad("playground")
 
         require("nvim-treesitter.configs").setup({
-            ensure_installed = {
-                "julia",
-                "markdown",
-                "typescript",
-                "rust",
-                "lua",
-                "python",
-                "luap",
-                "cpp",
-                "c",
-                "vim",
-                "latex",
-                "java",
-                "help",
-                "vim",
-                "comment",
-                "zig",
-            },
+            ensure_installed = ts_parsers,
             highlight = {
                 enable = true,
             },
