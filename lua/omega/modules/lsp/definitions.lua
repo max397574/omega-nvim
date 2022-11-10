@@ -50,7 +50,7 @@ local function toggle_virtual_text(contents)
 end
 
 local winnr = nil
-local function open_floating_buffer(contents, bufnr)
+local function open_floating_buffer(contents, bufnr, range)
     if winnr then
         vim.api.nvim_clear_autocmds({ group = "lsp-definition-float" })
         vim.api.nvim_set_current_win(winnr)
@@ -65,7 +65,6 @@ local function open_floating_buffer(contents, bufnr)
         border = "rounded",
         style = "minimal",
     })
-    -- TODO: set cursor
     vim.wo[winnr].winbar = nil
     vim.api.nvim_create_autocmd("WinClosed", {
         callback = function()
@@ -91,8 +90,8 @@ local actions = {
     ["add_virtual_text"] = function(contents)
         add_virtual_text(contents)
     end,
-    ["open_floating_buffer"] = function(contents, _, bufnr)
-        open_floating_buffer(contents, bufnr)
+    ["open_floating_buffer"] = function(contents, range, bufnr)
+        open_floating_buffer(contents, bufnr, range)
     end,
 }
 

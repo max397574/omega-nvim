@@ -15,10 +15,10 @@ local function update_sign(bufnr)
     params.context = context
     vim.lsp.buf_request_all(bufnr, "textDocument/codeAction", params, function(results)
         remove_sign()
-        if results[1].error then
+        if not results or not results[1] then
             return
         end
-        if not results or not results[1] then
+        if results[1].error then
             return
         end
         if vim.tbl_isempty(results[1]) then
