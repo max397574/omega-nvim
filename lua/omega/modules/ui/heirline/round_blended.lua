@@ -678,6 +678,7 @@ local word_count = {
 }
 
 RoundWorkDir = utilities.surround({ "", "" }, background_color, RoundWorkDir)
+RoundWorkDir = { flexible = 5, RoundWorkDir }
 
 local inactive_statusline = {
     condition = function()
@@ -691,7 +692,7 @@ local inactive_statusline = {
 
 local default_statusline = {
     condition = conditions.is_active,
-    utils.make_flexible_component(5, RoundWorkDir),
+    RoundWorkDir,
     space,
     RoundFileNameBlock,
     space,
@@ -701,13 +702,13 @@ local default_statusline = {
     diagnostics,
     space,
     align,
-    utils.make_flexible_component(4, coords),
+    { flexible = 4, coords },
     space,
     round_mode_icon,
     space,
     round_progress,
     space,
-    utils.make_flexible_component(6, word_count),
+    { flexible = 6, word_count },
 }
 
 local help_file_line = {
