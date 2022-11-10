@@ -89,13 +89,15 @@ local tex_math_envs = [[
 
 local tex_template = [=[
 \documentclass[a4paper,12pt]{article}
-\usepackage[a4paper, top=3.7cm, left=3cm, total={15.5cm,23cm}]{geometry}
+\usepackage[a4paper, top=2.5cm, left=2.5cm, total={16cm,25.2cm}]{geometry}
 \usepackage{fancyhdr}
 \usepackage{import}
 \usepackage{pdfpages}
 \usepackage{transparent}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{chngcntr}
+\counterwithin*{section}{part}
 \usepackage{pdfpages}
 \hypersetup{pdfborder = {0 0 0}}
 
@@ -145,7 +147,6 @@ local tex_template = [=[
 \fancyhead[RO]{$3Paper \hfill\nouppercase{\leftmark}}
 \fancyfoot[LE,RO]{$4Author \hfill\thepage}
 
-\newpage
 \pagenumbering{arabic}
 
 $0
