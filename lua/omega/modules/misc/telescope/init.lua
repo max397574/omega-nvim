@@ -3,10 +3,16 @@ local tele_mod = {}
 tele_mod.plugins = {
     ["telescope.nvim"] = {
         "nvim-telescope/telescope.nvim",
+        -- branch="fps",
         config = function()
             require("omega.modules.misc.telescope.configs")["telescope.nvim"]()
         end,
         cmd = { "Telescope" },
+        setup = function()
+            vim.defer_fn(function()
+                vim.cmd.PackerLoad("telescope.nvim")
+            end, 0)
+        end,
         module = {
             "telescope",
             "omega.modules.misc.telescope",
@@ -193,8 +199,8 @@ tele_mod.api = {
 
             pickers
                 .new(opts, {
-                    prompt_title = "~ Colorscheme Picker ~",
-                    results_title = "~ Colorschemes ~",
+                    prompt_title = "Colorscheme Picker",
+                    results_title = "Colorschemes",
                     -- layout_strategy = "custom_bottom",
                     finder = finders.new_table(opts.data),
                     sorter = conf.generic_sorter(opts),
@@ -223,9 +229,9 @@ tele_mod.api = {
         local opts = {
             shorten_path = false,
             prompt_position = "top",
-            prompt_title = "~ Current Buffer ~",
-            preview_title = "~ Location Preview~ ",
-            results_title = "~ Lines ~",
+            prompt_title = "Current Buffer",
+            preview_title = "Location Preview",
+            results_title = "Lines",
             -- layout_strategy = "custom_bottom",
             layout_config = { prompt_position = "top", height = 0.4 },
         }
@@ -240,7 +246,7 @@ tele_mod.api = {
         })
         local builtin = require("telescope.builtin")
         local opts = {
-            prompt_title = "~ Help Tags ~",
+            prompt_title = "Help Tags",
             initial_mode = "insert",
             sorting_strategy = "ascending",
             anchor = "S",
@@ -277,9 +283,9 @@ tele_mod.api = {
     end,
     ["find_files"] = function()
         local opts = {
-            prompt_title = "~ Find Files ~",
-            preview_title = "~ File Preview ~",
-            results_title = "~ Files ~",
+            prompt_title = "Find Files",
+            preview_title = "File Preview",
+            results_title = "Files",
             -- layout_strategy = "custom_bottom",
             find_command = {
                 "rg",
@@ -300,10 +306,10 @@ tele_mod.api = {
         local opts = {
             border = true,
             shorten_path = false,
-            prompt_title = "~ Find String ~",
-            preview_title = "~ Location Preview ~ ",
+            prompt_title = "Find String",
+            preview_title = "Location Preview",
             -- layout_strategy = "custom_bottom",
-            results_title = "~ Occurrences ~",
+            results_title = "Occurrences",
             disable_coordinates = true,
             layout_config = {
                 width = 0.90,

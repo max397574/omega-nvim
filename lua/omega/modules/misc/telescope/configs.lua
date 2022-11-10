@@ -157,24 +157,24 @@ local configs = {
                     -- preview_width = 0.6,
                     bottom_pane = {
                         height = 0.5,
-                        preview_cutoff = 20,
+                        preview_cutoff = 70,
                         prompt_position = "top",
                     },
                     custom_bottom = {
                         height = 0.5,
-                        preview_cutoff = 20,
+                        preview_cutoff = 70,
                         -- preview_width = 0.6,
                         prompt_position = "top",
                     },
                     center = {
                         height = 0.5,
-                        preview_cutoff = 20,
+                        preview_cutoff = 70,
                         prompt_position = "top",
                         width = 0.99,
                     },
                     cursor = {
                         height = 0.5,
-                        preview_cutoff = 20,
+                        preview_cutoff = 70,
                         width = 0.99,
                     },
                     flex = {
@@ -184,16 +184,16 @@ local configs = {
                     height = 0.5,
                     horizontal = {
                         height = 0.5,
-                        preview_cutoff = 20,
+                        preview_cutoff = 70,
                         preview_width = 0.65,
                         prompt_position = "top",
                         width = 0.99,
                     },
-                    preview_cutoff = 20,
+                    preview_cutoff = 70,
                     prompt_position = "top",
                     vertical = {
                         height = 0.95,
-                        preview_cutoff = 20,
+                        preview_cutoff = 70,
                         preview_height = 0.5,
                         preview_width = 0.65,
                         prompt_position = "top",
@@ -357,10 +357,11 @@ local configs = {
                     get_status_text = function(_)
                         return ""
                     end,
+                    path_display = { "smart", "shorten" },
                     layout_config = {
                         width = 0.85,
                         height = 0.9,
-                        preview_cutoff = 20,
+                        preview_cutoff = 70,
                         prompt_position = "top",
                         vertical = { mirror = false },
                         horizontal = {
@@ -444,10 +445,11 @@ local configs = {
                     get_status_text = function(_)
                         return ""
                     end,
+                    path_display = { "smart", "shorten" },
                     layout_config = {
                         width = 0.85,
                         height = 0.9,
-                        preview_cutoff = 20,
+                        preview_cutoff = 70,
                         prompt_position = "top",
                         vertical = { mirror = false },
                         horizontal = {
