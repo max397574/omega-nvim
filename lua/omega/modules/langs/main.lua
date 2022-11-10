@@ -213,7 +213,7 @@ lsp_mod.configs = {
 
         vim.diagnostic.config({
             float = {
-                focusable = true,
+                focusable = false,
                 border = utils.border(),
                 scope = "line",
                 format = function(diagnostic)
