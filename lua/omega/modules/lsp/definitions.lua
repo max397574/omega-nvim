@@ -50,10 +50,12 @@ local function toggle_virtual_text(contents)
 end
 
 local winnr = nil
-local function open_floating_buffer(contents, bufnr, range)
+---@diagnostic disable-next-line: unused-local
+local function open_floating_buffer(contents, bufnr, range, location)
     if winnr then
         vim.api.nvim_clear_autocmds({ group = "lsp-definition-float" })
         vim.api.nvim_set_current_win(winnr)
+        vim.lsp.util.jump_to_location(location, "utf-8", true)
         return
     end
     winnr = vim.api.nvim_open_win(bufnr, false, {
@@ -67,13 +69,14 @@ local function open_floating_buffer(contents, bufnr, range)
     })
     vim.wo[winnr].winbar = nil
     vim.api.nvim_create_autocmd("WinClosed", {
-        callback = function()
+        callback = function(_)
             winnr = nil
         end,
         pattern = tostring(winnr),
     })
+    vim.api.nvim_win_set_cursor(winnr, { range.start.line, 1 })
     vim.api.nvim_create_autocmd({ "CursorMoved" }, {
-        callback = function()
+        callback = function(_)
             vim.api.nvim_win_close(winnr, false)
             winnr = nil
         end,
@@ -90,8 +93,8 @@ local actions = {
     ["add_virtual_text"] = function(contents)
         add_virtual_text(contents)
     end,
-    ["open_floating_buffer"] = function(contents, range, bufnr)
-        open_floating_buffer(contents, bufnr, range)
+    ["open_floating_buffer"] = function(contents, range, bufnr, location)
+        open_floating_buffer(contents, bufnr, range, location)
     end,
 }
 
@@ -126,7 +129,7 @@ function lsp_definitions.get_definition(action)
             vim.notify("Unable to get contents of file", vim.log.levels.WARN)
             return
         end
-        actions[action](contents, range, bufnr)
+        actions[action](contents, range, bufnr, location)
     end)
 end
 
