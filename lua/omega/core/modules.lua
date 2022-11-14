@@ -95,6 +95,9 @@ function modules.setup()
             "venn",
             -- "windows",
         },
+        ["refactoring"] = {
+            "ssr",
+        },
         ["games"] = {
             "vimbegood",
             "wordle",
