@@ -21,7 +21,7 @@ query_test.lua
 nice_colors
 ui_attach.lua
 hl_eol.lua
-indent_bl
+indent_bl.lua
 jobs.lua
 nabla_test.lua
 snippets
