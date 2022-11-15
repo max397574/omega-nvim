@@ -28,3 +28,5 @@ snippets
 traverse.sh
 profiles.lua
 neorg_range_operator.lua
+minimal_package_overwrite.lua
+my_test_package.lua
