@@ -2,7 +2,13 @@
 local neocomplete = {}
 
 neocomplete.plugins = {
-    ["neo-complete.nvim"] = { "~/neovim_plugins/neocomplete.nvim/" },
+    ["neocomplete.nvim"] = { "~/neovim_plugins/neocomplete.nvim/" },
+}
+
+neocomplete.configs = {
+    ["neocomplete.nvim"] = function()
+        require("neocomplete").setup()
+    end,
 }
 
 return neocomplete
