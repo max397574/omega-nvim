@@ -21,5 +21,8 @@ ssr.keybindings = function()
         },
     }, { prefix = "<leader>", mode = "n" })
 end
+vim.keymap.set("x", "<leader>Rs", function()
+    require("ssr").open()
+end)
 
 return ssr
