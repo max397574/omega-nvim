@@ -86,12 +86,12 @@ cmp_mod.configs = {
                 word = before .. "..."
             end
 
-            if
-                entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet
-                and string.sub(vim_item.abbr, -1, -1) == "~"
-            then
-                word = word .. "~"
-            end
+            -- if
+            --     entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet
+            --     and string.sub(vim_item.abbr, -1, -1) == "~"
+            -- then
+            -- word = word .. "~"
+            -- end
             return word
         end
         vim.cmd.PackerLoad("nvim-autopairs")
