@@ -1,29 +1,3 @@
-local ts_parsers = {
-    "markdown",
-    "markdown_inline",
-    "css",
-    "scss",
-    "typescript",
-    "rust",
-    "lua",
-    "python",
-    "query",
-    "cpp",
-    "yaml",
-    "c",
-    "vim",
-    "latex",
-    "java",
-    "help",
-    "julia",
-    "vim",
-    "norg",
-    "zig",
-    "diff",
-}
-local ts_filetypes = vim.deepcopy(ts_parsers)
-table.insert(ts_filetypes, "tex")
-
 local modules = {}
 function modules.bootstrap_packer()
     local has_packer = pcall(require, "packer")
@@ -181,9 +155,9 @@ local module_sections = {
                 end,
             },
         },
-        log = {
-            { "MTDL9/vim-log-highlighting", ft = "log" },
-        },
+        -- log = {
+        --     { "MTDL9/vim-log-highlighting", ft = "log" },
+        -- },
         main = {
             {
                 "neovim/nvim-lspconfig",
@@ -211,13 +185,13 @@ local module_sections = {
                 },
             },
 
-            {
-                "ray-x/lsp_signature.nvim",
-                after = "nvim-lspconfig",
-                config = function()
-                    require("omega.modules.langs.main").configs["lsp_signature.nvim"]()
-                end,
-            },
+            -- {
+            --     "ray-x/lsp_signature.nvim",
+            --     after = "nvim-lspconfig",
+            --     config = function()
+            --         require("omega.modules.langs.main").configs["lsp_signature.nvim"]()
+            --     end,
+            -- },
         },
         -- python,
         rust = {
@@ -296,14 +270,14 @@ local module_sections = {
                 "hrsh7th/cmp-emoji",
                 after = "nvim-cmp",
             },
-            {
-                "max397574/cmp-greek",
-                after = "nvim-cmp",
-            },
-            {
-                "hrsh7th/cmp-buffer",
-                after = "nvim-cmp",
-            },
+            -- {
+            --     "max397574/cmp-greek",
+            --     after = "nvim-cmp",
+            -- },
+            -- {
+            --     "hrsh7th/cmp-buffer",
+            --     after = "nvim-cmp",
+            -- },
             {
                 "hrsh7th/cmp-path",
                 after = "nvim-cmp",
@@ -312,10 +286,10 @@ local module_sections = {
                 "kdheepak/cmp-latex-symbols",
                 after = "nvim-cmp",
             },
-            {
-                "hrsh7th/cmp-calc",
-                after = "nvim-cmp",
-            },
+            -- {
+            --     "hrsh7th/cmp-calc",
+            --     after = "nvim-cmp",
+            -- },
             {
                 "hrsh7th/cmp-nvim-lua",
                 after = "nvim-cmp",
@@ -324,18 +298,18 @@ local module_sections = {
                 "hrsh7th/cmp-nvim-lsp",
                 after = "nvim-cmp",
             },
-            {
-                "hrsh7th/cmp-cmdline",
-                after = "nvim-cmp",
-            },
-            {
-                "dmitmel/cmp-cmdline-history",
-                after = "nvim-cmp",
-            },
-            {
-                "rcarriga/cmp-dap",
-                after = "nvim-cmp",
-            },
+            -- {
+            --     "hrsh7th/cmp-cmdline",
+            --     after = "nvim-cmp",
+            -- },
+            -- {
+            --     "dmitmel/cmp-cmdline-history",
+            --     after = "nvim-cmp",
+            -- },
+            -- {
+            --     "rcarriga/cmp-dap",
+            --     after = "nvim-cmp",
+            -- },
         },
         snippets = {
             {
@@ -376,15 +350,15 @@ local module_sections = {
                 module = { "colorscheme_switcher" },
             },
         },
-        colortils = {
-            {
-                "~/neovim_plugins/colortils.nvim/",
-                cmd = "Colortils",
-                config = function()
-                    require("omega.modules.misc.colortils").configs["colortils.nvim"]()
-                end,
-            },
-        },
+        -- colortils = {
+        --     {
+        --         "~/neovim_plugins/colortils.nvim/",
+        --         cmd = "Colortils",
+        --         config = function()
+        --             require("omega.modules.misc.colortils").configs["colortils.nvim"]()
+        --         end,
+        --     },
+        -- },
         comment = {
             {
                 "numToStr/Comment.nvim",
@@ -450,103 +424,103 @@ local module_sections = {
                 "nanotee/luv-vimdocs",
                 cmd = { "Telescope", "h" },
             },
-            {
-                "milisims/nvim-luaref",
-                cmd = { "Telescope", "h" },
-            },
-            {
-                "~/neovim_plugins/help_files/",
-                cmd = { "Telescope", "h" },
-            },
-            {
-                "~/neovim_plugins/crefvim/",
-                cmd = { "Telescope", "h" },
-            },
+            -- {
+            --     "milisims/nvim-luaref",
+            --     cmd = { "Telescope", "h" },
+            -- },
+            -- {
+            --     "~/neovim_plugins/help_files/",
+            --     cmd = { "Telescope", "h" },
+            -- },
+            -- {
+            --     "~/neovim_plugins/crefvim/",
+            --     cmd = { "Telescope", "h" },
+            -- },
         },
-        holo = {
-            {
-                "edluffy/hologram.nvim",
-                module = "hologram",
-                config = function()
-                    require("hologram").setup()
-                end,
-            },
-        },
-        image = {
-            {
-                "samodostal/image.nvim",
-                setup = function()
-                    vim.api.nvim_create_autocmd({ "BufEnter", "VimResized" }, {
-                        pattern = {
-                            "*.jpeg",
-                            "*.jpg",
-                            "*.png",
-                            "*.bmp",
-                            "*.webp",
-                            "*.tiff",
-                            "*.tif",
-                        },
-                        once = true,
-                        callback = function()
-                            require("packer").loader("image.nvim")
-                            vim.cmd.PackerLoad("baleia.nvim")
-                            require("image").setup({
-                                render = {
-                                    foreground_color = true,
-                                    background_color = true,
-                                },
-                            })
-                            local async = require("plenary.async")
-                            local config = require("image.config")
-                            local ui = require("image.ui")
-                            local dimensions = require("image.dimensions")
-                            local api = require("image.api")
-                            local options = require("image.options")
-                            local global_opts = nil
-                            local on_image_open = function()
-                                local buf_id = 0
-                                local buf_path = vim.api.nvim_buf_get_name(buf_id)
-
-                                local ascii_width, ascii_height, horizontal_padding, vertical_padding =
-                                    dimensions.calculate_ascii_width_height(
-                                        buf_id,
-                                        buf_path,
-                                        global_opts
-                                    )
-
-                                options.set_options_before_render(buf_id)
-                                ui.buf_clear(buf_id)
-
-                                local label =
-                                    ui.create_label(buf_path, ascii_width, horizontal_padding)
-
-                                local ascii_data = api.get_ascii_data(
-                                    buf_path,
-                                    ascii_width,
-                                    ascii_height,
-                                    global_opts
-                                )
-                                ui.buf_insert_data_with_padding(
-                                    buf_id,
-                                    ascii_data,
-                                    horizontal_padding,
-                                    vertical_padding,
-                                    label,
-                                    global_opts
-                                )
-
-                                options.set_options_after_render(buf_id)
-                            end
-                            global_opts = config.DEFAULT_OPTS
-
-                            async.run(on_image_open, function() end)
-                        end,
-                    })
-                end,
-                opt = true,
-            },
-            { "m00qek/baleia.nvim", opt = true },
-        },
+        -- holo = {
+        --     {
+        --         "edluffy/hologram.nvim",
+        --         module = "hologram",
+        --         config = function()
+        --             require("hologram").setup()
+        --         end,
+        --     },
+        -- },
+        -- image = {
+        --     {
+        --         "samodostal/image.nvim",
+        --         setup = function()
+        --             vim.api.nvim_create_autocmd({ "BufEnter", "VimResized" }, {
+        --                 pattern = {
+        --                     "*.jpeg",
+        --                     "*.jpg",
+        --                     "*.png",
+        --                     "*.bmp",
+        --                     "*.webp",
+        --                     "*.tiff",
+        --                     "*.tif",
+        --                 },
+        --                 once = true,
+        --                 callback = function()
+        --                     require("packer").loader("image.nvim")
+        --                     vim.cmd.PackerLoad("baleia.nvim")
+        --                     require("image").setup({
+        --                         render = {
+        --                             foreground_color = true,
+        --                             background_color = true,
+        --                         },
+        --                     })
+        --                     local async = require("plenary.async")
+        --                     local config = require("image.config")
+        --                     local ui = require("image.ui")
+        --                     local dimensions = require("image.dimensions")
+        --                     local api = require("image.api")
+        --                     local options = require("image.options")
+        --                     local global_opts = nil
+        --                     local on_image_open = function()
+        --                         local buf_id = 0
+        --                         local buf_path = vim.api.nvim_buf_get_name(buf_id)
+        --
+        --                         local ascii_width, ascii_height, horizontal_padding, vertical_padding =
+        --                             dimensions.calculate_ascii_width_height(
+        --                                 buf_id,
+        --                                 buf_path,
+        --                                 global_opts
+        --                             )
+        --
+        --                         options.set_options_before_render(buf_id)
+        --                         ui.buf_clear(buf_id)
+        --
+        --                         local label =
+        --                             ui.create_label(buf_path, ascii_width, horizontal_padding)
+        --
+        --                         local ascii_data = api.get_ascii_data(
+        --                             buf_path,
+        --                             ascii_width,
+        --                             ascii_height,
+        --                             global_opts
+        --                         )
+        --                         ui.buf_insert_data_with_padding(
+        --                             buf_id,
+        --                             ascii_data,
+        --                             horizontal_padding,
+        --                             vertical_padding,
+        --                             label,
+        --                             global_opts
+        --                         )
+        --
+        --                         options.set_options_after_render(buf_id)
+        --                     end
+        --                     global_opts = config.DEFAULT_OPTS
+        --
+        --                     async.run(on_image_open, function() end)
+        --                 end,
+        --             })
+        --         end,
+        --         opt = true,
+        --     },
+        --     { "m00qek/baleia.nvim", opt = true },
+        -- },
         insert_utils = {
             {
                 "Krafi2/jeskape.nvim",
@@ -602,7 +576,6 @@ local module_sections = {
                         },
                     })
                 end,
-                requires = { "nvim-treesitter" },
                 config = function()
                     require("omega.modules.misc.neorg").configs["neorg"]()
                 end,
@@ -631,15 +604,15 @@ local module_sections = {
                 end,
             },
         },
-        ["nvim-tree"] = {
-            {
-                "kyazdani42/nvim-tree.lua",
-                cmd = { "NvimTreeToggle", "NvimTreeOpen" },
-                config = function()
-                    require("omega.modules.misc.nvim-tree").configs["nvim-tree.lua"]()
-                end,
-            },
-        },
+        -- ["nvim-tree"] = {
+        --     {
+        --         "kyazdani42/nvim-tree.lua",
+        --         cmd = { "NvimTreeToggle", "NvimTreeOpen" },
+        --         config = function()
+        --             require("omega.modules.misc.nvim-tree").configs["nvim-tree.lua"]()
+        --         end,
+        --     },
+        -- },
         paperplanes = {
             {
                 "rktjmp/paperplanes.nvim",
@@ -649,15 +622,15 @@ local module_sections = {
                 end,
             },
         },
-        sj = {
-            {
-                "woosaaahh/sj.nvim",
-                keys = { "/" },
-                config = function()
-                    require("omega.modules.misc.sj").configs["sj.nvim"]()
-                end,
-            },
-        },
+        -- sj = {
+        --     {
+        --         "woosaaahh/sj.nvim",
+        --         keys = { "/" },
+        --         config = function()
+        --             require("omega.modules.misc.sj").configs["sj.nvim"]()
+        --         end,
+        --     },
+        -- },
         surround = {
             {
                 "kylechui/nvim-surround",
@@ -674,15 +647,15 @@ local module_sections = {
                 end,
             },
         },
-        symbols_outline = {
-            {
-                "simrat39/symbols-outline.nvim",
-                cmd = "SymbolsOutline",
-                config = function()
-                    require("omega.modules.misc.symbols_outline").configs["symbols-outline.nvim"]()
-                end,
-            },
-        },
+        -- symbols_outline = {
+        --     {
+        --         "simrat39/symbols-outline.nvim",
+        --         cmd = "SymbolsOutline",
+        --         config = function()
+        --             require("omega.modules.misc.symbols_outline").configs["symbols-outline.nvim"]()
+        --         end,
+        --     },
+        -- },
         telescope = {
             {
                 "nvim-telescope/telescope.nvim",
@@ -719,7 +692,7 @@ local module_sections = {
             },
             {
                 "nvim-telescope/telescope-ui-select.nvim",
-                after="telescope.nvim",
+                after = "telescope.nvim",
                 opt = true,
                 setup = function()
                     omega.ui_select = vim.ui.select
@@ -757,18 +730,28 @@ local module_sections = {
         treesitter = {
             {
                 "nvim-treesitter/nvim-treesitter",
-                run = ":TSUpdate",
-                ft = ts_filetypes,
                 config = function()
                     require("omega.modules.misc.treesitter").configs["nvim-treesitter"]()
                 end,
             },
             {
                 "nvim-treesitter/nvim-treesitter-refactor",
+                opt = true,
+                setup = function()
+                    vim.defer_fn(function()
+                        require("packer").loader("nvim-treesitter-refactor")
+                    end, 1)
+                end,
                 after = "nvim-treesitter",
             },
             {
                 "nvim-treesitter/nvim-treesitter-textobjects",
+                opt = true,
+                setup = function()
+                    vim.defer_fn(function()
+                        require("packer").loader("nvim-treesitter-textobjects")
+                    end, 1)
+                end,
                 after = "nvim-treesitter",
             },
             {
@@ -777,7 +760,6 @@ local module_sections = {
             },
             {
                 "p00f/nvim-ts-rainbow",
-                after = "nvim-treesitter",
             },
             {
                 "nvim-treesitter/playground",
@@ -789,7 +771,7 @@ local module_sections = {
             },
             {
                 "ziontee113/query-secretary",
-                after = "nvim-treesitter",
+                keys = { "<leader>qw" },
             },
         },
         trouble = {
@@ -808,12 +790,12 @@ local module_sections = {
                 end,
             },
         },
-        undotree = {
-            {
-                "mbbill/undotree",
-                cmd = "UndotreeToggle",
-            },
-        },
+        -- undotree = {
+        --     {
+        --         "mbbill/undotree",
+        --         cmd = "UndotreeToggle",
+        --     },
+        -- },
         venn = {
             {
                 "jbyuki/venn.nvim",

@@ -356,9 +356,9 @@ cmp_mod.configs = {
                 if vim.bo.ft == "lua" then
                     return true
                 end
-                if require("cmp_dap").is_dap_buffer() then
-                    return true
-                end
+                -- if require("cmp_dap").is_dap_buffer() then
+                --     return true
+                -- end
                 local lnum, col = vim.fn.line("."), math.min(vim.fn.col("."), #vim.fn.getline("."))
                 for _, syn_id in ipairs(vim.fn.synstack(lnum, col)) do
                     syn_id = vim.fn.synIDtrans(syn_id) -- Resolve :highlight links

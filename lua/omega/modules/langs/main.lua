@@ -1,34 +1,5 @@
 local lsp_mod = {}
 
-lsp_mod.plugins = {
-    ["nvim-lspconfig"] = {
-        "neovim/nvim-lspconfig",
-        opt = true,
-        ft = {
-            "python",
-            "html",
-            "typescript",
-            "zig",
-            "rust",
-            "css",
-            "cpp",
-            "nix",
-            "julia",
-            "rust",
-            "haskell",
-            "tex",
-            "vim",
-            "lua",
-            "tangle",
-        },
-    },
-
-    ["lsp_signature.nvim"] = {
-        "ray-x/lsp_signature.nvim",
-        after = "nvim-lspconfig",
-    },
-}
-
 lsp_mod.configs = {
     ["lsp_signature.nvim"] = function()
         -- require("lsp_signature").setup({
