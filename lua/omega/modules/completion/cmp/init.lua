@@ -61,10 +61,117 @@ cmp_mod.plugins = {
     },
 }
 
-local function define_highlights() end
-
 cmp_mod.configs = {
     ["nvim-cmp"] = function()
+        local noice_config = {
+            cmdline = {
+                enabled = true,
+                ---@type table<string, CmdlineFormat>
+                format = {
+                    search_down = {
+                        kind = "Search",
+                        pattern = "^/",
+                        lang = "regex",
+                        view = "cmdline",
+                    },
+                    inspect = {
+                        conceal = true,
+                        icon = " ",
+                        lang = "lua",
+                        pattern = "^:%s*lua =%s*",
+                    },
+                },
+                view = "cmdline",
+            },
+            popupmenu = {
+                enabled = true,
+                ---@type 'nui'|'cmp'
+                backend = "nui",
+            },
+            notiy = {
+                enabled = true,
+            },
+            messages = {
+                enabled = true,
+            },
+            lsp = {
+                hover = {
+                    enabled = true,
+                },
+                progress = {
+                    enabled = false,
+                },
+                signature = {
+                    enabled = true,
+                },
+                message = {
+                    enabled = true,
+                },
+                override = {
+                    -- override the default lsp markdown formatter with Noice
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    -- override the lsp markdown formatter with Noice
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    -- override cmp documentation with Noice (needs the other options to work)
+                    ["cmp.entry.get_documentation"] = true,
+                },
+            },
+            routes = {
+                {
+                    view = "notify",
+                    filter = { event = "msg_showmode" },
+                },
+                {
+                    filter = {
+                        event = "msg_show",
+                        kind = "",
+                        find = "written",
+                    },
+                    opts = { skip = true },
+                },
+            },
+        }
+        if vim.tbl_contains({ "bottom", "top" }, omega.config.noice_cmdline_position) then
+            noice_config.cmdline.view = nil
+            noice_config.views = {
+                cmdline_popup = {
+                    position = {
+                        row = vim.o.lines - 3,
+                        col = "50%",
+                    },
+                    size = {
+                        width = math.floor(vim.o.columns * 0.9),
+                        height = "auto",
+                    },
+                    win_options = {
+                        conceallevel = 0,
+                    },
+                },
+                popupmenu = {
+                    position = {
+                        row = vim.o.lines - 16,
+                        col = "50%",
+                    },
+                    size = {
+                        width = math.floor(vim.o.columns * 0.9),
+                        height = 10,
+                    },
+                    border = {
+                        style = "rounded",
+                        padding = { 0, 1 },
+                    },
+                    win_options = {
+                        winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+                    },
+                },
+            }
+            if omega.config.noice_cmdline_position == "top" then
+                noice_config.views.cmdline_popup.position.row = 2
+                noice_config.views.popupmenu.position.row = 4
+            end
+        end
+        require("noice").setup(noice_config)
+
         local cmp = require("cmp")
         local types = require("cmp.types")
         local luasnip = require("luasnip")
@@ -96,7 +203,6 @@ cmp_mod.configs = {
         end
         vim.cmd.PackerLoad("nvim-autopairs")
         vim.cmd.PackerLoad("LuaSnip")
-        define_highlights()
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 
@@ -197,24 +303,6 @@ cmp_mod.configs = {
                         behavior = cmp.ConfirmBehavior.Insert,
                     }),
                 }),
-                -- ["<tab>"] = cmp.mapping(function()
-                --     if cmp.visible() then
-                --         cmp.select_next_item({
-                --             behavior = cmp.SelectBehavior.Insert,
-                --         })
-                --     end
-                -- end, {
-                --     "c",
-                -- }),
-                -- ["<s-tab>"] = cmp.mapping(function()
-                --     if cmp.visible() then
-                --         cmp.select_prev_item({
-                --             behavior = cmp.SelectBehavior.Insert,
-                --         })
-                --     end
-                -- end, {
-                --     "c",
-                -- }),
                 ["<C-l>"] = cmp.mapping(function(fallback)
                     if luasnip.choice_active() then
                         require("luasnip").change_choice(1)

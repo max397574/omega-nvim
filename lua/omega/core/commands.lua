@@ -144,3 +144,6 @@ add_cmd("Redir", function(args)
 end, {
     nargs = "*",
 })
+
+add_cmd("CacheOmega",function()
+end,{})

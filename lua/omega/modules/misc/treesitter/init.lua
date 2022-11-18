@@ -28,7 +28,7 @@ table.insert(ts_filetypes, "tex")
 ts_mod.plugins = {
     ["nvim-treesitter"] = {
         "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
+        -- run = ":TSUpdate",
         ft = ts_filetypes,
     },
     ["nvim-treesitter-refactor"] = {
