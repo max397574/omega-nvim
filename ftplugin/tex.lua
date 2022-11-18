@@ -26,7 +26,7 @@ local function latex_clipboard_image()
             "\\begin{figure}[h]",
             "\\includegraphics[width=200px]{" .. file_path:sub(
                 #img_dir + 2,
-                -(5 + #tostring(index))
+                -(4 + #tostring(index))
             ) .. (index ~= 0 and tostring(index) or "") .. ".png}",
             "\\caption{" .. caption .. "}",
             "\\end{figure}",
