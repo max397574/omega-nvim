@@ -148,7 +148,7 @@ fg("LineNr", grey)
 fg("NvimInternalError", red)
 fg("VertSplit", one_bg2)
 if omega.config.cmp_theme == "border" then
-    fg("CmpBorder", blue)
+    fg("CmpBorder", white)
 elseif omega.config.cmp_theme == "no-border" then
     fg_bg("CmpBorder", colors.darker_black, colors.black)
 end
