@@ -1,3 +1,3 @@
+-- dofile(vim.fn.expand("~") .. "/neovim_plugins/profiler.nvim/lua/profiler.lua")
 require("impatient")
-vim.opt.runtimepath:append(vim.fn.stdpath("data"))
 require("omega.core")
