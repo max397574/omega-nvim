@@ -690,21 +690,21 @@ local module_sections = {
                 "nvim-telescope/telescope-file-browser.nvim",
                 after = "telescope.nvim",
             },
-            {
-                "nvim-telescope/telescope-ui-select.nvim",
-                after = "telescope.nvim",
-                opt = true,
-                setup = function()
-                    omega.ui_select = vim.ui.select
-                    vim.ui.select = function(items, opts, on_choice)
-                        vim.cmd.PackerLoad({
-                            "telescope.nvim",
-                            "telescope-ui-select.nvim",
-                        })
-                        vim.ui.select(items, opts, on_choice)
-                    end
-                end,
-            },
+            -- {
+            --     "nvim-telescope/telescope-ui-select.nvim",
+            --     after = "telescope.nvim",
+            --     opt = true,
+            --     setup = function()
+            --         omega.ui_select = vim.ui.select
+            --         vim.ui.select = function(items, opts, on_choice)
+            --             vim.cmd.PackerLoad({
+            --                 "telescope.nvim",
+            --                 "telescope-ui-select.nvim",
+            --             })
+            --             vim.ui.select(items, opts, on_choice)
+            --         end
+            --     end,
+            -- },
             { "~/neovim_plugins/lense.nvim", after = "telescope.nvim" },
         },
         todo = {
