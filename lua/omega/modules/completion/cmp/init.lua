@@ -1,72 +1,10 @@
 local cmp_mod = {}
 
-cmp_mod.plugins = {
-    ["nvim-cmp"] = {
-        "~/neovim_plugins/nvim-cmp",
-        requires = { "nvim-autopairs" },
-        -- ft = { "norg" },
-        event = { "InsertEnter", "CmdLineEnter" },
-    },
-    ["cmp_luasnip"] = {
-        "saadparwaiz1/cmp_luasnip",
-        after = "nvim-cmp",
-    },
-    ["cmp-emoji"] = {
-        "hrsh7th/cmp-emoji",
-        after = "nvim-cmp",
-    },
-    ["cmp-greek"] = {
-        "max397574/cmp-greek",
-        after = "nvim-cmp",
-    },
-    ["cmp-buffer"] = {
-        "hrsh7th/cmp-buffer",
-        after = "nvim-cmp",
-    },
-    ["cmp-path"] = {
-        "hrsh7th/cmp-path",
-        after = "nvim-cmp",
-    },
-    ["cmp-latex-symbols"] = {
-        "kdheepak/cmp-latex-symbols",
-        after = "nvim-cmp",
-    },
-    ["cmp-calc"] = {
-        "hrsh7th/cmp-calc",
-        after = "nvim-cmp",
-    },
-    ["cmp-nvim-lua"] = {
-        "hrsh7th/cmp-nvim-lua",
-        after = "nvim-cmp",
-    },
-    ["cmp-nvim-lsp"] = {
-        "hrsh7th/cmp-nvim-lsp",
-        after = "nvim-cmp",
-    },
-    ["cmp-cmdline"] = {
-        "hrsh7th/cmp-cmdline",
-        after = "nvim-cmp",
-    },
-    ["cmp-cmdline-history"] = {
-        "dmitmel/cmp-cmdline-history",
-        after = "nvim-cmp",
-    },
-    -- ["cmp-nvim-lsp-signature-help"] = {
-    --     "hrsh7th/cmp-nvim-lsp-signature-help",
-    --     after = "nvim-cmp",
-    -- },
-    ["cmp-dap"] = {
-        "rcarriga/cmp-dap",
-        after = "nvim-cmp",
-    },
-}
-
 cmp_mod.configs = {
     ["nvim-cmp"] = function()
         local noice_config = {
             cmdline = {
                 enabled = true,
-                ---@type table<string, CmdlineFormat>
                 format = {
                     search_down = {
                         kind = "Search",
@@ -108,11 +46,8 @@ cmp_mod.configs = {
                     enabled = true,
                 },
                 override = {
-                    -- override the default lsp markdown formatter with Noice
                     ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                    -- override the lsp markdown formatter with Noice
                     ["vim.lsp.util.stylize_markdown"] = true,
-                    -- override cmp documentation with Noice (needs the other options to work)
                     ["cmp.entry.get_documentation"] = true,
                 },
             },
@@ -170,6 +105,7 @@ cmp_mod.configs = {
                 noice_config.views.popupmenu.position.row = 4
             end
         end
+        require("plenary.reload").reload_module("noice")
         require("noice").setup(noice_config)
 
         local cmp = require("cmp")
@@ -344,7 +280,7 @@ cmp_mod.configs = {
                 { name = "luasnip", priority = 8 },
                 -- { name = "neorg", priority = 6 },
                 { name = "latex_symbols", priority = 1 },
-                -- { name = "nvim_lsp_signature_help", priority = 10 },
+                { name = "nvim_lsp_signature_help", priority = 10 },
             },
             enabled = function()
                 if vim.bo.ft == "TelescopePrompt" then

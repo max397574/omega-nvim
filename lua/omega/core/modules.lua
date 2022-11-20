@@ -185,13 +185,13 @@ local module_sections = {
                 },
             },
 
-            -- {
-            --     "ray-x/lsp_signature.nvim",
-            --     after = "nvim-lspconfig",
-            --     config = function()
-            --         require("omega.modules.langs.main").configs["lsp_signature.nvim"]()
-            --     end,
-            -- },
+            {
+                "ray-x/lsp_signature.nvim",
+                after = "nvim-lspconfig",
+                config = function()
+                    require("omega.modules.langs.main").configs["lsp_signature.nvim"]()
+                end,
+            },
         },
         -- python,
         rust = {
@@ -278,6 +278,10 @@ local module_sections = {
             --     "hrsh7th/cmp-buffer",
             --     after = "nvim-cmp",
             -- },
+            {
+                "hrsh7th/cmp-nvim-lsp-signature-help",
+                after = "nvim-cmp",
+            },
             {
                 "hrsh7th/cmp-path",
                 after = "nvim-cmp",
@@ -437,90 +441,6 @@ local module_sections = {
             --     cmd = { "Telescope", "h" },
             -- },
         },
-        -- holo = {
-        --     {
-        --         "edluffy/hologram.nvim",
-        --         module = "hologram",
-        --         config = function()
-        --             require("hologram").setup()
-        --         end,
-        --     },
-        -- },
-        -- image = {
-        --     {
-        --         "samodostal/image.nvim",
-        --         setup = function()
-        --             vim.api.nvim_create_autocmd({ "BufEnter", "VimResized" }, {
-        --                 pattern = {
-        --                     "*.jpeg",
-        --                     "*.jpg",
-        --                     "*.png",
-        --                     "*.bmp",
-        --                     "*.webp",
-        --                     "*.tiff",
-        --                     "*.tif",
-        --                 },
-        --                 once = true,
-        --                 callback = function()
-        --                     require("packer").loader("image.nvim")
-        --                     vim.cmd.PackerLoad("baleia.nvim")
-        --                     require("image").setup({
-        --                         render = {
-        --                             foreground_color = true,
-        --                             background_color = true,
-        --                         },
-        --                     })
-        --                     local async = require("plenary.async")
-        --                     local config = require("image.config")
-        --                     local ui = require("image.ui")
-        --                     local dimensions = require("image.dimensions")
-        --                     local api = require("image.api")
-        --                     local options = require("image.options")
-        --                     local global_opts = nil
-        --                     local on_image_open = function()
-        --                         local buf_id = 0
-        --                         local buf_path = vim.api.nvim_buf_get_name(buf_id)
-        --
-        --                         local ascii_width, ascii_height, horizontal_padding, vertical_padding =
-        --                             dimensions.calculate_ascii_width_height(
-        --                                 buf_id,
-        --                                 buf_path,
-        --                                 global_opts
-        --                             )
-        --
-        --                         options.set_options_before_render(buf_id)
-        --                         ui.buf_clear(buf_id)
-        --
-        --                         local label =
-        --                             ui.create_label(buf_path, ascii_width, horizontal_padding)
-        --
-        --                         local ascii_data = api.get_ascii_data(
-        --                             buf_path,
-        --                             ascii_width,
-        --                             ascii_height,
-        --                             global_opts
-        --                         )
-        --                         ui.buf_insert_data_with_padding(
-        --                             buf_id,
-        --                             ascii_data,
-        --                             horizontal_padding,
-        --                             vertical_padding,
-        --                             label,
-        --                             global_opts
-        --                         )
-        --
-        --                         options.set_options_after_render(buf_id)
-        --                     end
-        --                     global_opts = config.DEFAULT_OPTS
-        --
-        --                     async.run(on_image_open, function() end)
-        --                 end,
-        --             })
-        --         end,
-        --         opt = true,
-        --     },
-        --     { "m00qek/baleia.nvim", opt = true },
-        -- },
         insert_utils = {
             {
                 "Krafi2/jeskape.nvim",
