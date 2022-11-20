@@ -155,8 +155,8 @@ utils.in_mathzone = function()
             end
             node = node:parent()
         end
-        return false
     end
+    return false
 end
 
 local read_buffers = {}

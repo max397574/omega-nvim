@@ -181,10 +181,10 @@ tele_mod.api = {
     end,
     ["help_tags"] = function()
         vim.cmd.PackerLoad({
-            "nvim-luaref",
-            "help_files",
+            -- "nvim-luaref",
+            -- "help_files",
             "luv-vimdocs",
-            "crefvim",
+            -- "crefvim",
         })
         local builtin = require("telescope.builtin")
         local opts = {

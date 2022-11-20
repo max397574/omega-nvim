@@ -95,15 +95,6 @@ ls.add_snippets("tex", {
             return in_mathzone()
         end,
     }),
-    s({ snippetType = "autosnippet", trig = "(%a)bar", regTrig = true }, {
-        d(1, function(_, snip, _)
-            return sn(nil, { t("\\bar{" .. snip.captures[1] .. "}") }, i(0))
-        end),
-    }, {
-        condition = function(_, _, _)
-            return in_mathzone()
-        end,
-    }),
     s({ snippetType = "autosnippet", trig = "hat" }, { t("\\hat{"), i(1), t("}"), i(0) }, {
         condition = function()
             return in_mathzone()
@@ -118,6 +109,15 @@ ls.add_snippets("tex", {
 ls.add_snippets("tex", {
     s({ trig = "*", wordTrig = false }, { t("{\\cdot"), t("}"), i(0) }, {
         condition = function()
+            return in_mathzone()
+        end,
+    }),
+    s({ snippetType = "autosnippet", trig = "(%a)bar", regTrig = true }, {
+        d(1, function(_, snip, _)
+            return sn(nil, { t("\\bar{" .. snip.captures[1] .. "}") }, i(0))
+        end),
+    }, {
+        condition = function(_, _, _)
             return in_mathzone()
         end,
     }),
