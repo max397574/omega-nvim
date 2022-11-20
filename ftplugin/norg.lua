@@ -57,7 +57,7 @@ wk.register({
     mode = "n",
 })
 
-omega.plugin_configs["nvim-surround"]()
+require("omega.modules.misc.surround").configs["nvim-surround"]()
 require("nvim-surround").buffer_setup({
     surrounds = {
         ["/"] = { add = { "/", "/" } },
