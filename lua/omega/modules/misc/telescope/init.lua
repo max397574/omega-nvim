@@ -26,6 +26,12 @@ tele_mod.keybindings = function()
                 end,
                 "File",
             },
+            ["."] = {
+                function()
+                    require("telescope.builtin").resume()
+                end,
+                "Repeat",
+            },
         },
         ["/"] = {
             function()
