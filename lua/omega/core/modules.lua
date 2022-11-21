@@ -25,11 +25,6 @@ local module_sections = {
             {
                 "lukas-reineke/indent-blankline.nvim",
                 opt = true,
-                setup = function()
-                    vim.defer_fn(function()
-                        require("packer").loader("indent-blankline.nvim")
-                    end, 0)
-                end,
                 config = function()
                     require("omega.modules.ui.blankline").configs["indent-blankline.nvim"]()
                 end,
@@ -149,10 +144,10 @@ local module_sections = {
         lua = {
             {
                 "folke/neodev.nvim",
-                ft = "lua",
                 config = function()
                     require("omega.modules.langs.lua").configs["neodev.nvim"]()
                 end,
+                after = "nvim-lspconfig",
             },
         },
         -- log = {
@@ -166,23 +161,11 @@ local module_sections = {
                     require("omega.modules.langs.html")
                 end,
                 opt = true,
-                ft = {
-                    "python",
-                    "html",
-                    "typescript",
-                    "zig",
-                    "rust",
-                    "css",
-                    "cpp",
-                    "nix",
-                    "julia",
-                    "rust",
-                    "haskell",
-                    "tex",
-                    "vim",
-                    "lua",
-                    "tangle",
-                },
+                setup = function()
+                    vim.defer_fn(function()
+                        require("packer").loader("nvim-lspconfig")
+                    end, 0)
+                end,
             },
 
             {
@@ -197,10 +180,10 @@ local module_sections = {
         rust = {
             {
                 "simrat39/rust-tools.nvim",
-                ft = "rust",
                 config = function()
                     require("omega.modules.langs.rust").configs["rust-tools.nvim"]()
                 end,
+                after = "nvim-lspconfig",
             },
         },
         -- swift,
@@ -650,6 +633,33 @@ local module_sections = {
         treesitter = {
             {
                 "nvim-treesitter/nvim-treesitter",
+                -- module = "nvim-treesitter",
+                opt = true,
+                setup = function()
+                    if omega.load_treesitter then
+                        require("packer").loader("nvim-treesitter")
+                        require("packer").loader("indent-blankline.nvim")
+                    else
+                        vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
+                            callback = function()
+                                local file = vim.fn.expand("%")
+                                if not vim.tbl_contains({ "[packer]", "" }, file) then
+                                    require("packer").loader("nvim-treesitter")
+                                    require("packer").loader("indent-blankline.nvim")
+                                end
+                            end,
+                        })
+                    end
+                end,
+                cmd = {
+                    "TSInstall",
+                    "TSBufEnable",
+                    "TSBufDisable",
+                    "TSEnable",
+                    "TSDisable",
+                    "TSModuleInfo",
+                },
+
                 config = function()
                     require("omega.modules.misc.treesitter").configs["nvim-treesitter"]()
                 end,
@@ -747,7 +757,7 @@ local module_sections = {
 function modules.setup()
     local packer = require("packer")
     packer.init({
-        -- compile_path = vim.fn.stdpath("data") .. "/plugin/packer_compiled.lua",
+        compile_path = vim.fn.stdpath("config") .. "/plugin/packer_compiled.lua",
         git = {
             clone_timeout = 300,
             subcommands = {
