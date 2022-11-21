@@ -278,10 +278,10 @@ local module_sections = {
             --     "hrsh7th/cmp-buffer",
             --     after = "nvim-cmp",
             -- },
-            {
-                "hrsh7th/cmp-nvim-lsp-signature-help",
-                after = "nvim-cmp",
-            },
+            -- {
+            --     "hrsh7th/cmp-nvim-lsp-signature-help",
+            --     after = "nvim-cmp",
+            -- },
             {
                 "hrsh7th/cmp-path",
                 after = "nvim-cmp",
