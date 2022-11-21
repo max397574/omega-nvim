@@ -1,17 +1,5 @@
 local autopairs = {}
 
-autopairs.plugins = {
-    ["nvim-autopairs"] = {
-        "windwp/nvim-autopairs",
-        event = {
-            "InsertEnter",
-            -- for working with cmp
-            "CmdLineEnter",
-        },
-        -- TODO: uncomment this
-        after = "nvim-cmp",
-    },
-}
 autopairs.configs = {
     ["nvim-autopairs"] = function()
         local Rule = require("nvim-autopairs.rule")

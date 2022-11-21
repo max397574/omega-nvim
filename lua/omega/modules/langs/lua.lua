@@ -63,9 +63,9 @@ lua_lsp.configs = {
         }
 
         local lua_dev_plugins = {
-            "noice.nvim",
+            -- "noice.nvim",
             -- "selection_popup",
-            "plenary.nvim",
+            -- "plenary.nvim",
             -- "neorg",
             -- "nvim-treesitter",
         }

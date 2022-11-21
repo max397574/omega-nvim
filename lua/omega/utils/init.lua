@@ -70,54 +70,6 @@ function utils.t(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
---- Bootsrpats impatient
-function utils.bootstrap_plugins()
-    local has_which_key = pcall(require, "which-key")
-    if not has_which_key then
-        -- Which-key Bootstrapping
-        local wk_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/which-key.nvim"
-        if vim.fn.empty(vim.fn.glob(wk_path)) > 0 then
-            vim.notify("Bootstrapping which-key.nvim, please wait ...")
-            vim.fn.system({
-                "git",
-                "clone",
-                "--depth",
-                "1",
-                "https://github.com/max397574/which-key.nvim",
-                wk_path,
-            })
-        end
-
-        vim.cmd.packadd("which-key.nvim")
-    end
-
-    if not omega.config.use_impatient then
-        return
-    end
-    local has_impatient = pcall(require, "impatient")
-    if not has_impatient then
-        -- Packer Bootstrapping
-        local packer_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/impatient.nvim"
-        if vim.fn.empty(vim.fn.glob(packer_path)) > 0 then
-            vim.notify("Bootstrapping impatient.nvim, please wait ...")
-            vim.fn.system({
-                "git",
-                "clone",
-                "--depth",
-                "1",
-                "https://github.com/lewis6991/impatient.nvim",
-                packer_path,
-            })
-        end
-
-        vim.cmd.packadd("impatient.nvim")
-
-        require("impatient").enable_profile()
-    else
-        require("impatient").enable_profile()
-    end
-end
-
 --- Appends a `,` to the current line
 function utils.append_comma()
     -- save cursor position
@@ -203,8 +155,8 @@ utils.in_mathzone = function()
             end
             node = node:parent()
         end
-        return false
     end
+    return false
 end
 
 local read_buffers = {}

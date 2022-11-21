@@ -7,10 +7,11 @@ local conf = require("telescope.config").values
 
 local configs = {
     ["telescope.nvim"] = function()
-        vim.defer_fn(function()
-            vim.cmd.PackerLoad("neorg")
-        end, 1)
-        require("packer").loader("nvim-treesitter")
+        -- vim.defer_fn(function()
+        --     vim.cmd.PackerLoad("neorg")
+        -- end, 1)
+        -- require("packer").loader("nvim-treesitter")
+        -- require("packer").loader("telescope-ui-select.nvim")
         require("packer").loader("lense.nvim")
         --- Pick any picker and use `cwd` as `cwd`
         ---@param cwd string The `cwd` to use
@@ -521,7 +522,7 @@ local configs = {
             })
         end
         require("telescope").load_extension("fzf")
-        require("telescope").load_extension("ui-select")
+        -- require("telescope").load_extension("ui-select")
     end,
     ["telescope-emoji.nvim"] = function()
         require("telescope").load_extension("emoji")

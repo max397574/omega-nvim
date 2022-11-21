@@ -15,7 +15,7 @@
 ---@field once boolean
 ---@field group string|integer #the autocommand group name or id to match against
 ---@field buffer number #buffer number for buffer local autocommands |autocmd-buflocal|. Cannot be used with {pattern}.
----@field callback fun(arg:autocmd_callback_parameter)|string
+---@field callback fun(arg:autocmd_callback_parameter?)|string
 
 ---@param event autocmd_event[]|autocmd_event
 ---@param opts autocmd_opts

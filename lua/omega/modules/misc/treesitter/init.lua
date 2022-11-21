@@ -2,6 +2,8 @@ local ts_mod = {}
 local ts_parsers = {
     "markdown",
     "markdown_inline",
+    "bash",
+    "regex",
     "css",
     "scss",
     "typescript",
@@ -21,48 +23,6 @@ local ts_parsers = {
     "norg",
     "zig",
     "diff",
-}
-local ts_filetypes = vim.deepcopy(ts_parsers)
-table.insert(ts_filetypes, "tex")
-
-ts_mod.plugins = {
-    ["nvim-treesitter"] = {
-        "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
-        ft = ts_filetypes,
-    },
-    ["nvim-treesitter-refactor"] = {
-        "nvim-treesitter/nvim-treesitter-refactor",
-        after = "nvim-treesitter",
-    },
-    ["nvim-treesitter-textobjects"] = {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        after = "nvim-treesitter",
-    },
-    ["nvim-treesitter-endwise"] = {
-        "RRethy/nvim-treesitter-endwise",
-        opt = true,
-    },
-    ["nvim-ts-rainbow"] = {
-        "p00f/nvim-ts-rainbow",
-        after = "nvim-treesitter",
-    },
-    -- ["nvim-treesitter-context"] = {
-    --     "nvim-treesitter/nvim-treesitter-context",
-    --     after = "nvim-treesitter",
-    -- },
-    ["playground"] = {
-        "nvim-treesitter/playground",
-        cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
-    },
-    ["nvim-treehopper"] = {
-        "~/neovim_plugins/nvim-treehopper/",
-        module = "tsht",
-    },
-    ["query-secretary"] = {
-        "ziontee113/query-secretary",
-        after = "nvim-treesitter",
-    },
 }
 
 ts_mod.configs = {

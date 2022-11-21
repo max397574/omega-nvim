@@ -1,70 +1,113 @@
 local cmp_mod = {}
 
-cmp_mod.plugins = {
-    ["nvim-cmp"] = {
-        "~/neovim_plugins/nvim-cmp",
-        requires = { "nvim-autopairs" },
-        -- ft = { "norg" },
-        event = { "InsertEnter", "CmdLineEnter" },
-    },
-    ["cmp_luasnip"] = {
-        "saadparwaiz1/cmp_luasnip",
-        after = "nvim-cmp",
-    },
-    ["cmp-emoji"] = {
-        "hrsh7th/cmp-emoji",
-        after = "nvim-cmp",
-    },
-    ["cmp-greek"] = {
-        "max397574/cmp-greek",
-        after = "nvim-cmp",
-    },
-    ["cmp-buffer"] = {
-        "hrsh7th/cmp-buffer",
-        after = "nvim-cmp",
-    },
-    ["cmp-path"] = {
-        "hrsh7th/cmp-path",
-        after = "nvim-cmp",
-    },
-    ["cmp-latex-symbols"] = {
-        "kdheepak/cmp-latex-symbols",
-        after = "nvim-cmp",
-    },
-    ["cmp-calc"] = {
-        "hrsh7th/cmp-calc",
-        after = "nvim-cmp",
-    },
-    ["cmp-nvim-lua"] = {
-        "hrsh7th/cmp-nvim-lua",
-        after = "nvim-cmp",
-    },
-    ["cmp-nvim-lsp"] = {
-        "hrsh7th/cmp-nvim-lsp",
-        after = "nvim-cmp",
-    },
-    ["cmp-cmdline"] = {
-        "hrsh7th/cmp-cmdline",
-        after = "nvim-cmp",
-    },
-    ["cmp-cmdline-history"] = {
-        "dmitmel/cmp-cmdline-history",
-        after = "nvim-cmp",
-    },
-    -- ["cmp-nvim-lsp-signature-help"] = {
-    --     "hrsh7th/cmp-nvim-lsp-signature-help",
-    --     after = "nvim-cmp",
-    -- },
-    ["cmp-dap"] = {
-        "rcarriga/cmp-dap",
-        after = "nvim-cmp",
-    },
-}
-
-local function define_highlights() end
-
 cmp_mod.configs = {
     ["nvim-cmp"] = function()
+        local noice_config = {
+            cmdline = {
+                enabled = true,
+                format = {
+                    search_down = {
+                        kind = "Search",
+                        pattern = "^/",
+                        lang = "regex",
+                        view = "cmdline",
+                    },
+                    inspect = {
+                        conceal = true,
+                        icon = " ",
+                        lang = "lua",
+                        pattern = "^:%s*lua =%s*",
+                    },
+                },
+                view = "cmdline",
+            },
+            popupmenu = {
+                enabled = true,
+                ---@type 'nui'|'cmp'
+                backend = "nui",
+            },
+            notiy = {
+                enabled = true,
+            },
+            messages = {
+                enabled = true,
+            },
+            lsp = {
+                hover = {
+                    enabled = true,
+                },
+                progress = {
+                    enabled = false,
+                },
+                signature = {
+                    enabled = true,
+                },
+                message = {
+                    enabled = true,
+                },
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
+                },
+            },
+            routes = {
+                {
+                    view = "notify",
+                    filter = { event = "msg_showmode" },
+                },
+                {
+                    filter = {
+                        event = "msg_show",
+                        kind = "",
+                        find = "written",
+                    },
+                    opts = { skip = true },
+                },
+            },
+        }
+        if vim.tbl_contains({ "bottom", "top" }, omega.config.noice_cmdline_position) then
+            noice_config.cmdline.view = nil
+            noice_config.views = {
+                cmdline_popup = {
+                    position = {
+                        row = vim.o.lines - 3,
+                        col = "50%",
+                    },
+                    size = {
+                        width = math.floor(vim.o.columns * 0.9),
+                        height = "auto",
+                    },
+                    win_options = {
+                        conceallevel = 0,
+                    },
+                },
+                popupmenu = {
+                    position = {
+                        row = vim.o.lines - 16,
+                        col = "50%",
+                    },
+                    size = {
+                        width = math.floor(vim.o.columns * 0.9),
+                        height = 10,
+                    },
+                    border = {
+                        style = "rounded",
+                        padding = { 0, 1 },
+                    },
+                    win_options = {
+                        winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+                    },
+                },
+            }
+            if omega.config.noice_cmdline_position == "top" then
+                noice_config.views.cmdline_popup.position.row = 2
+                noice_config.views.popupmenu.position.row = 4
+            end
+        end
+        require("plenary.reload").reload_module("noice")
+        require("noice").setup(noice_config)
+
         local cmp = require("cmp")
         local types = require("cmp.types")
         local luasnip = require("luasnip")
@@ -96,7 +139,6 @@ cmp_mod.configs = {
         end
         vim.cmd.PackerLoad("nvim-autopairs")
         vim.cmd.PackerLoad("LuaSnip")
-        define_highlights()
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 
@@ -197,24 +239,6 @@ cmp_mod.configs = {
                         behavior = cmp.ConfirmBehavior.Insert,
                     }),
                 }),
-                -- ["<tab>"] = cmp.mapping(function()
-                --     if cmp.visible() then
-                --         cmp.select_next_item({
-                --             behavior = cmp.SelectBehavior.Insert,
-                --         })
-                --     end
-                -- end, {
-                --     "c",
-                -- }),
-                -- ["<s-tab>"] = cmp.mapping(function()
-                --     if cmp.visible() then
-                --         cmp.select_prev_item({
-                --             behavior = cmp.SelectBehavior.Insert,
-                --         })
-                --     end
-                -- end, {
-                --     "c",
-                -- }),
                 ["<C-l>"] = cmp.mapping(function(fallback)
                     if luasnip.choice_active() then
                         require("luasnip").change_choice(1)
@@ -256,7 +280,7 @@ cmp_mod.configs = {
                 { name = "luasnip", priority = 8 },
                 -- { name = "neorg", priority = 6 },
                 { name = "latex_symbols", priority = 1 },
-                -- { name = "nvim_lsp_signature_help", priority = 10 },
+                { name = "nvim_lsp_signature_help", priority = 10 },
             },
             enabled = function()
                 if vim.bo.ft == "TelescopePrompt" then
@@ -268,9 +292,9 @@ cmp_mod.configs = {
                 if vim.bo.ft == "lua" then
                     return true
                 end
-                if require("cmp_dap").is_dap_buffer() then
-                    return true
-                end
+                -- if require("cmp_dap").is_dap_buffer() then
+                --     return true
+                -- end
                 local lnum, col = vim.fn.line("."), math.min(vim.fn.col("."), #vim.fn.getline("."))
                 for _, syn_id in ipairs(vim.fn.synstack(lnum, col)) do
                     syn_id = vim.fn.synIDtrans(syn_id) -- Resolve :highlight links

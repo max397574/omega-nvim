@@ -1,63 +1,5 @@
 local tele_mod = {}
 
-tele_mod.plugins = {
-    ["telescope.nvim"] = {
-        "nvim-telescope/telescope.nvim",
-        -- branch="fps",
-        config = function()
-            require("omega.modules.misc.telescope.configs")["telescope.nvim"]()
-        end,
-        cmd = { "Telescope" },
-        setup = function()
-            vim.defer_fn(function()
-                vim.cmd.PackerLoad("telescope.nvim")
-            end, 0)
-        end,
-        module = {
-            "telescope",
-            "omega.modules.misc.telescope",
-        },
-    },
-    ["telescope-emoji.nvim"] = {
-        "xiyaowong/telescope-emoji.nvim",
-        config = function()
-            require("omega.modules.misc.telescope.configs")["telescope-emoji.nvim"]()
-        end,
-        after = "telescope.nvim",
-    },
-    ["telescope-fzf-native.nvim"] = {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        run = "make",
-        after = "telescope.nvim",
-    },
-    ["telescope-symbols.nvim"] = {
-        "nvim-telescope/telescope-symbols.nvim",
-        after = "telescope.nvim",
-    },
-    ["telescope-file-browser.nvim"] = {
-        "nvim-telescope/telescope-file-browser.nvim",
-        after = "telescope.nvim",
-    },
-    ["telescope-ui-select.nvim"] = {
-        "nvim-telescope/telescope-ui-select.nvim",
-        opt = true,
-        setup = function()
-            omega.ui_select = vim.ui.select
-            vim.ui.select = function(items, opts, on_choice)
-                vim.cmd.PackerLoad({
-                    "telescope.nvim",
-                    "telescope-ui-select.nvim",
-                })
-                vim.ui.select(items, opts, on_choice)
-            end
-        end,
-    },
-    ["lense.nvim"] = {
-        "~/neovim_plugins/lense.nvim",
-        after = "telescope.nvim",
-    },
-}
-
 tele_mod.keybindings = function()
     require("which-key").register({
         C = {
@@ -80,14 +22,14 @@ tele_mod.keybindings = function()
             name = " Find",
             f = {
                 function()
-                    omega.modules.misc.telescope.api.find_files()
+                    require("omega.modules.misc.telescope").api.find_files()
                 end,
                 "File",
             },
         },
         ["/"] = {
             function()
-                omega.modules.misc.telescope.api.live_grep()
+                require("omega.modules.misc.telescope").api.live_grep()
             end,
             " Live Grep",
         },
@@ -107,14 +49,14 @@ tele_mod.keybindings = function()
             },
             h = {
                 function()
-                    omega.modules.misc.telescope.api.help_tags()
+                    require("omega.modules.misc.telescope").api.help_tags()
                 end,
                 "Tags",
             },
         },
         ["."] = {
             function()
-                omega.modules.misc.telescope.api.file_browser()
+                require("omega.modules.misc.telescope").api.file_browser()
             end,
             " File Browser",
         },
@@ -128,7 +70,7 @@ tele_mod.keybindings = function()
         mode = "n",
     })
     vim.keymap.set("n", "<c-s>", function()
-        omega.modules.misc.telescope.api.buffer_fuzzy()
+        require("omega.modules.misc.telescope").api.buffer_fuzzy()
     end, { noremap = true })
 end
 
@@ -239,10 +181,10 @@ tele_mod.api = {
     end,
     ["help_tags"] = function()
         vim.cmd.PackerLoad({
-            "nvim-luaref",
-            "help_files",
+            -- "nvim-luaref",
+            -- "help_files",
             "luv-vimdocs",
-            "crefvim",
+            -- "crefvim",
         })
         local builtin = require("telescope.builtin")
         local opts = {
