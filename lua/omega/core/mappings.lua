@@ -1,158 +1,109 @@
 local map = vim.keymap.set
 
 local wk = require("which-key")
+map("n", "<leader>S", function()
+    vim.cmd.FormatWrite()
+end, { desc = " Format" })
+map("n", "<leader>W", function()
+    vim.cmd.write()
+end, { desc = " Write" })
+map("n", "<leader>y", '"+y', { desc = " Yank to clipboard" })
+map("n", "<leader>qn", function()
+    vim.cmd.cnext()
+end, { desc = " Quickfix Next Entry" })
+map("n", "<leader>qp", function()
+    vim.cmd.cprevious()
+end, { desc = " Quickfix Previous Entry" })
+map("n", "<leader>qo", function()
+    vim.cmd.copen()
+end, { desc = " Quickfix Open" })
+map("n", "<leader>io", function()
+    local lines = {}
+    for _ = 1, math.max(vim.v.count, 1) do
+        table.insert(lines, "")
+    end
+    vim.api.nvim_buf_set_lines(
+        0,
+        vim.api.nvim_win_get_cursor(0)[1],
+        vim.api.nvim_win_get_cursor(0)[1],
+        false,
+        lines
+    )
+end, { desc = " Insert Empty Line Below" })
+map("n", "<leader>iO", function()
+    local lines = {}
+    for _ = 1, math.max(vim.v.count, 1) do
+        table.insert(lines, "")
+    end
+    vim.api.nvim_buf_set_lines(
+        0,
+        vim.api.nvim_win_get_cursor(0)[1] - 1,
+        vim.api.nvim_win_get_cursor(0)[1] - 1,
+        false,
+        lines
+    )
+end, { desc = " Insert Empty Line Above" })
+map("n", "<leader>ii", "i <ESC>l", { desc = " Insert Space Before" })
+map("n", "<leader>ia", "a <ESC>h", { desc = " Insert Space After" })
+map("n", "<leader>i<cr>", "i<CR><ESC>", { desc = " Insert Linebreak at Cursor" })
+
 wk.register({
-    y = { '"+y', " Yank to clipboard" },
-    ["W"] = {
-        function()
-            vim.cmd.w()
-        end,
-        " Write",
-    },
-    ["S"] = {
-        function()
-            vim.cmd.FormatWrite()
-        end,
-        " Format",
-    },
     q = {
         name = " Quickfix",
-        n = { "<cmd>cnext<CR>", "Next Entry" },
-        p = { "<cmd>cprevious<CR>", "Previous Entry" },
-        o = { "<cmd>copen<CR>", "Open" },
-    },
-    w = {
-        name = " Window",
-        ["w"] = { "<C-W>p", "Previous" },
-        ["d"] = { "<C-W>c", "Delete" },
-        ["-"] = { "<C-W>s", "Split below" },
-        ["|"] = { "<C-W>v", "Split right" },
-        ["2"] = { "<C-W>v", "Layout Double Columns" },
-        ["h"] = { "<C-W>h", "Window left" },
-        ["j"] = { "<C-W>j", "Window below" },
-        ["l"] = { "<C-W>l", "Window right" },
-        ["k"] = { "<C-W>k", "Window up" },
-        ["H"] = { "<C-W>5<", "Expand left" },
-        ["J"] = { ":resize +5<CR>", "Expand below" },
-        ["L"] = { "<C-W>5>", "Expand right" },
-        ["K"] = { ":resize -5<CR>", "Expand up" },
-        ["="] = { "<C-W>=", "Balance" },
-        ["s"] = { "<C-W>s", "Split below" },
-        ["v"] = { "<C-W>v", "Split right" },
     },
     i = {
         name = " Insert",
-        o = {
-            function()
-                local lines = {}
-                for _ = 1, math.max(vim.v.count, 1) do
-                    table.insert(lines, "")
-                end
-                vim.api.nvim_buf_set_lines(
-                    0,
-                    vim.api.nvim_win_get_cursor(0)[1],
-                    vim.api.nvim_win_get_cursor(0)[1],
-                    false,
-                    lines
-                )
-            end,
-            "Empty line below",
-        },
-        O = {
-            function()
-                local lines = {}
-                for _ = 1, math.max(vim.v.count, 1) do
-                    table.insert(lines, "")
-                end
-                vim.api.nvim_buf_set_lines(
-                    0,
-                    vim.api.nvim_win_get_cursor(0)[1] - 1,
-                    vim.api.nvim_win_get_cursor(0)[1] - 1,
-                    false,
-                    lines
-                )
-            end,
-            "Empty line above",
-        },
-        i = { "i <ESC>l", "Space before" },
-        a = { "a <ESC>h", "Space after" },
-        e = { "<cmd>Telescope emoji<cr>", "Emoji" },
-        ["<CR>"] = { "i<CR><ESC>", "Linebreak at Cursor" },
     },
 
     v = {
         name = " View",
-        l = {
-            function()
-                require("omega.utils").LatexPreview()
-            end,
-            "Latex",
-        },
-        f = {
-            function()
-                ---@diagnostic disable-next-line: undefined-field
-                require("nabla").toggle_virt()
-            end,
-            "Formulas",
-        },
-        h = {
-            function()
-                vim.cmd.TSHighlightCapturesUnderCursor()
-            end,
-            "Highlight Groups",
-        },
-        m = {
-            function()
-                require("omega.utils").MarkdownPreview()
-            end,
-            "Markdown",
-        },
     },
-    p = { '"0p', " Paste Last Yank" },
-
-    Q = { ":let @q='<c-r><c-r>q", " Edit Macro Q" },
-
     m = {
         name = " Messages",
-        v = {
-            function()
-                require("omega.utils").view_messages()
-            end,
-            "View",
-        },
-        s = {
-            "<cmd>messages<cr>",
-            "Show",
-        },
-        y = {
-            function()
-                vim.cmd.let([[@0 = execute('messages')]])
-            end,
-            "Yank",
-        },
-        c = {
-            function()
-                vim.cmd.let([[@+ = execute('messages')]])
-            end,
-            "Copy to Clipboard",
-        },
     },
-
-    ["P"] = {
+    P = {
         name = " Packer",
-        S = { "<cmd>PackerStatus<cr>", "Status" },
-        s = { "<cmd>PackerSync<cr>", "Sync" },
-        c = { "<cmd>PackerCompile<cr>", "Compile" },
-        p = { "<cmd>PackerProfile<cr>", "Profile" },
-        i = { "<cmd>PackerInstall<cr>", "Install" },
-        u = { "<cmd>PackerUpdate<cr>", "Update" },
-        C = { "<cmd>PackerClean<cr>", "Clean" },
     },
 }, {
     prefix = "<leader>",
     mode = "n",
     silent = true,
 })
+
+map("n", "<leader>vl", function()
+    require("omega.utils").LatexPreview()
+end, { desc = " View Latex" })
+map("n", "<leader>vf", function()
+    require("nabla").toggle_virt()
+end, { desc = " View Formulas" })
+map("n", "<leader>vh", function()
+    vim.cmd.TSHighlightCapturesUnderCursor()
+end, { desc = " View Highlight Groups" })
+map("n", "<leader>vm", function()
+    require("omega.utils").MarkdownPreview()
+end, { desc = " View Markdown" })
+
+map("n", "<leader>mv", function()
+    require("omega.utils").view_messages()
+end, { desc = " Messages View" })
+map("n", "<leader>ms", "<cmd>messages<cr>", { desc = " Messages Show" })
+map("n", "<leader>my", function()
+    vim.cmd.let([[@0 = execute('messages')]])
+end, { desc = " Messages Yank" })
+map("n", "<leader>mc", function()
+    vim.cmd.let([[@+ = execute('messages')]])
+end, { desc = " Messages Copy to Clipboard" })
+
+map("n", "<leader>p", '"0p', { desc = " Paste Last Yank" })
+map("n", "<leader>Q", ":let @q='<c-r><c-r>q", { desc = " Edit Macro Q" })
+
+map("n", "<leader>PS", "<cmd>PackerStatus<cr>", { desc = " Packer Status" })
+map("n", "<leader>Ps", "<cmd>PackerSync<cr>", { desc = " Packer Sync" })
+map("n", "<leader>Pc", "<cmd>PackerCompile<cr>", { desc = " Packer Compile" })
+map("n", "<leader>PP", "<cmd>PackerProfile<cr>", { desc = " Packer Profile" })
+map("n", "<leader>Pi", "<cmd>PackerInstall<cr>", { desc = " Packer Install" })
+map("n", "<leader>Pu", "<cmd>PackerUpdate<cr>", { desc = " Packer Update" })
+map("n", "<leader>Pc", "<cmd>PackerClean<cr>", { desc = " Packer Clean" })
 
 map("n", ",,", function()
     require("omega.utils").append_comma()
