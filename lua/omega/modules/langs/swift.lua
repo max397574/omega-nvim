@@ -2,7 +2,7 @@ local swift_mod = {}
 
 swift_mod.plugins = {
     ["xbase"] = {
-        "tami5/xbase",
+        "xbase-lab/xbase",
         ft = "swift",
         requires = {
             "nvim-lua/plenary.nvim",
