@@ -60,7 +60,18 @@ tele_mod.keybindings = function()
             end,
             " File Browser",
         },
-        [","] = { "<cmd>Telescope buffers<cr>", "﩯Buffers" },
+        [","] = {
+            function()
+                require("telescope.builtin").buffers()
+            end,
+            "﩯Buffers",
+        },
+        [":"] = {
+            function()
+                require("telescope.builtin").commands()
+            end,
+            " Commands",
+        },
 
         i = {
             e = { "<cmd>Telescope emoji<cr>", "Emoji" },
