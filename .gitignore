@@ -32,3 +32,5 @@ minimal_package_overwrite.lua
 my_test_package.lua
 textopng.py
 plugin/packer_compiled.lua
+omega_startup*
+nvchad

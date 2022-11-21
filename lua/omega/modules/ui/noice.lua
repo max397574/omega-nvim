@@ -120,7 +120,7 @@ noice.configs = {
             }
             if omega.config.noice_cmdline_position == "top" then
                 config.views.cmdline_popup.position.row = 2
-                config.views.popupmenu.position.row = 4
+                config.views.popupmenu.position.row = 5
             end
         end
         require("noice").setup(config)
