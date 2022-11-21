@@ -42,8 +42,38 @@ wk.register({
     },
     i = {
         name = " Insert",
-        o = { "o<ESC>k", "Empty line below" },
-        O = { "O<ESC>j", "Empty line above" },
+        o = {
+            function()
+                local lines = {}
+                for _ = 1, math.max(vim.v.count, 1) do
+                    table.insert(lines, "")
+                end
+                vim.api.nvim_buf_set_lines(
+                    0,
+                    vim.api.nvim_win_get_cursor(0)[1],
+                    vim.api.nvim_win_get_cursor(0)[1],
+                    false,
+                    lines
+                )
+            end,
+            "Empty line below",
+        },
+        O = {
+            function()
+                local lines = {}
+                for _ = 1, math.max(vim.v.count, 1) do
+                    table.insert(lines, "")
+                end
+                vim.api.nvim_buf_set_lines(
+                    0,
+                    vim.api.nvim_win_get_cursor(0)[1] - 1,
+                    vim.api.nvim_win_get_cursor(0)[1] - 1,
+                    false,
+                    lines
+                )
+            end,
+            "Empty line above",
+        },
         i = { "i <ESC>l", "Space before" },
         a = { "a <ESC>h", "Space after" },
         e = { "<cmd>Telescope emoji<cr>", "Emoji" },
