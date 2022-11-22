@@ -24,7 +24,7 @@ hl_eol.lua
 indent_bl.lua
 jobs.lua
 nabla_test.lua
-snippets
+# snippets
 traverse.sh
 profiles.lua
 neorg_range_operator.lua

@@ -136,9 +136,9 @@ ls.add_snippets("tex", {
         end)
     ),
     s("bdm", {
-        t([=[\boldmath{$]=]),
+        t([=[{\boldmath{$]=]),
         i(1),
-        t([[$}]]),
+        t([[$}}]]),
         i(0),
     }),
     s("RR", {
