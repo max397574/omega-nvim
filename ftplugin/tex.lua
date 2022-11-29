@@ -24,10 +24,10 @@ local function latex_clipboard_image()
         local cursor = vim.api.nvim_win_get_cursor(0)
         vim.api.nvim_buf_set_lines(0, cursor[1] - 1, cursor[1], false, {
             "\\begin{figure}[h]",
-            "\\includegraphics[width=200px]{" .. file_path:sub(
+            "\\centerline{\\includegraphics[width=200px]{" .. file_path:sub(
                 #img_dir + 2,
                 -(4 + #tostring(index))
-            ) .. (index ~= 0 and tostring(index) or "") .. ".png}",
+            ) .. (index ~= 0 and tostring(index) or "") .. ".png}}",
             "\\caption{" .. caption .. "}",
             "\\end{figure}",
         })
