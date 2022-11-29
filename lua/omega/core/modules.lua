@@ -91,7 +91,7 @@ local module_sections = {
                 setup = function()
                     vim.defer_fn(function()
                         require("packer").loader("noice.nvim")
-                    end, 1000)
+                    end, 0)
                 end,
                 config = function()
                     require("omega.modules.ui.noice").configs["noice.nvim"]()
@@ -164,17 +164,18 @@ local module_sections = {
                 setup = function()
                     vim.defer_fn(function()
                         require("packer").loader("nvim-lspconfig")
+                        omega.lsp_active = true
                     end, 0)
                 end,
             },
 
-            {
-                "ray-x/lsp_signature.nvim",
-                after = "nvim-lspconfig",
-                config = function()
-                    require("omega.modules.langs.main").configs["lsp_signature.nvim"]()
-                end,
-            },
+            -- {
+            --     "ray-x/lsp_signature.nvim",
+            --     after = "nvim-lspconfig",
+            --     config = function()
+            --         require("omega.modules.langs.main").configs["lsp_signature.nvim"]()
+            --     end,
+            -- },
         },
         -- python,
         rust = {
@@ -690,10 +691,12 @@ local module_sections = {
             },
             {
                 "p00f/nvim-ts-rainbow",
+                after = "nvim-treesitter",
             },
             {
                 "nvim-treesitter/playground",
-                cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
+                opt = true,
+                -- cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
             },
             {
                 "~/neovim_plugins/nvim-treehopper/",
