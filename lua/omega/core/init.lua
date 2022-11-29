@@ -1,6 +1,5 @@
 vim.g.mapleader = " "
 
-require("omega.core.omega_global")
 require("omega.core.config").load()
 
 local modules = require("omega.core.modules")
