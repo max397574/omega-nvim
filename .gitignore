@@ -34,3 +34,4 @@ textopng.py
 plugin/packer_compiled.lua
 omega_startup*
 nvchad
+statusline.lua
