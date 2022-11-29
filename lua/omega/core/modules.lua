@@ -740,6 +740,12 @@ local module_sections = {
         },
     },
     games = {
+        cellular_automation = {
+            {
+                "eandrju/cellular-automaton.nvim",
+                cmd = "CellularAutomaton",
+            },
+        },
         vimbegood = {
             {
                 "~/neovim_plugins/vim-be-good",
