@@ -8,21 +8,4 @@ ssr.plugins = {
     },
 }
 
-ssr.keybindings = function()
-    require("which-key").register({
-        ["R"] = {
-            name = " Refactoring",
-            s = {
-                function()
-                    require("ssr").open()
-                end,
-                "Structural replace",
-            },
-        },
-    }, { prefix = "<leader>", mode = "n" })
-end
-vim.keymap.set("x", "<leader>Rs", function()
-    require("ssr").open()
-end)
-
 return ssr

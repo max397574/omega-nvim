@@ -37,9 +37,9 @@ function on_attach.setup(client, bufnr)
     vim.keymap.set("n", "<C-d>", vim.diagnostic.goto_prev, opts)
     vim.keymap.set("n", "<C-f>", vim.diagnostic.goto_next, opts)
     -- vim.keymap.set("n", "<Leader>fs", vim.lsp.buf.formatting_sync, opts)
-    require("packer").loader("nvim-navic")
-    require("nvim-navic").setup({ depth_limit = 4 })
-    require("nvim-navic").attach(client, bufnr)
+    -- require("packer").loader("nvim-navic")
+    -- require("nvim-navic").setup({ depth_limit = 4 })
+    -- require("nvim-navic").attach(client, bufnr)
     lsp_highlight_document(client, bufnr)
     require("which-key").register({
         s = {

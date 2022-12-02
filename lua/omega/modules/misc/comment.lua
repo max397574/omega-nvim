@@ -31,18 +31,6 @@ comment.configs = {
     end,
 }
 
-comment.keybindings = function()
-    local wk = require("which-key")
-    wk.register({
-
-        c = {
-            name = " Comment",
-            c = { "Toggle Line" },
-        },
-    }, {
-        prefix = "<leader>",
-        mode = "n",
-    })
-end
+comment.keybindings = function() end
 
 return comment

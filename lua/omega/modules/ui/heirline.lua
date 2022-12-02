@@ -1,31 +1,9 @@
 local heirline_mod = {}
 
-heirline_mod.plugins = {
-    ["heirline.nvim"] = {
-        "rebelot/heirline.nvim",
-    },
-    ["nvim-navic"] = {
-        "SmiteshP/nvim-navic",
-        ft = {
-            "python",
-            "html",
-            "typescript",
-            "zig",
-            "css",
-            "nix",
-            "rust",
-            "haskell",
-            "tex",
-            "vim",
-            "lua",
-        },
-    },
-}
-
 heirline_mod.configs = {
-    ["nvim-navic"] = function()
-        require("nvim-navic").setup({ depth_limit = 4 })
-    end,
+    -- ["nvim-navic"] = function()
+    --     require("nvim-navic").setup({ depth_limit = 4 })
+    -- end,
     ["heirline.nvim"] = function()
         local theme = require("omega.colors.base16").themes(vim.g.colors_name)
         local conditions = require("heirline.conditions")
@@ -343,18 +321,18 @@ heirline_mod.configs = {
 
         if omega.config.statusline == "round_colored_bg" then
             require("heirline").setup(
-                require("omega.modules.ui.heirline.round_colored_bg"),
-                winbar_line
+                require("omega.modules.ui.heirline.round_colored_bg")
+                -- winbar_line
             )
         elseif omega.config.statusline == "round_dark_bg" then
             require("heirline").setup(
-                require("omega.modules.ui.heirline.round_dark_bg"),
-                winbar_line
+                require("omega.modules.ui.heirline.round_dark_bg")
+                -- winbar_line
             )
         elseif omega.config.statusline == "round_blended" then
             require("heirline").setup(
-                require("omega.modules.ui.heirline.round_blended"),
-                winbar_line
+                require("omega.modules.ui.heirline.round_blended")
+                -- winbar_line
             )
         end
     end,

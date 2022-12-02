@@ -1,29 +1,5 @@
 local neorg_mod = {}
 
-neorg_mod.plugins = {
-    ["neorg"] = {
-        "nvim-neorg/neorg",
-        -- "~/neovim_plugins/neorg",
-        ft = "norg",
-        setup = function()
-            vim.filetype.add({
-                extension = {
-                    norg = "norg",
-                },
-            })
-        end,
-        requires = { "nvim-treesitter" },
-        -- run = ":Neorg sync-parsers",
-    },
-    ["neorg-telescope"] = { "~/neovim_plugins/neorg-telescope/", after = "neorg" },
-    ["neorg-context"] = { "~/neovim_plugins/neorg-context/", after = "neorg" },
-    ["neorg-kanban"] = { "~/neovim_plugins/neorg-kanban/", after = "neorg" },
-    ["neorg-zettelkasten"] = {
-        "~/neovim_plugins/neorg-zettelkasten/",
-        after = "neorg",
-    },
-}
-
 neorg_mod.configs = {
     ["neorg-context"] = function()
         neorg.modules.load_module("external.context", nil, {})

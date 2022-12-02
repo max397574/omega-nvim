@@ -14,12 +14,4 @@ gitlinker.configs = {
     end,
 }
 
-gitlinker.keybindings = function()
-    require("which-key").register({ y = "Copy Link" }, { mode = "n", prefix = "<leader>g" })
-    require("which-key").register(
-        { g = { name = " Git", y = "Copy Link" } },
-        { mode = "v", prefix = "<leader>" }
-    )
-end
-
 return gitlinker

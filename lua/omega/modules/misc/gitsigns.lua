@@ -75,56 +75,6 @@ gitsigns.configs = {
     end,
 }
 
-gitsigns.keybindings = function()
-    local wk = require("which-key")
-    wk.register({
-        g = {
-            name = " Git",
-            h = {
-                name = "Hunk",
-                s = {
-                    function()
-                        require("gitsigns").stage_hunk()
-                    end,
-                    "Stage",
-                },
-                p = {
-                    function()
-                        require("gitsigns").preview_hunk()
-                    end,
-                    "Preview",
-                },
-                b = {
-                    function()
-                        require("gitsigns").blame_line()
-                    end,
-                    "Blame Line",
-                    desc = " Git Blame Line",
-                },
-                R = {
-                    function()
-                        require("gitsigns").reset_buffer()
-                    end,
-                    "Reset Buffer",
-                },
-                r = {
-                    function()
-                        require("gitsigns").reset_hunk()
-                    end,
-                    "Reset Hunk",
-                },
-                u = {
-                    function()
-                        require("gitsigns").undo_stage_hunk()
-                    end,
-                    "Undo Stage",
-                },
-            },
-        },
-    }, {
-        mode = "n",
-        prefix = "<leader>",
-    })
-end
+gitsigns.keybindings = function() end
 
 return gitsigns

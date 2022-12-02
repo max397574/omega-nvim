@@ -15,19 +15,4 @@ todo.configs = {
     end,
 }
 
-todo.keybindings = function()
-    require("which-key").register({
-        t = {
-            name = "璘Todo",
-            q = { "<cmd>TodoQuickFix", "Quickfix" },
-            t = { "<cmd>TodoTelescope<cr>", "Telescope" },
-            T = { "<cmd>TodoTrouble<cr>", "Trouble" },
-            l = { "<cmd>TodoLocList<CR>", "Loclist" },
-        },
-    }, {
-        mode = "n",
-        prefix = "<leader>",
-    })
-end
-
 return todo

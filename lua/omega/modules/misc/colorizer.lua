@@ -19,11 +19,4 @@ colorizer.configs = {
     end,
 }
 
-colorizer.keybindings = function()
-    require("which-key").register(
-        { c = { "<cmd>ColorizerAttachToBuffer<cr>", "Colorizer" } },
-        { mode = "n", prefix = "<leader>v" }
-    )
-end
-
 return colorizer

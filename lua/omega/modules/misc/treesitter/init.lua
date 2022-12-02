@@ -197,21 +197,5 @@ ts_mod.configs = {
     end,
 }
 
-ts_mod.keybindings = function()
-    vim.keymap.set(
-        "o",
-        "m",
-        ":<C-U>lua require('tsht').nodes()<CR>",
-        { noremap = true, silent = true }
-    )
-    vim.keymap.set(
-        "x",
-        "m",
-        ":<C-U>lua require('tsht').nodes()<CR>",
-        { noremap = true, silent = true }
-    )
-    vim.keymap.set("n", "<leader>qw", function()
-        require("query-secretary").query_window_initiate()
-    end, { desc = "Write Query" })
-end
+ts_mod.keybindings = function() end
 return ts_mod
