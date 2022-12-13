@@ -31,7 +31,7 @@ debugging.configs = {
             "DapStopped",
             { text = "⧐", texthl = "TSString", linehl = "", numhl = "" }
         )
-        vim.cmd.PackerLoad("nvim-dap-ui")
+        require("packer").loader("nvim-dap-ui")
         local dap = require("dap")
         dap.adapters.lldb = {
             type = "executable",

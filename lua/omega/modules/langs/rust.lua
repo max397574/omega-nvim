@@ -9,7 +9,7 @@ rust_lsp.plugins = {
 
 rust_lsp.configs = {
     ["rust-tools.nvim"] = function()
-        vim.cmd.PackerLoad("nvim-dap")
+        require("packer").loader("nvim-dap")
         local function on_attach(client, bufnr)
             require("omega.modules.lsp.on_attach").setup(client, bufnr)
         end

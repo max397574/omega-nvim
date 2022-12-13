@@ -203,6 +203,7 @@ lsp_mod.configs = {
                     return diagnostic.message
                 end,
                 header = { "Cursor Diagnostics:", "DiagnosticHeader" },
+                suffix = "",
                 prefix = function(diagnostic, i, total)
                     local icon, highlight
                     if diagnostic.severity == 1 then

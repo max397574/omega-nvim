@@ -61,6 +61,11 @@ noice.configs = {
                     filter = { event = "msg_showmode" },
                 },
                 {
+                    view = "notify",
+                    filter = { find = "overly long" },
+                    opts = { skip = true },
+                },
+                {
                     filter = {
                         event = "msg_show",
                         kind = "",

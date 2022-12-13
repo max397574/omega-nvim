@@ -21,6 +21,7 @@ end
 function on_attach.setup(client, bufnr)
     -- require("omega.modules.langs.inlay_hints").setup_autocmd()
     -- require("omega.modules.lsp.inlay_hints").setup(bufnr)
+    -- client.server_capabilities.semanticTokensProvider = nil
     if client.server_capabilities.codeActionProvider then
         require("omega.modules.lsp.available_code_action").setup(bufnr)
     end
