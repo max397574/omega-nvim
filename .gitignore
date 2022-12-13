@@ -35,3 +35,7 @@ plugin/packer_compiled.lua
 omega_startup*
 nvchad
 statusline.lua
+startup
+nvchad_lua
+nvchad_startup
+omega_lua
