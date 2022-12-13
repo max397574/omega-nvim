@@ -1,4 +1,5 @@
 local colors = require("omega.colors").get()
+vim.g.terminal_color_foreground = colors.white
 
 return {
     ["Visual"] = { bg = colors.light_grey },
