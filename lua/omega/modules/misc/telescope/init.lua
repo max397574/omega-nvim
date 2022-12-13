@@ -106,12 +106,7 @@ tele_mod.api = {
         require("telescope.builtin").current_buffer_fuzzy_find(opts)
     end,
     ["help_tags"] = function()
-        vim.cmd.PackerLoad({
-            -- "nvim-luaref",
-            -- "help_files",
-            "luv-vimdocs",
-            -- "crefvim",
-        })
+        require("packer").loader("luv-vimdocs")
         local builtin = require("telescope.builtin")
         local opts = {
             prompt_title = "Help Tags",
@@ -124,9 +119,9 @@ tele_mod.api = {
                 preview_width = 0.75,
                 width = 0.95,
                 height = 0.8,
+                preview_cutoff = 80,
             },
             preview = {
-                preview_cutoff = 120,
                 preview_width = 80,
                 hide_on_startup = false,
             },
@@ -163,8 +158,20 @@ tele_mod.api = {
                 "--hidden",
                 "--no-ignore",
             },
+            file_ignore_patterns = {
+                "^target",
+                "%.aux",
+                "%.toc",
+                "%.pdf",
+                "%.out",
+                "%.log",
+                "%.png",
+                "%.jpg",
+                "%.jpeg",
+            },
             layout_config = {
                 prompt_position = "top",
+                preview_cutoff = 80,
             },
         }
         require("telescope.builtin").find_files(opts)

@@ -114,7 +114,7 @@ local configs = {
             pick_pickers(dir)
         end
 
-        vim.cmd.PackerLoad("telescope-fzf-native.nvim")
+        require"packer".loader("telescope-fzf-native.nvim")
         local action_layout = require("telescope.actions.layout")
         local actions_layout = require("telescope.actions.layout")
         -- local fb_actions = require("telescope._extensions.file_browser.actions")
@@ -180,6 +180,7 @@ local configs = {
                     },
                     flex = {
                         horizontal = {},
+                        preview_cutoff = 70,
                         preview_width = 0.65,
                     },
                     height = 0.5,

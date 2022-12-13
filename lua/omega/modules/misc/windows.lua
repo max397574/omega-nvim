@@ -10,7 +10,7 @@ windows.plugins = {
                 callback = function()
                     local info = vim.fn.gettabinfo(vim.fn.tabpagenr())
                     if #info[1].windows >= 2 then
-                        vim.cmd.PackerLoad({ "animation.nvim", "middleclass", "windows.nvim" })
+                        require"packer".loader({ "animation.nvim", "middleclass", "windows.nvim" })
                         require("windows").setup()
                     end
                 end,

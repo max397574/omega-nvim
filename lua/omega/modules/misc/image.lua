@@ -17,7 +17,7 @@ image.plugins = {
                 once = true,
                 callback = function()
                     require("packer").loader("image.nvim")
-                    vim.cmd.PackerLoad("baleia.nvim")
+                    require"packer".loader("baleia.nvim")
                     require("image").setup({
                         render = {
                             foreground_color = true,

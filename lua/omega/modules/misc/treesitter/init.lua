@@ -52,7 +52,7 @@ ts_mod.configs = {
                 -- branch = "attached-modifiers",
             },
         }
-        vim.cmd.PackerLoad("playground")
+        require"packer".loader("playground")
 
         require("nvim-treesitter.configs").setup({
             ensure_installed = ts_parsers,

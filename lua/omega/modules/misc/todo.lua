@@ -10,7 +10,7 @@ todo.plugins = {
 
 todo.configs = {
     ["todo-comments.nvim"] = function()
-        vim.cmd.PackerLoad({ "telescope.nvim", "trouble.nvim" })
+        require"packer".loader({ "telescope.nvim", "trouble.nvim" })
         require("todo-comments").setup()
     end,
 }
