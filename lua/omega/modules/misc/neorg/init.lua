@@ -23,12 +23,6 @@ neorg_mod.configs = {
                     },
                 },
                 ["core.looking-glass"] = {},
-                -- ["core.cheatsheet"] = {},
-                ["core.norg.completion"] = {
-                    config = {
-                        engine = "nvim-cmp",
-                    },
-                },
                 ["core.norg.concealer"] = {
                     config = {
                         dim_code_blocks = {
@@ -295,7 +289,19 @@ neorg_mod.configs = {
                 noremap = true,
             })
         end)
-
+        require("packer").loader("neorg-context")
+        require("packer").loader("neorg-kanban")
+        require("packer").loader("neorg-zettelkasten")
+        neorg.modules.load_module("external.context", nil, {})
+        neorg.modules.load_module("external.kanban", nil, {})
+        neorg.modules.load_module("external.zettelkasten", nil, {})
+        local ok, _ = pcall(require, "cmp")
+        if ok then
+            require("omega.modules.completion.cmp").configs["nvim-cmp"]()
+            neorg.modules.load_module("core.norg.completion", nil, {
+                engine = "nvim-cmp",
+            })
+        end
         vim.keymap.set("n", neorg_leader .. "tc", "<cmd>Neorg gtd capture<cr>")
         vim.keymap.set("n", neorg_leader .. "tv", "<cmd>Neorg gtd views<cr>")
         vim.keymap.set("n", neorg_leader .. "te", "<cmd>Neorg gtd edit<cr>")

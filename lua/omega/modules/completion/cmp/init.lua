@@ -57,6 +57,11 @@ cmp_mod.configs = {
                     filter = { event = "msg_showmode" },
                 },
                 {
+                    view = "notify",
+                    filter = { find = "overly long" },
+                    opts = { skip = true },
+                },
+                {
                     filter = {
                         event = "msg_show",
                         kind = "",
@@ -137,8 +142,8 @@ cmp_mod.configs = {
             -- end
             return word
         end
-        vim.cmd.PackerLoad("nvim-autopairs")
-        vim.cmd.PackerLoad("LuaSnip")
+        require("packer").loader("nvim-autopairs")
+        require("packer").loader("LuaSnip")
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 
@@ -442,6 +447,16 @@ cmp_mod.configs = {
         -- })
 
         vim.api.nvim_set_hl(0, "NormalFloat", {})
+        if not neorg then
+            return
+        end
+        local ok = pcall(neorg.modules.load_module, "core.norg.completion", nil, {
+            engine = "nvim-cmp",
+        })
+        if ok then
+            table.insert(config.sources, { name = "neorg", priority = 6 })
+            cmp.setup(config)
+        end
     end,
 }
 

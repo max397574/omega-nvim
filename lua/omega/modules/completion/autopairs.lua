@@ -10,6 +10,8 @@ autopairs.configs = {
             -- disable_filetype = { "norg" },
         })
         npairs.add_rule(Rule("$", "$", "tex"))
+        npairs.remove_rule("[")
+        npairs.add_rule(Rule("[", "]", "-norg"))
     end,
 }
 
