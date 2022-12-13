@@ -41,7 +41,7 @@ local module_sections = {
                         callback = function()
                             local count = #vim.fn.getbufinfo({ buflisted = 1 })
                             if count >= 2 then
-                                vim.cmd.PackerLoad("bufferline.nvim")
+                                require"packer".loader("bufferline.nvim")
                             end
                         end,
                     })
@@ -64,25 +64,25 @@ local module_sections = {
                     require("omega.modules.ui.heirline").configs["heirline.nvim"]()
                 end,
             },
-            {
-                "SmiteshP/nvim-navic",
-                ft = {
-                    "python",
-                    "html",
-                    "typescript",
-                    "zig",
-                    "css",
-                    "nix",
-                    "rust",
-                    "haskell",
-                    "tex",
-                    "vim",
-                    "lua",
-                },
-                config = function()
-                    require("omega.modules.ui.heirline").configs["nvim-navic"]()
-                end,
-            },
+            -- {
+            --     "SmiteshP/nvim-navic",
+            --     ft = {
+            --         "python",
+            --         "html",
+            --         "typescript",
+            --         "zig",
+            --         "css",
+            --         "nix",
+            --         "rust",
+            --         "haskell",
+            --         "tex",
+            --         "vim",
+            --         "lua",
+            --     },
+            --     config = function()
+            --         require("omega.modules.ui.heirline").configs["nvim-navic"]()
+            --     end,
+            -- },
         },
         ["noice"] = {
             {
@@ -111,6 +111,12 @@ local module_sections = {
         ["which_key"] = {
             {
                 "~/neovim_plugins/which-key.nvim",
+                opt = true,
+                setup = function()
+                    vim.defer_fn(function()
+                        require("packer").loader("which-key.nvim")
+                    end, 0)
+                end,
                 config = function()
                     require("omega.modules.mappings.which_key").configs["which-key.nvim"]()
                     require("omega.core.mappings")
@@ -316,6 +322,7 @@ local module_sections = {
         neocomplete = {
             {
                 "~/neovim_plugins/neocomplete.nvim/",
+                event = "InsertEnter",
                 config = function()
                     require("omega.modules.completion.neocomplete").configs["neocomplete.nvim"]()
                 end,
@@ -383,12 +390,29 @@ local module_sections = {
                     vim.api.nvim_create_autocmd({ "BufRead" }, {
                         group = vim.api.nvim_create_augroup("gitsign_load", {}),
                         callback = function()
-                            vim.fn.system("git -C " .. vim.fn.expand("%:p:h") .. " rev-parse")
-                            if vim.v.shell_error == 0 then
-                                vim.api.nvim_del_augroup_by_name("gitsign_load")
-                                vim.schedule(function()
-                                    require("packer").loader("gitsigns.nvim")
-                                end)
+                            -- vim.fn.system("git -C " .. vim.fn.expand("%:p:h") .. " rev-parse")
+                            -- if vim.v.shell_error == 0 then
+                            --     vim.api.nvim_del_augroup_by_name("gitsign_load")
+                            --     vim.schedule(function()
+                            --         require("packer").loader("gitsigns.nvim")
+                            --     end)
+                            -- end
+                            local function onexit(code, _)
+                                if code == 0 then
+                                    vim.schedule(function()
+                                        require("packer").loader("gitsigns.nvim")
+                                    end)
+                                end
+                            end
+                            local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+                            if lines ~= { "" } then
+                                vim.loop.spawn("git", {
+                                    args = {
+                                        "ls-files",
+                                        "--error-unmatch",
+                                        vim.fn.expand("%"),
+                                    },
+                                }, onexit)
                             end
                         end,
                     })
@@ -489,23 +513,14 @@ local module_sections = {
             {
                 "~/neovim_plugins/neorg-context/",
                 after = "neorg",
-                config = function()
-                    neorg.modules.load_module("external.context", nil, {})
-                end,
             },
             {
                 "~/neovim_plugins/neorg-kanban/",
                 after = "neorg",
-                config = function()
-                    neorg.modules.load_module("external.kanban", nil, {})
-                end,
             },
             {
                 "~/neovim_plugins/neorg-zettelkasten/",
                 after = "neorg",
-                config = function()
-                    neorg.modules.load_module("external.zettelkasten", nil, {})
-                end,
             },
         },
         -- ["nvim-tree"] = {
@@ -762,6 +777,38 @@ local module_sections = {
             { "n-shift/wordle.nvim", cmd = "Wordle" },
         },
     },
+    standalone = {
+        { "elihunter173/dirbuf.nvim", cmd = "Dirbuf" },
+        -- {
+        --     "brymer-meneses/grammar-guard.nvim",
+        --     ft = { "tex" },
+        --     config = function()
+        --         require("grammar-guard").init()
+        --         require("lspconfig").grammar_guard.setup({
+        --             cmd = { vim.fn.expand("~").."/ltex-ls-15.2.0/bin/ltex-ls" },
+        --             settings = {
+        --                 ltex = {
+        --                     enabled = { "latex", "tex", "bib", "markdown" },
+        --                     language = "de-CH",
+        --                     diagnosticSeverity = "information",
+        --                     -- setenceCacheSize = 2000,
+        --                     -- additionalRules = {
+        --                     --     enablePickyRules = true,
+        --                     --     motherTongue = "en",
+        --                     -- },
+        --                     -- trace = { server = "verbose" },
+        --                     -- dictionary = {},
+        --                     -- disabledRules = {},
+        --                     -- hiddenFalsePositives = {},
+        --                 },
+        --             },
+        --         })
+        --     end,
+        --     requires = {
+        --         { "williamboman/nvim-lsp-installer", after = "grammar-guard.nvim" },
+        --     },
+        -- },
+    },
 }
 function modules.setup()
     local packer = require("packer")
@@ -800,22 +847,15 @@ end
 function modules.load()
     local use = require("packer").use
     for sec, sec_modules in pairs(module_sections) do
-        for mod_sec, module in pairs(sec_modules) do
-            if type(module) == "string" then
-                local keybindings = require(("omega.modules.%s.%s"):format(sec, module)).keybindings
-                if keybindings then
-                    keybindings()
-                end
-            end
-            if type(mod_sec) == "string" then
-                local keybindings =
-                    require(("omega.modules.%s.%s"):format(sec, mod_sec)).keybindings
-                if keybindings then
-                    keybindings()
-                end
-            end
-            for _, mod in ipairs(module) do
+        if sec == "standalone" then
+            for _, mod in ipairs(sec_modules) do
                 use(mod)
+            end
+        else
+            for _, module in pairs(sec_modules) do
+                for _, mod in ipairs(module) do
+                    use(mod)
+                end
             end
         end
     end

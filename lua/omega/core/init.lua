@@ -36,7 +36,7 @@ _G._packer = setmetatable(_G._packer or {}, {
     end,
 })
 
-local wk_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/which-key.nvim"
+local wk_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/which-key.nvim"
 if vim.fn.empty(vim.fn.glob(wk_path)) > 0 then
     vim.notify("Bootstrapping which-key.nvim, please wait ...")
     vim.fn.system({

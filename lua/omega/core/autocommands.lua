@@ -63,16 +63,16 @@ aucmd({ "Filetype" }, {
 })
 
 -- -- show cursor line only in active window
--- aucmd({ "InsertLeave", "WinEnter", "CmdlineLeave" }, {
---     pattern = "*",
---     command = "set cursorline",
---     desc = "Enable cursorline",
--- })
--- aucmd({ "InsertEnter", "WinLeave", "CmdlineEnter" }, {
---     pattern = "*",
---     command = "set nocursorline",
---     desc = "Disable cursorline",
--- })
+aucmd({ "InsertLeave", "WinEnter", "CmdlineLeave" }, {
+    pattern = "*",
+    command = "set cursorline",
+    desc = "Enable cursorline",
+})
+aucmd({ "InsertEnter", "WinLeave", "CmdlineEnter" }, {
+    pattern = "*",
+    command = "set nocursorline",
+    desc = "Disable cursorline",
+})
 
 -- windows to close with "q"
 aucmd({ "FileType" }, {
@@ -275,7 +275,7 @@ aucmd("InsertCharPre", {
             end, vim.o.timeoutlen)
             vim.keymap.set("i", " ", function()
                 pcall(vim.keymap.del, "i", " ")
-                vim.api.nvim_input("<bs><right>")
+                vim.api.nvim_input("<bs><left>")
             end, {
                 noremap = true,
                 silent = true,
@@ -298,5 +298,14 @@ aucmd("BufWritePre", {
             vim.fn.mkdir(dir, "p")
         end
         print(os.clock() - start .. "s")
+    end,
+})
+
+aucmd("LspAttach", {
+    callback = function(args)
+        local bufnr = args.buf
+        -- vim.lsp.semantic_tokens.stop(bufnr, args.data.client_id)
+        local client=vim.lsp.get_client_by_id(args.data.client_id)
+        client.server_capabilities.semanticTokensProvider = nil
     end,
 })

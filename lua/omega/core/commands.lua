@@ -23,7 +23,7 @@ local function filetypes()
 end
 
 add_cmd("Tmp", function(args)
-    vim.cmd.PackerLoad("nvim-lspconfig")
+    require"packer".loader("nvim-lspconfig")
     require("omega.extras").scratch_buf(args)
 end, {
     nargs = "?",
