@@ -205,12 +205,10 @@ end, {
     desc = "Append semicolon",
 })
 
-map(
-    "n",
-    "<esc>",
-    "<cmd>nohl<cr>",
-    { noremap = true, silent = true, desc = "Clear highlight from search" }
-)
+map("n", "<esc>", function()
+    require("notify").dismiss()
+    vim.cmd.nohl()
+end, { noremap = true, silent = true, desc = "Clear highlight from search" })
 
 map("s", "<leader><tab>", function()
     require("luasnip").expand_or_jump()
