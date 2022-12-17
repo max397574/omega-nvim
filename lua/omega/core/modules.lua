@@ -652,7 +652,7 @@ local module_sections = {
                 -- module = "nvim-treesitter",
                 opt = true,
                 setup = function()
-                    if omega.load_treesitter then
+                    if not vim.tbl_contains({ "[packer]", "" }, vim.fn.expand("%")) then
                         require("packer").loader("nvim-treesitter")
                         require("packer").loader("indent-blankline.nvim")
                     else

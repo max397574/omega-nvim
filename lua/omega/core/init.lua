@@ -1,7 +1,5 @@
 vim.g.mapleader = " "
 
-require("omega.core.config").load()
-
 local modules = require("omega.core.modules")
 
 local packer_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/packer.nvim"
@@ -53,8 +51,11 @@ vim.cmd.packadd("which-key.nvim")
 
 require("omega.core.settings")
 require("omega.core.autocommands")
-require("omega.core.commands")
 require("omega.core.ui")
 
 modules.setup()
 modules.load()
+
+vim.defer_fn(function()
+    require("omega.core.commands")
+end, 1)

@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch, redundant-parameter
 local utils = require("omega.utils")
 local colors = {}
 
@@ -39,15 +40,44 @@ function colors.create_colorscheme()
     return scheme
 end
 
--- if theme given, load given theme if given, otherwise nvchad_theme
+-- credits to https://github.com/EdenEast/nightfox.nvim
+function colors.compile_theme()
+    local highlights = require("omega.colors.highlights")
+    local lines = {
+        string.format(
+            [[
+require"omega.colors".compiled=string.dump(function()
+vim.g.colors_name="%s"
+        ]],
+            vim.g.colors_name
+        ),
+    }
+    for group, values in pairs(highlights) do
+        local options = ""
+        for optionname, value in pairs(values) do
+            if type(value) == "boolean" then
+                value = tostring(value)
+            else
+                value = '"' .. value .. '"'
+            end
+            options = options .. optionname .. "=" .. value .. ","
+        end
+        table.insert(lines, string.format([[vim.api.nvim_set_hl(0,"%s", {%s})]], group, options))
+    end
+    table.insert(lines, "end)")
+    local highlight_file = vim.fn.stdpath("cache") .. "/omega/highlights"
+    local file = io.open(highlight_file, "wb")
+    if not file then
+        print("error")
+        return
+    end
+    loadstring(table.concat(lines, "\n"), "=")()
+    file:write(require("omega.colors").compiled)
+    file:close()
+end
+
 colors.init = function(theme, reload)
     reload = reload or false
-    -- local old_colorscheme = require("omega.core.data_save").data["colorscheme"]
-    -- if old_colorscheme and theme ~= old_colorscheme then
-    --     reload = true
-    -- end
-    -- require("lua.omega.core.data_save").store("colorscheme", theme)
-    -- set the global theme, used at various places like theme switcher, highlights
     if not theme then
         if vim.g.forced_theme then
             theme = vim.g.forced_theme
@@ -57,44 +87,41 @@ colors.init = function(theme, reload)
     end
     vim.g.colors_name = theme
 
-    local base16 = require("omega.colors.base16")
+    -- local base16 = require("omega.colors.base16")
+    --
+    -- base16.apply_theme(base16.themes(theme))
 
-    -- first load the base16 theme
-    base16(base16.themes(theme), true)
-    -- base16_custom(base16.themes(theme), true)
-
-    -- unload to force reload
     package.loaded["omega.colors.highlights" or false] = nil
-    -- then load the highlights
     package.loaded["omega.colors.highlights"] = nil
     package.loaded["omega.colors.custom"] = nil
-    local highlights_raw = vim.split(vim.api.nvim_exec("filter BufferLine hi", true), "\n")
-    local highlight_groups = {}
-    for _, raw_hi in ipairs(highlights_raw) do
-        table.insert(highlight_groups, string.match(raw_hi, "BufferLine%a+"))
-    end
-    for _, highlight in ipairs(highlight_groups) do
-        vim.cmd([[hi clear ]] .. highlight)
-    end
-    require("omega.colors.highlights")
+    loadfile(vim.fn.stdpath("cache") .. "/omega/highlights")()
+
     require("omega.colors.custom")
     if reload then
-        require("plenary.reload").reload_module("omega")
-        require("plenary.reload").reload_module("bufferline")
-        pcall(require("omega.modules.ui.bufferline").configs["bufferline.nvim"])
-        require("plenary.reload").reload_module("heirline")
-        pcall(require("omega.modules.ui.heirline").configs["heirline.nvim"])
+        local highlights_raw = vim.split(vim.api.nvim_exec("filter BufferLine hi", true), "\n")
+        local highlight_groups = {}
+        for _, raw_hi in ipairs(highlights_raw) do
+            table.insert(highlight_groups, string.match(raw_hi, "BufferLine%a+"))
+        end
+        for _, highlight in ipairs(highlight_groups) do
+            vim.cmd([[hi clear ]] .. highlight)
+        end
+        package.loaded["omega"] = nil
+        package.loaded["bufferline"] = nil
+        package.loaded["heirline"] = nil
+        require("omega.modules.ui.bufferline").configs["bufferline.nvim"]()
+        require("omega.modules.ui.heirline").configs["heirline.nvim"]()
+        loadfile(vim.fn.stdpath("cache") .. "/omega/highlights")()
+        require("omega.colors.custom")
         require("colorscheme_switcher").new_scheme()
-        -- require("omega.core.modules").load()
-        -- require("omega.core")
     end
-    -- require("ignis.modules.ui.bufferline")
 end
 
+local config = require("omega.config").values
 function colors.toggle_light()
-    if vim.g.colors_name ~= omega.config.light_colorscheme then
+    if vim.g.colors_name ~= config.light_colorscheme then
         omega.old_theme = vim.g.colors_name
-        colors.init(omega.config.light_colorscheme, true)
+        colors.init(config.light_colorscheme, true)
         vim.g.toggle_icon = " "
     else
         colors.init(omega.old_theme, true)
@@ -107,28 +134,10 @@ colors.get = function(theme)
     if not theme then
         theme = vim.g.colors_name
     end
-    local path = "lua/hl_themes/" .. theme .. ".lua"
-    local files = vim.api.nvim_get_runtime_file(path, true)
-    local color_table
-    if #files == 0 then
-        error("lua/hl_themes/" .. theme .. ".lua" .. " not found")
-    elseif #files == 1 then
-        color_table = dofile(files[1])
-    else
-        local nvim_base_pattern = "nvim-base16.lua/lua/hl_themes"
-        local valid_file = false
-        for _, file in ipairs(files) do
-            if not file:find(nvim_base_pattern) then
-                color_table = dofile(file)
-                valid_file = true
-            end
-        end
-        if not valid_file then
-            -- multiple files but in startup repo shouldn't happen so just use first one
-            color_table = dofile(files[1])
-        end
+    if theme == "nil" or theme == nil then
+        theme = config.colorscheme
     end
-    return color_table
+    return require("hl_themes." .. theme)
 end
 
 return colors

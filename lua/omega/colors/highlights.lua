@@ -1,43 +1,7 @@
--- code from https://github.com/NvChad/NvChad
-local function highlight(group, guifg, guibg, attr, guisp)
-    local arg = {}
-    if guifg then
-        if vim.tbl_contains({ "none", "NONE", "None" }, guifg) then
-            arg["fg"] = ""
-        else
-            arg["fg"] = guifg
-        end
-    end
-    if guibg then
-        if vim.tbl_contains({ "none", "NONE", "None" }, guibg) then
-            arg["bg"] = ""
-        else
-            arg["bg"] = guibg
-        end
-    end
-    if attr then
-        if type(attr) == "table" then
-            for _, at in ipairs(attr) do
-                arg[at] = true
-            end
-        else
-            if not vim.tbl_contains({ "none", "NONE", "None" }, attr) then
-                arg[attr] = true
-            end
-        end
-    end
-    if guisp then
-        arg["sp"] = guisp
-        -- table.insert(arg, "guisp=#" .. guisp)
-    end
-
-    -- nvim.ex.highlight(parts)
-    vim.api.nvim_set_hl(0, group, arg)
-end
-
-local cmd = vim.cmd
+local config = require("omega.config").values
 
 local colors = require("omega.colors").get(vim.g.colors_name)
+local theme = require("omega.colors.base16").themes(vim.g.colors_name)
 
 local black = colors.black
 local black2 = colors.black2
@@ -61,246 +25,303 @@ local orange = colors.orange
 local tele_bg = colors.telescope_bg or colors.darker_black
 local tele_prompt = colors.telescope_prompt or colors.black2
 
-local ui = {
-    italic_comments = true,
-    -- theme to be used, check available themes with `<leader> + t + h`
-    -- theme = "kanagawa",
-    -- Enable this only if your terminal has the colorscheme set which nvchad uses
-    -- For Ex : if you have onedark set in nvchad, set onedark's bg color on your terminal
-    transparency = false,
+-- Comments
+local highlights = {
+    ["Normal"] = { fg = theme.base05, bg = theme.base00 },
+    ["Bold"] = { bold = true },
+    ["Debug"] = { fg = theme.base08 },
+    ["Directory"] = { fg = theme.base0D },
+    ["Error"] = { fg = theme.base00, bg = theme.base08 },
+    ["ErrorMsg"] = { fg = theme.base08, bg = theme.base00 },
+    ["Exception"] = { fg = theme.base08 },
+    ["FoldColumn"] = { fg = theme.base0C, bg = theme.base01 },
+    ["CurSearch"] = { fg = theme.base01, bg = theme.base09 },
+    ["Italic"] = { italic = true },
+    ["Macro"] = { fg = theme.base08, italic = true },
+    ["MatchParen"] = { bold = true },
+    ["ModeMsg"] = { fg = theme.base0B },
+    ["MoreMsg"] = { fg = theme.base0B },
+    ["Question"] = { fg = theme.base0D },
+    ["Substitute"] = { fg = theme.base01, bg = theme.base0A },
+    ["SpecialKey"] = { fg = theme.base03 },
+    ["TooLong"] = { fg = theme.base08 },
+    ["Underlined"] = { fg = theme.base08 },
+    ["Visual"] = { bg = theme.base02 },
+    ["VisualNOS"] = { fg = theme.base08 },
+    ["WarningMsg"] = { fg = theme.base08 },
+    ["WildMenu"] = { fg = theme.base08, bg = theme.base0A },
+    ["Title"] = { fg = theme.base0D },
+    ["Conceal"] = {},
+    ["Cursor"] = { fg = theme.base00, bg = theme.base05 },
+    ["NonText"] = { fg = theme.base03 },
+    ["NeorgMarkupVerbatim"] = { fg = theme.base03 },
+    ["SignColumn"] = { fg = theme.base03 },
+    ["StatusLine"] = { fg = theme.base04 },
+    ["StatusLineNC"] = { fg = theme.base03 },
+    ["ColorColumn"] = { bg = theme.base01 },
+    ["CursorColumn"] = { bg = theme.base01 },
+    ["CursorLine"] = { bg = theme.base01 },
+    ["CursorLineNr"] = { fg = theme.base04 },
+    ["QuickFixLine"] = { bg = theme.base01 },
+    ["TabLine"] = { fg = theme.base03, bg = theme.base01 },
+    ["TabLineFill"] = { fg = theme.base03, bg = theme.base01 },
+    ["TabLineSel"] = { fg = theme.base0B, bg = theme.base01 },
+    ["Boolean"] = { fg = theme.base09 },
+    ["Character"] = { fg = theme.base08 },
+    ["Conditional"] = { fg = theme.base0E, italic = true },
+    ["Constant"] = { fg = theme.base09 },
+    ["Define"] = { fg = theme.base0E },
+    ["Delimiter"] = { fg = theme.base0F },
+    ["Float"] = { fg = theme.base09 },
+    ["Identifier"] = { fg = theme.base08 },
+    ["Include"] = { fg = theme.base0D },
+    ["Label"] = { fg = theme.base0A },
+    ["Number"] = { fg = theme.base09 },
+    ["Operator"] = { fg = theme.base05 },
+    ["PreProc"] = { fg = theme.base0A },
+    ["Repeat"] = { fg = theme.base0A },
+    ["SpecialChar"] = { fg = theme.base0F },
+    ["Statement"] = { fg = theme.base08 },
+    ["StorageClass"] = { fg = theme.base0A },
+    ["String"] = { fg = theme.base0B },
+    ["Structure"] = { fg = theme.base0E },
+    ["Tag"] = { fg = theme.base0A },
+    ["Todo"] = { fg = theme.base0A, bg = theme.base01 },
+    ["Type"] = { fg = theme.base0A },
+    ["Typedef"] = { fg = theme.base0A },
+    ["DiffDelete"] = { fg = theme.base08, bg = theme.base01 },
+    ["DiffText"] = { fg = theme.base0D, bg = theme.base01 },
+    ["DiffAdded"] = { fg = theme.base0B, bg = theme.base00 },
+    ["DiffFile"] = { fg = theme.base08, bg = theme.base00 },
+    ["DiffNewFile"] = { fg = theme.base0B, bg = theme.base00 },
+    ["DiffLine"] = { fg = theme.base0D, bg = theme.base00 },
+    ["DiffRemoved"] = { fg = theme.base08, bg = theme.base00 },
+    ["gitcommitOverflow"] = { fg = theme.base08 },
+    ["gitcommitSummary"] = { fg = theme.base0B },
+    ["gitcommitComment"] = { fg = theme.base03 },
+    ["gitcommitUntracked"] = { fg = theme.base03 },
+    ["gitcommitDiscarded"] = { fg = theme.base03 },
+    ["gitcommitSelected"] = { fg = theme.base03 },
+    ["gitcommitHeader"] = { fg = theme.base0E },
+    ["gitcommitSelectedType"] = { fg = theme.base0D },
+    ["gitcommitUnmergedType"] = { fg = theme.base0D },
+    ["gitcommitDiscardedType"] = { fg = theme.base0D },
+    ["gitcommitBranch"] = { fg = theme.base09, bold = true },
+    ["gitcommitUntrackedFile"] = { fg = theme.base0A },
+    ["gitcommitUnmergedFile"] = { fg = theme.base08, bold = true },
+    ["gitcommitDiscardedFile"] = { fg = theme.base08, bold = true },
+    ["gitcommitSelectedFile"] = { fg = theme.base0B, bold = true },
+    ["mailQuoted1"] = { fg = theme.base0A },
+    ["mailQuoted2"] = { fg = theme.base0B },
+    ["mailQuoted3"] = { fg = theme.base0E },
+    ["mailQuoted4"] = { fg = theme.base0C },
+    ["mailQuoted5"] = { fg = theme.base0D },
+    ["mailQuoted6"] = { fg = theme.base0A },
+    ["mailURL"] = { fg = theme.base0D },
+    ["mailEmail"] = { fg = theme.base0D },
+    ["SpellLocal"] = { undercurl = true, sp=theme.base0C },
+    ["SpellCap"] = { undercurl = true, sp=theme.base0D },
+    ["SpellRare"] = { undercurl = true, sp=theme.base0E },
+    ["@comment"] = { fg = theme.base03, italic = true },
+    ["@error"] = { fg = theme.base08 },
+    ["@none"] = { fg = theme.base05 },
+    ["@preproc"] = { fg = theme.base0A },
+    ["@define"] = { fg = theme.base0A },
+    ["@operator"] = { fg = theme.base05 },
+    ["@punctuation.delimiter"] = { fg = theme.base0F },
+    ["@puncuation.bracket"] = { fg = theme.base0D },
+    ["@punctuation.special"] = { fg = theme.base05 },
+    ["@string"] = { fg = theme.base0B },
+    ["@string.regex"] = { fg = theme.base0C },
+    ["@string.escape"] = { fg = theme.base0C },
+    ["@string.special"] = { fg = theme.base0C },
+    ["@character"] = { fg = theme.base08 },
+    ["@character.special"] = { fg = theme.base0F },
+    ["@boolean"] = { fg = theme.base09 },
+    ["@number"] = { fg = theme.base09 },
+    ["@float"] = { fg = theme.base09 },
+    ["@function"] = { fg = theme.base0D, italic = true },
+    ["@function.builtin"] = { fg = theme.base0D },
+    ["@function.call"] = { fg = theme.base0D },
+    ["@function.macro"] = { fg = theme.base08 },
+    ["@method"] = { fg = theme.base0D, italic = true },
+    ["@method.call"] = { fg = theme.base0D },
+    ["@constructor"] = { fg = theme.base0C },
+    ["@parameter"] = { fg = theme.base08 },
+    ["@keyword"] = { fg = theme.base0E },
+    ["@keyword.function"] = { fg = theme.base0E },
+    ["@keyword.operator"] = { fg = theme.base0E },
+    ["@keyword.return"] = { fg = theme.base0E },
+    ["@conditional"] = { fg = theme.base0E, italic = true },
+    ["@repeat"] = { fg = theme.base0A },
+    ["@debug"] = { fg = theme.base08 },
+    ["@label"] = { fg = theme.base0A },
+    ["@include"] = { fg = theme.base0D },
+    ["@exception"] = { fg = theme.base08 },
+    ["@type"] = { fg = theme.base0A },
+    ["@type.builtin"] = { fg = theme.base0A },
+    ["@type.definition"] = { fg = theme.base0A },
+    ["@type.qualifier"] = { fg = theme.base0A },
+    ["@storageclass"] = { fg = theme.base0A },
+    ["@attribute"] = { fg = theme.base0A },
+    ["@field"] = { fg = theme.base08 },
+    ["@property"] = { fg = theme.base08 },
+    ["@variable"] = { fg = theme.base05 },
+    ["@variable.builtin"] = { fg = theme.base09 },
+    ["@constant"] = { fg = theme.base09 },
+    ["@constant.builtin"] = { fg = theme.base09 },
+    ["@constant.macro"] = { fg = theme.base08 },
+    ["@namespace"] = { fg = theme.base08 },
+    ["@symbol"] = { fg = theme.base0B },
+    ["@text"] = { fg = theme.base05 },
+    ["@text.strong"] = { bold = true },
+    ["@text.emphasis"] = { fg = theme.base09, italic = true },
+    ["@text.underline"] = { fg = theme.base05, underline = true },
+    ["@text.strike"] = { fg = theme.base05, strikethrough = true },
+    ["@text.title"] = { bold = true, underline = true },
+    ["@text.literal"] = { fg = theme.base09 },
+    ["@text.uri"] = { fg = theme.base09, underline = true },
+    ["@text.math"] = { fg = theme.base0C },
+    ["@text.environment"] = { fg = theme.base0D },
+    ["@text.environment.name"] = { fg = theme.base05, italic = true },
+    ["@text.reference"] = { fg = theme.base09 },
+    ["@text.todo"] = { fg = theme.base0A, bg = theme.base01 },
+    ["@text.note"] = { fg = theme.base0D, bg = theme.base01 },
+    ["@text.warning"] = { fg = theme.base0A, bg = theme.base01 },
+    ["@text.danger"] = { fg = theme.base0F, bg = theme.base01 },
+    ["@text.diff.add"] = { fg = theme.base0B },
+    ["@text.diff.delete"] = { fg = theme.base08 },
+    ["@tag"] = { fg = theme.base0A },
+    ["@tag.attribute"] = { fg = theme.base0A },
+    ["@tag.delimiter"] = { fg = theme.base0F },
+    ["@conceal"] = { fg = theme.base05 },
+    ["@definition"] = { underline = true, sp=theme.base04 },
+    ["@scope"] = { bold = true },
+    ["TSAnnotation"] = { fg = theme.base0F },
+    ["TSError"] = { fg = theme.base08 },
+    ["TSParameterReference"] = { fg = theme.base05 },
+    ["TSPunctDelimiter"] = { fg = theme.base0F },
+    ["LspDiagnosticsDefaultError"] = { fg = theme.base08 },
+    ["LspDiagnosticsDefaultWarning"] = { fg = theme.base0A },
+    ["LspDiagnosticsDefaultWarn"] = { fg = theme.base0A },
+    ["LspDiagnosticsDefaultInformation"] = { fg = theme.base0D },
+    ["LspDiagnosticsDefaultInfo"] = { fg = theme.base0D },
+    ["LspDiagnosticsDefaultHint"] = { fg = theme.base0C },
+    ["TelescopeNormal"] = { fg = theme.base05, bg = theme.base00 },
+    ["TelescopePreviewNormal"] = { fg = theme.base05, bg = theme.base00 },
+    ["Keyword"] = { fg = theme.base0E, italic = true },
+    ["PMenu"] = { fg = theme.base05, bg = theme.base00 },
+    ["Special"] = { fg = theme.base0C, italic = true },
+    ["markdownBold"] = { fg = theme.base0A, bold = true },
+    ["@quantifier"] = { fg = theme.base0C, italic = true },
+    ["@require_call"] = { fg = theme.base0E, italic = true },
+    ["@utils"] = { fg = theme.base0D },
+    ["@code"] = { fg = theme.base03 },
+    ["@rust_path"] = { fg = theme.base0B },
+    ["CodeActionAvailable"] = { fg = theme.base08 },
+
+    Comment = { fg = grey_fg, italic = true },
+    TS_Context = { bg = grey_fg },
+    Yellow = { fg = yellow },
+    Red = { fg = red },
+    Green = { fg = green },
+    EndOfBuffer = { fg = black },
+    NormalFloat = {},
+
+    DiagnosticWarn = { fg = orange },
+    DiagnosticError = { fg = red },
+    DiagnosticInfo = { fg = yellow },
+    DiagnosticHint = { fg = blue },
+
+    SpellBad = { undercurl = true, sp = red },
+
+    PmenuSbar = { bg = one_bg2 },
+
+    LineNr = { fg = grey },
+    NvimInternalError = { fg = red },
+    VertSplit = { fg = one_bg2 },
+
+    PmenuThumb = { bg = white },
+    WinSeparator = { fg = one_bg2 },
+    CmpDocumentationWindowBorder = { fg = one_bg2 },
+
+    NeorgCodeBlock = { bg = darker_black },
+
+    Folded = {},
+
+    DashboardHeader = { fg = grey_fg },
+    DashboardFooter = { fg = grey_fg },
+    DashboardCenter = { fg = grey_fg },
+    DashboardShortcut = { fg = grey_fg },
+
+    DiffAdd = { fg = nord_blue },
+    DiffChange = { fg = grey_fg },
+    DiffModified = { fg = nord_blue },
+
+    IndentBlanklineChar = { fg = line },
+
+    LspDiagnosticsSignError = { fg = red },
+    LspDiagnosticsSignWarning = { fg = yellow },
+    LspDiagnosticsVirtualTextError = { fg = red },
+    LspDiagnosticsVirtualTextWarning = { fg = yellow },
+
+    LspDiagnosticsSignInformation = { fg = green },
+    LspDiagnosticsVirtualTextInformation = { fg = green },
+    LspDiagnosticsSignHint = { fg = purple },
+    LspDiagnosticsVirtualTextHint = { fg = purple },
+    NotifyERRORBorder = { fg = red },
+    NotifyERRORIcon = { fg = red },
+    NotifyERRORTitle = { fg = red },
+    NotifyWARNBorder = { fg = orange },
+    NotifyWARNIcon = { fg = orange },
+    NotifyWARNTitle = { fg = orange },
+    NotifyINFOBorder = { fg = green },
+    NotifyINFOIcon = { fg = green },
+    NotifyINFOTitle = { fg = green },
+    NotifyDEBUGBorder = { fg = grey },
+    NotifyDEBUGIcon = { fg = grey },
+    NotifyDEBUGTitle = { fg = grey },
+    NotifyTRACEBorder = { fg = purple },
+    NotifyTRACEIcon = { fg = purple },
+    NotifyTRACETitle = { fg = purple },
+    NvimTreeEmptyFolderName = { fg = blue },
+    NvimTreeEndOfBuffer = { fg = darker_black },
+    NvimTreeFolderIcon = { fg = folder_bg },
+    NvimTreeFolderName = { fg = folder_bg },
+    NvimTreeGitDirty = { fg = red },
+    NvimTreeIndentMarker = { fg = one_bg2 },
+    NvimTreeNormal = { bg = darker_black },
+    NvimTreeOpenedFolderName = { fg = blue },
+    NvimTreeRootFolder = { fg = red, underline = true },
+    NvimTreeStatuslineNc = { fg = darker_black, bg = darker_black },
+    NvimTreeVertSplit = { fg = darker_black, bg = darker_black },
+    NvimTreeWindowPicker = { fg = red, bg = tele_prompt },
+
+    Search = { bg = yellow },
+    IncSearch = { bg = red },
+
+    TelescopeBorder = { fg = folder_bg },
+
+    LspReferenceRead = { link = "Visual" },
+    LspReferenceText = { link = "Visual" },
+    LspReferenceWrite = { link = "Visual" },
+
+    LightspeedLabel = { fg = "#7DB000" },
+    LightspeedShortcut = { bg = "#7DB000" },
+    LightspeedOneCharMatch = { bg = "#7DB000" },
+    LightspeedUniqueChar = { fg = "#FF6000" },
+    LightspeedUnlabeledMatch = { fg = "#FF6000" },
+
+    Definition = { fg = colors.white, bg = colors.darker_black },
+    FloatBorder = { fg = light_grey, bg = black },
+
+    PmenuSel = { fg = colors.blue, bg = colors.light_grey },
+
+    LspSignatureActiveParameter = { bold = true, italic = true },
+
+    NoicePopup = { bg = darker_black },
 }
 
--- Define bg color
--- @param group Group
--- @param color Color
-local function bg(group, color, args)
-    local arg = {}
-    if args then
-        vim.tbl_extend("keep", arg, args)
-    end
-    arg["bg"] = color
-    vim.api.nvim_set_hl(0, group, arg)
-end
-
--- Define fg color
--- @param group Group
--- @param color Color
-local function fg(group, color, args)
-    local arg = {}
-    if args then
-        arg = args
-    end
-    arg["fg"] = color
-    vim.api.nvim_set_hl(0, group, arg)
-end
-
--- Define bg and fg color
--- @param group Group
--- @param fgcol Fg Color
--- @param bgcol Bg Color
-local function fg_bg(group, fgcol, bgcol, args)
-    local arg = {}
-    if args then
-        arg = args
-    end
-    arg["bg"] = bgcol
-    arg["fg"] = fgcol
-    vim.api.nvim_set_hl(0, group, arg)
-end
-
--- Comments
-if ui.italic_comments then
-    fg("Comment", grey_fg, { italic = true })
-else
-    fg("Comment", grey_fg)
-end
-bg("TS_Context", grey_fg)
-
--- Disable cusror line
--- Line number
-fg("cursorlinenr", white)
-
-fg("Yellow", colors.yellow)
-fg("Green", colors.green)
-fg("Red", colors.red)
-
--- same it bg, so it doesn't appear
-fg("EndOfBuffer", black)
-
--- For floating windows
--- bg("NormalFloat", black)
-bg("NormalFloat")
-fg("IndentBlanklineChar")
-
-fg("DiagnosticWarn", orange)
-fg("DiagnosticError", red)
-fg("DiagnosticInfo", yellow)
-fg("DiagnosticHint", blue)
-
-highlight("SpellBad", nil, nil, "undercurl", red)
-if omega.config.cmp_theme == "no-border" then
-    fg_bg("Pmenu", colors.white, colors.darker_black)
-end
-bg("PmenuSbar", one_bg2)
-
--- misc
-fg("LineNr", grey)
-fg("NvimInternalError", red)
-fg("VertSplit", one_bg2)
-if omega.config.cmp_theme == "border" then
-    fg("CmpBorder", white)
-elseif omega.config.cmp_theme == "no-border" then
-    fg_bg("CmpBorder", colors.darker_black, colors.black)
-end
-
-bg("PmenuThumb", white)
-fg("WinSeparator", one_bg2)
-fg("CmpDocumentationWindowBorder", one_bg2)
-
-bg("NeorgCodeBlock", darker_black)
-
-if ui.transparency then
-    vim.cmd("hi clear CursorLine")
-    bg("Normal", "")
-    bg("Folded", "")
-    fg("Folded", "")
-    fg("Comment", grey)
-end
-
--- [[ Plugin Highlights
-bg("Folded", "none")
-
--- Dashboard
-fg("DashboardCenter", grey_fg)
-fg("DashboardFooter", grey_fg)
-fg("DashboardHeader", grey_fg)
-fg("DashboardShortcut", grey_fg)
-
--- Git signs
-fg_bg("DiffAdd", nord_blue, "none")
-fg_bg("DiffChange", grey_fg, "none")
-fg_bg("DiffModified", nord_blue, "none")
-
--- Indent blankline plugin
-fg("IndentBlanklineChar", line)
-
--- ]]
-
--- [[ LspDiagnostics
-
--- Errors
-fg("LspDiagnosticsSignError", red)
-fg("LspDiagnosticsSignWarning", yellow)
-fg("LspDiagnosticsVirtualTextError", red)
-fg("LspDiagnosticsVirtualTextWarning", yellow)
-
--- Info
-fg("LspDiagnosticsSignInformation", green)
-fg("LspDiagnosticsVirtualTextInformation", green)
-
--- Hints
-fg("LspDiagnosticsSignHint", purple)
-fg("LspDiagnosticsVirtualTextHint", purple)
-
--- ]]
-
-fg("NotifyERRORBorder", red)
-fg("NotifyERRORIcon", red)
-fg("NotifyERRORTitle", red)
-fg("NotifyWARNBorder", orange)
-fg("NotifyWARNIcon", orange)
-fg("NotifyWARNTitle", orange)
-fg("NotifyINFOBorder", green)
-fg("NotifyINFOIcon", green)
-fg("NotifyINFOTitle", green)
-fg("NotifyDEBUGBorder", grey)
-fg("NotifyDEBUGIcon", grey)
-fg("NotifyDEBUGTitle", grey)
-fg("NotifyTRACEBorder", purple)
-fg("NotifyTRACEIcon", purple)
-fg("NotifyTRACETitle", purple)
-
--- NvimTree
-fg("NvimTreeEmptyFolderName", blue)
-fg("NvimTreeEndOfBuffer", darker_black)
-fg("NvimTreeFolderIcon", folder_bg)
-fg("NvimTreeFolderName", folder_bg)
-fg("NvimTreeGitDirty", red)
-fg("NvimTreeIndentMarker", one_bg2)
-bg("NvimTreeNormal", darker_black)
-fg("NvimTreeOpenedFolderName", blue)
-fg("NvimTreeRootFolder", red, { underline = true }) -- enable underline for root folder in nvim tree
-fg_bg("NvimTreeStatuslineNc", darker_black, darker_black)
-fg_bg("NvimTreeVertSplit", darker_black, darker_black)
--- bg("NvimTreeVertSplit", darker_black)
-fg_bg("NvimTreeWindowPicker", red, tele_prompt)
-
-if omega.config.telescope_highlights == "custom_bottom_no_borders" then
-    fg_bg("TelescopeBorder", tele_bg, tele_bg)
-    fg_bg("TelescopePromptBorder", tele_prompt, tele_prompt)
-    fg_bg("TelescopePreviewBorder", tele_bg, tele_bg)
-    fg_bg("TelescopeResultsBorder", tele_bg, tele_bg)
-
-    fg_bg("TelescopePromptNormal", white, tele_prompt)
-    fg_bg("TelescopePromptPrefix", red, tele_prompt)
-
-    bg("TelescopeNormal", tele_bg)
-    bg("TelescopePreviewNormal", tele_bg)
-
-    fg_bg("TelescopePreviewTitle", black, green)
-    fg_bg("TelescopePromptTitle", black, red)
-    fg_bg("TelescopeResultsTitle", black, blue)
-    fg_bg("TelescopeSelection", blue, light_grey)
-    fg_bg("TelescopeSelectionCaret", blue, light_grey)
-    bg("TelescopePreviewLine", light_grey)
-elseif omega.config.telescope_theme == "float_all_borders" then
-    fg_bg("TelescopeBorder", light_grey, black)
-    fg_bg("TelescopePromptBorder", light_grey, black)
-    fg_bg("TelescopePreviewBorder", light_grey, black)
-    fg_bg("TelescopeResultsBorder", light_grey, black)
-
-    -- fg_bg("TelescopePromptNormal", white, tele_prompt)
-    fg_bg("TelescopePromptNormal", white, "")
-    -- fg_bg("TelescopePromptPrefix", red, tele_prompt)
-    fg_bg("TelescopePromptPrefix", red, "")
-
-    bg("TelescopeNormal", black)
-    bg("TelescopePreviewNormal", black)
-
-    fg_bg("TelescopePreviewTitle", black, green)
-    fg_bg("TelescopePromptTitle", black, red)
-    fg_bg("TelescopeResultsTitle", black, blue)
-    fg_bg("TelescopeSelection", blue, light_grey)
-    fg_bg("TelescopeSelectionCaret", blue, light_grey)
-    bg("TelescopePreviewLine", light_grey)
-end
-
-bg("Search", yellow)
-bg("IncSearch", red)
-
--- Telescope
-fg("TelescopeBorder", folder_bg)
--- fg("TelescopePreviewBorder", folder_bg)
--- fg("TelescopePromptBorder", folder_bg)
--- fg("TelescopeResultsBorder", folder_bg)
-
-vim.api.nvim_set_hl(0, "LspReferenceRead", { link = "Visual" })
-vim.api.nvim_set_hl(0, "LspReferenceText", { link = "Visual" })
-vim.api.nvim_set_hl(0, "LspReferenceWrite", { link = "Visual" })
-fg("LightspeedLabel", "#7DB000", { underline = true })
-bg("LightspeedShortcut", "#7DB000", {})
-bg("LightspeedOneCharMatch", "#7DB000", {})
-fg("LightspeedUniqueChar", "#FF6000", {})
-fg("LightspeedUnlabeledMatch", "#FF6000", {})
-
-fg_bg("Definition", colors.white, colors.darker_black, {})
-fg_bg("FloatBorder", light_grey, black)
-
-fg_bg("PmenuSel", colors.blue, colors.light_grey)
-
-fg_bg("LspSignatureActiveParameter", nil, nil, { bold = true, italic = true })
-
-local theme = require("omega.colors.base16").themes(vim.g.colors_name)
 local kind_highlights = {
     Class = theme.base08,
     Color = theme.base08,
@@ -333,27 +354,58 @@ local kind_highlights = {
 }
 local color_utils = require("omega.utils.colors")
 for kind_name, hl in pairs(kind_highlights) do
-    if highlight then
-        -- TODO: check TS<...>
-        if omega.config.cmp_theme == "border" then
-            vim.api.nvim_set_hl(0, ("CmpItemKind%s"):format(kind_name), {
-                fg = hl,
-            })
-        elseif omega.config.cmp_theme == "no-border" then
-            vim.api.nvim_set_hl(0, ("CmpItemKind%s"):format(kind_name), {
-                fg = hl,
-                bg = color_utils.blend_colors(hl, theme.base00, 0.15),
-                -- fg = theme.base05,
-                -- bg = highlight,
-            })
-            vim.api.nvim_set_hl(0, ("CmpItemKindMenu%s"):format(kind_name), {
-                fg = hl,
-            })
-            vim.api.nvim_set_hl(0, ("CmpItemKindBlock%s"):format(kind_name), {
-                fg = color_utils.blend_colors(hl, theme.base00, 0.15),
-            })
-        end
+    if config.cmp_theme == "border" then
+        highlights[("CmpItemKind%s"):format(kind_name)] = { fg = hl }
+    elseif config.cmp_theme == "no-border" then
+        highlights[("CmpItemKind%s"):format(kind_name)] = {
+            fg = hl,
+            bg = color_utils.blend_colors(hl, theme.base00, 0.15),
+        }
+        highlights[("CmpItemKindMenu%s"):format(kind_name)] = { fg = hl }
+        highlights[("CmpItemKindBlock%s"):format(kind_name)] =
+            { fg = color_utils.blend_colors(hl, theme.base00, 0.15) }
     end
 end
 
-bg("NoicePopup", darker_black)
+if config.cmp_theme == "no-border" then
+    highlights.Pmenu = { fg = white, bg = darker_black }
+    highlights.CmpBorder = { fg = darker_black, bg = black }
+elseif config.cmp_theme == "border" then
+    highlights.CmpBorder = { fg = white }
+end
+
+if config.telescope_highlights == "custom_bottom_no_borders" then
+    highlights.TelescopeBorder = { fg = tele_bg, bg = tele_bg }
+    highlights.TelescopePromptBorder = { fg = tele_prompt, bg = tele_prompt }
+    highlights.TelescopePreviewBorder = { fg = tele_bg, bg = tele_bg }
+    highlights.TelescopeResultsBorder = { fg = tele_bg, bg = tele_bg }
+    highlights.TelescopePromptNormal = { fg = white, bg = tele_prompt }
+    highlights.TelescopePromptPrefix = { fg = red, bg = tele_prompt }
+    highlights.TelescopePreviewTitle = { fg = black, bg = green }
+    highlights.TelescopePromptTitle = { fg = black, bg = red }
+    highlights.TelescopeResultsTitle = { fg = black, bg = blue }
+    highlights.TelescopeSelection = { fg = blue, bg = light_grey }
+    highlights.TelescopeSelectionCaret = { fg = blue, bg = light_grey }
+
+    highlights.TelescopeNormal = { bg = tele_bg }
+    highlights.TelescopePreviewNormal = { bg = tele_bg }
+    highlights.TelescopePreviewLine = { bg = light_grey }
+elseif config.telescope_theme == "float_all_borders" then
+    highlights.TelescopeBorder = { fg = light_grey, bg = black }
+    highlights.TelescopePromptBorder = { fg = light_grey, bg = black }
+    highlights.TelescopePreviewBorder = { fg = light_grey, bg = black }
+    highlights.TelescopeResultsBorder = { fg = light_grey, bg = black }
+    highlights.TelescopePromptNormal = { fg = white }
+    highlights.TelescopePromptPrefix = { fg = red }
+    highlights.TelescopePreviewTitle = { fg = black, bg = green }
+    highlights.TelescopePromptTitle = { fg = black, bg = red }
+    highlights.TelescopeResultsTitle = { fg = black, bg = blue }
+    highlights.TelescopeSelection = { fg = blue, bg = light_grey }
+    highlights.TelescopeSelectionCaret = { fg = blue, bg = light_grey }
+
+    highlights.TelescopeNormal = { bg = black }
+    highlights.TelescopePreviewNormal = { bg = black }
+    highlights.TelescopePreviewLine = { bg = light_grey }
+end
+
+return highlights
