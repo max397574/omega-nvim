@@ -1,17 +1,28 @@
 local conditions = require("heirline.conditions")
 local utilities = require("heirline.utils")
 local utils = require("heirline.utils")
-local align = { provider = "%=" }
-local space = { provider = " " }
 local colors = require("omega.colors").get()
 local color_utils = require("omega.utils.colors")
+local data = require("omega.modules.ui.heirline.data")
 
-local background_color = colors.one_bg
+local priorities = {
+    current_path = 60,
+    workdir = 45,
+    git_diff = 35,
+    lsp = 10,
+}
 
-local use_dev_icons = false
+local space = setmetatable({ provider = " " }, {
+    __call = function(_, n)
+        return { provider = string.rep(" ", n) }
+    end,
+})
+
+local align = { provider = "%=" }
+local empty = { provider = "" }
 
 local function word_counter()
-    local wc = vim.api.nvim_eval("wordcount()")
+    local wc = vim.fn.wordcount()
     if wc["visual_words"] then
         return wc["visual_words"]
     else
@@ -19,39 +30,9 @@ local function word_counter()
     end
 end
 
-local file_icons = {
-    typescript = " ",
-    json = " ",
-    jsonc = " ",
-    tex = "ﭨ ",
-    ts = " ",
-    python = " ",
-    py = " ",
-    java = " ",
-    html = " ",
-    css = " ",
-    scss = " ",
-    javascript = " ",
-    js = " ",
-    javascriptreact = " ",
-    markdown = " ",
-    md = " ",
-    sh = " ",
-    zsh = " ",
-    vim = " ",
-    rust = " ",
-    rs = " ",
-    cpp = " ",
-    c = " ",
-    go = " ",
-    lua = " ",
-    conf = " ",
-    haskel = " ",
-    hs = " ",
-    ruby = " ",
-    norg = " ",
-    txt = " ",
-}
+local file_icons = data.file_icons
+
+local mode_icons = data.mode_icons
 
 local mode_colors = {
     n = colors.red,
@@ -69,14 +50,139 @@ local mode_colors = {
     t = colors.purple,
 }
 
-local FileNameBlock = {
-    init = function(self)
-        self.filename = vim.api.nvim_buf_get_name(0)
-        self.mode = vim.fn.mode(1)
+local background_color = colors.one_bg
+
+local mode_icon = {
+    hl = function(self)
+        local mode = self.mode:sub(1, 1)
+        return {
+            bg = color_utils.blend_colors(mode_colors[mode] or colors.blue, background_color, 0.15),
+            fg = mode_colors[mode] or colors.blue,
+        }
+    end,
+    provider = function(self)
+        return "%2(" .. mode_icons[self.mode:sub(1, 1)] .. "%)"
     end,
 }
 
-local HelpFileName = {
+local vim_mode = {
+    init = function(self)
+        self.mode = vim.fn.mode(1)
+    end,
+    condition = function()
+        return vim.bo.buftype == ""
+    end,
+    {
+        mode_icon,
+        {
+            provider = function()
+                return ""
+            end,
+            hl = function(self)
+                local mode = self.mode:sub(1, 1)
+                return {
+                    fg = color_utils.blend_colors(
+                        mode_colors[mode] or colors.blue,
+                        background_color,
+                        0.15
+                    ),
+                }
+            end,
+        },
+    },
+}
+local work_dir_icon = {
+    provider = " ",
+    hl = function()
+        return {
+            fg = colors.green,
+            bg = color_utils.blend_colors(colors.green, background_color, 0.15),
+        }
+    end,
+}
+
+local work_dir1 = {
+    provider = function()
+        return ""
+    end,
+    hl = {
+        fg = color_utils.blend_colors(colors.green, background_color, 0.15),
+        bg = colors.black,
+    },
+}
+local work_dir2 = {
+    {
+        provider = function()
+            return ""
+        end,
+        hl = {
+            fg = color_utils.blend_colors(colors.green, background_color, 0.15),
+            bg = background_color,
+        },
+    },
+    {
+        provider = " ",
+        hl = {
+            bg = background_color,
+        },
+    },
+}
+local work_dir3 = {
+    provider = function()
+        return ""
+    end,
+    hl = {
+        bg = colors.black,
+        fg = background_color,
+    },
+}
+
+local work_dir_name = {
+    flexible = priorities.workdir,
+    condition = function(self)
+        if vim.bo.buftype == "" then
+            return self.pwd
+        end
+    end,
+    hl = {
+        fg = colors.green,
+        bg = background_color,
+    },
+    {
+        work_dir1,
+        work_dir_icon,
+        work_dir2,
+        {
+            provider = function(self)
+                return self.pwd
+            end,
+        },
+        work_dir3,
+        { provider = " ", hl = { bg = colors.black } },
+    },
+    {
+        work_dir1,
+        work_dir_icon,
+        work_dir2,
+        {
+            provider = function(self)
+                return vim.fn.pathshorten(self.pwd)
+            end,
+        },
+        work_dir3,
+        { provider = " ", hl = { bg = colors.black } },
+    },
+    empty,
+}
+
+local current_dir = {
+    init = function(self)
+        self.pwd = vim.fn.fnamemodify(vim.fn.getcwd(0), ":~")
+    end,
+    work_dir_name,
+}
+
+local help_file_name = {
     condition = function()
         return vim.bo.filetype == "help"
     end,
@@ -87,155 +193,149 @@ local HelpFileName = {
     hl = { fg = colors.dark_blue },
 }
 
-local FileType = {
-    provider = function()
-        return string.upper(vim.bo.filetype)
-    end,
-    hl = { fg = utils.get_highlight("Type").fg, italic = true },
-}
-
-local FileIcon = {
-    init = function(self)
-        self.mode = vim.fn.mode(1)
-        local filename = self.filename
-        local extension = vim.fn.fnamemodify(filename, ":e")
-        if use_dev_icons then
-            self.icon, self.icon_color =
-                require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
-        else
-            self.icon = file_icons[extension] or ""
-        end
-    end,
+local file_icon = {
     provider = function(self)
-        return self.icon and (" " .. self.icon)
-    end,
-    hl = function(self)
-        if use_dev_icons then
-            return { fg = self.icon_color }
-        else
-            return {
-                fg = colors.blue,
-                bg = color_utils.blend_colors(colors.blue, background_color, 0.15),
-            }
-        end
-    end,
-    condition = function()
-        return vim.tbl_contains(vim.tbl_keys(file_icons), vim.bo.ft)
-    end,
-}
-
-local FileName = {
-    provider = function(self)
-        local filename = vim.fn.pathshorten(vim.fn.fnamemodify(self.filename, ":."))
-        if filename == "" then
-            return ""
-        end
-        return filename .. " "
+        return self.icon and self.icon
     end,
     hl = function()
-        return { fg = colors.blue, bg = background_color }
+        return {
+            fg = colors.blue,
+            bg = color_utils.blend_colors(colors.blue, background_color, 0.15),
+        }
     end,
 }
 
-local FileFlags = {
+local current_path = {
+    condition = function(self)
+        if vim.bo.buftype == "" then
+            return self.current_path
+        end
+    end,
+    hl = {
+        fg = colors.blue,
+        bg = background_color,
+    },
+    flexible = priorities.current_path,
+    {
+        provider = function(self)
+            return self.current_path
+        end,
+    },
+    {
+        provider = function(self)
+            return vim.fn.pathshorten(self.current_path, 2)
+        end,
+    },
+    empty,
+}
+
+local file_name = {
+    provider = function(self)
+        return self.filename
+    end,
+    hl = { fg = colors.blue, bg = background_color },
+}
+
+local file_flags = {
     {
         provider = function()
             if vim.bo.modified then
-                return " "
+                return "  "
             end
         end,
-        hl = function()
-            return { fg = colors.blue, bg = background_color }
-        end,
+        hl = { fg = colors.blue, bg = background_color },
     },
     {
         provider = function()
             if not vim.bo.modifiable or vim.bo.readonly then
-                return ""
+                return "  "
             end
         end,
-        hl = function(self)
-            local mode = self.mode:sub(1, 1)
-            return { fg = mode_colors[mode] or colors.blue }
-        end,
+        hl = { fg = colors.blue, bg = background_color },
     },
 }
 
-local FileIconSurroundF = {
+local file_name_block = {
+    init = function(self)
+        self.filename = vim.api.nvim_buf_get_name(0)
+        local filename = self.filename
+        local extension = vim.fn.fnamemodify(filename, ":e")
+        self.current_path = vim.fn.fnamemodify(vim.fn.fnamemodify(filename, ":.h"), ":h") .. "/"
+        self.filename = vim.fn.fnamemodify(filename, ":t")
+        self.icon = file_icons[extension] or ""
+    end,
+    hl = {
+        bg = background_color,
+    },
+    on_click = {
+        callback = function()
+            print(vim.fn.expand("%"))
+        end,
+        name = "print_file_name",
+    },
+    condition = function()
+        return not conditions.buffer_matches({
+            buftype = { "nofile", "hidden" },
+            filetype = { "NvimTree", "dashboard" },
+        })
+    end,
+
     {
         provider = function()
             return ""
         end,
-        hl = function()
-            if vim.tbl_contains(vim.tbl_keys(file_icons), vim.bo.ft) then
-                return {
-                    fg = color_utils.blend_colors(colors.blue, background_color, 0.15),
-                }
-            else
-                return { fg = background_color }
-            end
-        end,
+        hl = {
+            fg = color_utils.blend_colors(colors.blue, background_color, 0.15),
+            bg = colors.black,
+        },
     },
-}
-local FileIconSurroundB = {
+    file_icon,
     {
         provider = function()
-            return " "
+            return ""
         end,
-        hl = function(_)
-            return {
-                bg = background_color,
-                fg = color_utils.blend_colors(colors.blue, background_color, 0.15),
-            }
-        end,
-        condition = function()
-            return vim.tbl_contains(vim.tbl_keys(file_icons), vim.bo.ft)
-        end,
+        hl = {
+            fg = color_utils.blend_colors(colors.blue, background_color, 0.15),
+            bg = background_color,
+        },
     },
-}
-local FileNameSurround = {
+    {
+        provider = " ",
+        hl = {
+            bg = background_color,
+        },
+    },
+    current_path,
+    file_name,
+    file_flags,
     {
         provider = function()
-            return ""
+            return ""
         end,
-        hl = function(_)
-            return { fg = colors.blue, bg = "none" }
-        end,
-        condition = function()
-            return not vim.tbl_contains(vim.tbl_keys(file_icons), vim.bo.ft)
-        end,
+        hl = {
+            fg = background_color,
+            bg = colors.black,
+        },
     },
 }
 
-RoundFileNameBlock = utils.insert(
-    FileNameBlock,
-    FileIconSurroundF,
-    FileIcon,
-    FileIconSurroundB,
-    FileName,
-    unpack(FileFlags),
-    {
-        provider = "%<",
-    },
-    {
-        provider = function()
-            return " "
-        end,
-        hl = function(_)
-            return {
-                fg = background_color,
-            }
-        end,
-    }
-)
-RoundFileNameBlock.condition = function()
-    return not conditions.buffer_matches({
-        buftype = { "nofile", "hidden" },
-        filetype = { "NvimTree" },
-    })
-end
+local git_branch = {
+    condition = conditions.is_git_repo,
+    init = function(self)
+        self.status_dict = vim.b.gitsigns_status_dict
+        self.has_changes = self.status_dict.added ~= 0
+            or self.status_dict.removed ~= 0
+            or self.status_dict.changed ~= 0
+    end,
+    provider = function(self)
+        return " " .. self.status_dict.head .. " "
+    end,
+    hl = { fg = colors.blue },
+}
 
 local git = {
+    flexible = priorities.git_diff,
+    condition = conditions.is_git_repo,
     on_click = {
         callback = function()
             vim.defer_fn(function()
@@ -246,7 +346,6 @@ local git = {
         end,
         name = "toggle_lazygit",
     },
-    condition = conditions.is_git_repo,
 
     init = function(self)
         self.status_dict = vim.b.gitsigns_status_dict
@@ -258,179 +357,29 @@ local git = {
     hl = { fg = colors.orange },
 
     {
-        provider = function(self)
-            return " " .. self.status_dict.head .. " "
-        end,
-    },
-    {
-        provider = function(self)
-            local count = self.status_dict.added or 0
-            return count > 0 and ("  " .. count)
-        end,
-        hl = { fg = colors.green },
-    },
-    {
-        provider = function(self)
-            local count = self.status_dict.removed or 0
-            return count > 0 and ("  " .. count)
-        end,
-        hl = { fg = colors.red },
-    },
-    {
-        provider = function(self)
-            local count = self.status_dict.changed or 0
-            return count > 0 and ("  " .. count)
-        end,
-        hl = { fg = colors.orange },
-    },
-}
-
-local RoundWorkDir = {
-    {
-        provider = function()
-            return "  "
-        end,
-        hl = function(_)
-            return {
-                fg = colors.green,
-                bg = color_utils.blend_colors(colors.green, background_color, 0.15),
-            }
-        end,
-    },
-    {
-        provider = function()
-            return ""
-        end,
-        hl = {
-            bg = background_color,
-            fg = color_utils.blend_colors(colors.green, background_color, 0.15),
+        {
+            provider = function(self)
+                local count = self.status_dict.added or 0
+                return count > 0 and ("  " .. count)
+            end,
+            hl = { fg = colors.green },
+        },
+        {
+            provider = function(self)
+                local count = self.status_dict.removed or 0
+                return count > 0 and ("  " .. count)
+            end,
+            hl = { fg = colors.red },
+        },
+        {
+            provider = function(self)
+                local count = self.status_dict.changed or 0
+                return count > 0 and ("  " .. count)
+            end,
+            hl = { fg = colors.orange },
         },
     },
-    {
-        provider = function()
-            local cwd = vim.fn.getcwd(0)
-            cwd = vim.fn.fnamemodify(cwd, ":~")
-            cwd = vim.fn.pathshorten(cwd)
-            local trail = cwd:sub(-1) == "/" and "" or "/"
-            return " " .. cwd .. trail
-        end,
-        hl = { bg = background_color, fg = colors.green },
-    },
-}
-
-local round_mode_icon = {
-    {
-        init = function(self)
-            self.mode = vim.fn.mode(1)
-        end,
-        provider = function()
-            return ""
-        end,
-        hl = function(self)
-            local mode = self.mode:sub(1, 1)
-            return {
-                fg = color_utils.blend_colors(
-                    mode_colors[mode] or colors.blue,
-                    background_color,
-                    0.15
-                ),
-            }
-        end,
-    },
-    {
-        init = function(self)
-            self.mode = vim.fn.mode(1)
-        end,
-
-        static = {
-            mode_icons = {
-                ["n"] = "  ",
-                ["i"] = "  ",
-                ["s"] = "  ",
-                ["S"] = "  ",
-                [""] = "  ",
-
-                ["v"] = "  ",
-                ["V"] = "  ",
-                [""] = "  ",
-                ["r"] = " ﯒ ",
-                ["r?"] = "  ",
-                ["c"] = "  ",
-                ["t"] = "  ",
-                ["!"] = "  ",
-                ["R"] = "  ",
-            },
-            mode_names = {
-                n = "N",
-                no = "N?",
-                nov = "N?",
-                noV = "N?",
-                ["no"] = "N?",
-                niI = "Ni",
-                niR = "Nr",
-                niV = "Nv",
-                nt = "Nt",
-                v = "V",
-                vs = "Vs",
-                V = "V_",
-                Vs = "Vs",
-                [""] = "",
-                ["s"] = "",
-                s = "S",
-                S = "S_",
-                [""] = "",
-                i = "I",
-                ic = "Ic",
-                ix = "Ix",
-                R = "R",
-                Rc = "Rc",
-                Rx = "Rx",
-                Rv = "Rv",
-                Rvc = "Rv",
-                Rvx = "Rv",
-                c = "C",
-                cv = "Ex",
-                r = "...",
-                rm = "M",
-                ["r?"] = "?",
-                ["!"] = "!",
-                t = "T",
-            },
-        },
-        hl = function(self)
-            local mode = self.mode:sub(1, 1)
-            return {
-                bg = color_utils.blend_colors(
-                    mode_colors[mode] or colors.blue,
-                    background_color,
-                    0.15
-                ),
-                fg = mode_colors[mode] or colors.blue,
-            }
-        end,
-
-        provider = function(self)
-            return "%2(" .. self.mode_icons[self.mode:sub(1, 1)] .. "%)" .. " "
-        end,
-    },
-    {
-        init = function(self)
-            self.mode = vim.fn.mode(1)
-        end,
-        provider = function()
-            return ""
-        end,
-        hl = function(self)
-            local mode = self.mode:sub(1, 1)
-            return {
-                fg = color_utils.blend_colors(
-                    mode_colors[mode] or colors.blue,
-                    background_color,
-                    0.15
-                ),
-            }
-        end,
-    },
+    empty,
 }
 
 local function progress_bar()
@@ -680,24 +629,21 @@ local word_count = {
     },
 }
 
-RoundWorkDir = utilities.surround({ "", "" }, background_color, RoundWorkDir)
-RoundWorkDir = { flexible = 5, RoundWorkDir }
-
 local inactive_statusline = {
     condition = function()
         return not conditions.is_active()
     end,
-    RoundWorkDir,
-    space,
-    RoundFileNameBlock,
+    current_dir,
+    file_name_block,
     align,
 }
 
 local default_statusline = {
+    vim_mode,
     condition = conditions.is_active,
-    RoundWorkDir,
     space,
-    RoundFileNameBlock,
+    current_dir,
+    file_name_block,
     space,
     git,
     space,
@@ -705,13 +651,14 @@ local default_statusline = {
     diagnostics,
     space,
     align,
-    { flexible = 4, coords },
     space,
-    round_mode_icon,
+    git_branch,
+    space,
+    { flexible = 30, coords },
     space,
     round_progress,
     space,
-    { flexible = 6, word_count },
+    { flexible = 5, word_count },
 }
 
 local help_file_line = {
@@ -720,10 +667,18 @@ local help_file_line = {
             buftype = { "help", "quickfix" },
         })
     end,
-    FileType,
+    {
+        provider = function()
+            return string.upper(vim.bo.filetype)
+        end,
+        hl = {
+            fg = colors.green,
+            italic = true,
+        },
+    },
     space,
     align,
-    HelpFileName,
+    help_file_name,
     align,
     round_progress,
 }
