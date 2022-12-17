@@ -4,6 +4,7 @@ local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local previewers = require("telescope.previewers")
 local conf = require("telescope.config").values
+local config=require"omega.config".values
 
 local configs = {
     ["telescope.nvim"] = function()
@@ -345,7 +346,7 @@ local configs = {
             opts.use_ft_detect = opts.use_ft_detect == false and false or bad_files(filepath)
             previewers.buffer_previewer_maker(filepath, bufnr, opts)
         end
-        if omega.config.telescope_theme == "custom_bottom_no_borders" then
+        if config.telescope_theme == "custom_bottom_no_borders" then
             require("telescope").setup(themes.get_ivy({
                 -- defaults = themes.get_ivy({
                 defaults = {
@@ -433,7 +434,7 @@ local configs = {
                     },
                 },
             }))
-        elseif omega.config.telescope_theme == "float_all_borders" then
+        elseif config.telescope_theme == "float_all_borders" then
             require("telescope").setup({
                 -- defaults = themes.get_ivy({
                 defaults = {

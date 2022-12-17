@@ -36,31 +36,31 @@ aucmd("FileType", {
     end,
 })
 
-local netrw = vim.api.nvim_create_augroup("netrw", { clear = true })
-aucmd({ "Filetype" }, {
-    pattern = "netrw",
-    callback = function()
-        require("omega.core.settings.netrw").draw_icons()
-    end,
-    desc = "Draw netrw icons",
-    group = netrw,
-})
-aucmd({ "TextChanged" }, {
-    pattern = "*",
-    callback = function()
-        require("omega.core.settings.netrw").draw_icons()
-    end,
-    desc = "Draw netrw icons",
-    group = netrw,
-})
-aucmd({ "Filetype" }, {
-    pattern = "netrw",
-    callback = function()
-        require("omega.core.settings.netrw").set_maps()
-    end,
-    desc = "Define netrw mappings",
-    group = netrw,
-})
+-- local netrw = vim.api.nvim_create_augroup("netrw", { clear = true })
+-- aucmd({ "FileType" }, {
+--     pattern = "netrw",
+--     callback = function()
+--         require("omega.core.settings.netrw").draw_icons()
+--     end,
+--     desc = "Draw netrw icons",
+--     group = netrw,
+-- })
+-- aucmd({ "TextChanged" }, {
+--     pattern = "*",
+--     callback = function()
+--         require("omega.core.settings.netrw").draw_icons()
+--     end,
+--     desc = "Draw netrw icons",
+--     group = netrw,
+-- })
+-- aucmd({ "FileType" }, {
+--     pattern = "netrw",
+--     callback = function()
+--         require("omega.core.settings.netrw").set_maps()
+--     end,
+--     desc = "Define netrw mappings",
+--     group = netrw,
+-- })
 
 -- -- show cursor line only in active window
 aucmd({ "InsertLeave", "WinEnter", "CmdlineLeave" }, {
@@ -305,7 +305,7 @@ aucmd("LspAttach", {
     callback = function(args)
         local bufnr = args.buf
         -- vim.lsp.semantic_tokens.stop(bufnr, args.data.client_id)
-        local client=vim.lsp.get_client_by_id(args.data.client_id)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
         client.server_capabilities.semanticTokensProvider = nil
     end,
 })

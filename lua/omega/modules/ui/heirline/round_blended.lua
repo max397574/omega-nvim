@@ -491,6 +491,7 @@ local diagnostics = {
 }
 
 local lsp_progress = {
+    flexible = priorities.lsp,
     condition = function()
         if not omega.lsp_active then
             return false
@@ -501,31 +502,34 @@ local lsp_progress = {
         return true
     end,
     hl = { fg = colors.blue },
-    provider = function()
-        local messages = vim.lsp.util.get_progress_messages()
-        if #messages == 0 then
-            return ""
-        end
-        local status = {}
-        for _, msg in pairs(messages) do
-            table.insert(status, msg.percentage or 0)
-        end
-        local spinners = {
-            "⠋",
-            "⠙",
-            "⠹",
-            "⠸",
-            "⠼",
-            "⠴",
-            "⠦",
-            "⠧",
-            "⠇",
-            "⠏",
-        }
-        local ms = vim.loop.hrtime() / 1000000
-        local frame = math.floor(ms / 120) % #spinners
-        return spinners[frame + 1] .. " " .. table.concat(status, " | ")
-    end,
+    {
+        provider = function()
+            local messages = vim.lsp.util.get_progress_messages()
+            if #messages == 0 then
+                return ""
+            end
+            local status = {}
+            for _, msg in pairs(messages) do
+                table.insert(status, msg.percentage or 0)
+            end
+            local spinners = {
+                "⠋",
+                "⠙",
+                "⠹",
+                "⠸",
+                "⠼",
+                "⠴",
+                "⠦",
+                "⠧",
+                "⠇",
+                "⠏",
+            }
+            local ms = vim.loop.hrtime() / 1000000
+            local frame = math.floor(ms / 120) % #spinners
+            return spinners[frame + 1] .. " " .. table.concat(status, " | ")
+        end,
+    },
+    empty,
 }
 
 local coords = {

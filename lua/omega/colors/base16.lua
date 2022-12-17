@@ -1,3 +1,4 @@
+local config = require("omega.config").values
 local function highlight(group, guifg, guibg, attr, guisp)
     local arg = {}
     if guifg then
@@ -47,10 +48,6 @@ local function apply_base16_theme(theme)
         vim.g.terminal_color_foreground = theme.base0E
     end
 
-    -- TODO
-    -- nvim.command "hi clear"
-    -- nvim.command "syntax reset"
-
     -- Vim editor colors
     highlight("Normal", theme.base05, theme.base00, nil, nil)
     highlight("Bold", nil, nil, "bold", nil)
@@ -65,7 +62,6 @@ local function apply_base16_theme(theme)
     highlight("CurSearch", theme.base01, theme.base09, nil, nil)
     highlight("Italic", nil, nil, nil, nil)
     highlight("Macro", theme.base08, nil, nil, nil)
-    -- highlight("MatchParen", nil, theme.base03, nil, nil)
     highlight("MatchParen", nil, nil, { "bold" }, nil)
     highlight("ModeMsg", theme.base0B, nil, nil, nil)
     highlight("MoreMsg", theme.base0B, nil, nil, nil)
@@ -80,7 +76,6 @@ local function apply_base16_theme(theme)
     highlight("WarningMsg", theme.base08, nil, nil, nil)
     highlight("WildMenu", theme.base08, theme.base0A, nil, nil)
     highlight("Title", theme.base0D, nil, nil, nil)
-    -- highlight("Conceal", theme.base0D, theme.base00, nil, nil)
     highlight("Conceal", nil, nil, nil, nil)
     highlight("Cursor", theme.base00, theme.base05, nil, nil)
     highlight("NonText", theme.base03, nil, nil, nil)
@@ -96,7 +91,6 @@ local function apply_base16_theme(theme)
     highlight("CursorLineNr", theme.base04, nil, nil, nil)
     highlight("QuickFixLine", nil, theme.base01, nil, nil)
     highlight("PMenu", theme.base05, theme.base01, nil, nil)
-    -- highlight("PMenuSel", theme.base01, theme.base05, nil, nil)
     highlight("TabLine", theme.base03, theme.base01, nil, nil)
     highlight("TabLineFill", theme.base03, theme.base01, nil, nil)
     highlight("TabLineSel", theme.base0B, theme.base01, nil, nil)
@@ -303,47 +297,29 @@ local function apply_base16_theme(theme)
     highlight("CodeActionAvailable", theme.base08, nil, nil, nil)
 end
 
-return setmetatable({
-    themes = function(name)
-        local path = "lua/themes/" .. name .. "-base16.lua"
-        local files = vim.api.nvim_get_runtime_file(path, true)
-        local theme_array
-        if #files == 0 then
-            error("No such base16 theme: " .. name)
-        elseif #files == 1 then
-            theme_array = dofile(files[1])
-        else
-            local nvim_base_pattern = "nvim-base16.lua/lua/themes"
-            local valid_file = false
-            for _, file in ipairs(files) do
-                if not file:find(nvim_base_pattern) then
-                    theme_array = dofile(file)
-                    valid_file = true
-                end
-            end
-            if not valid_file then
-                -- multiple files but in startup repo shouldn't happen so just use first one
-                theme_array = dofile(files[1])
-            end
-        end
-        return theme_array
-    end,
-    apply_theme = apply_base16_theme,
-    theme_from_array = function(array)
-        assert(#array == 16, "base16.theme_from_array: The array length must be 16")
-        local result = {}
-        for i, value in ipairs(array) do
-            assert(
-                #value == 6,
-                "base16.theme_from_array: array values must be in 6 digit hex format, e.g. 'ffffff'"
-            )
-            local key = ("base%02X"):format(i - 1)
-            result[key] = value
-        end
-        return result
-    end,
-}, {
-    __call = function(_, ...)
-        apply_base16_theme(...)
-    end,
-})
+local base16 = {}
+
+base16.themes = function(theme)
+    if not theme then
+        theme = vim.g.colors_name
+    end
+    if theme == "nil" or theme == nil then
+        theme = config.colorscheme
+    end
+    return require("themes." .. theme .. "-base16")
+end
+base16.apply_theme = apply_base16_theme
+base16.theme_from_array = function(array)
+    assert(#array == 16, "base16.theme_from_array: The array length must be 16")
+    local result = {}
+    for i, value in ipairs(array) do
+        assert(
+            #value == 6,
+            "base16.theme_from_array: array values must be in 6 digit hex format, e.g. 'ffffff'"
+        )
+        local key = ("base%02X"):format(i - 1)
+        result[key] = value
+    end
+    return result
+end
+return base16

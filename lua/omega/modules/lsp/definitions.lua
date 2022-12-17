@@ -1,6 +1,7 @@
 local lsp_definitions = {}
 require("plenary.reload").reload_module("omega.modules.lsp")
 local ns = vim.api.nvim_create_namespace("lsp-definition")
+local config=require"omega.config".values
 local extmarks = {}
 
 local function add_virtual_text(contents)
@@ -99,7 +100,7 @@ local actions = {
 }
 
 function lsp_definitions.get_definition(action)
-    local context = omega.config.lsp_definition_context
+    local context = config.lsp_definition_context
     local position_params = vim.lsp.util.make_position_params(0)
     vim.lsp.buf_request(0, "textDocument/definition", position_params, function(err, result, ...)
         local location = vim.tbl_islist(result) and result[1] or result

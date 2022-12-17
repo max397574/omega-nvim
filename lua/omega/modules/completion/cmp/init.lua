@@ -1,4 +1,5 @@
 local cmp_mod = {}
+local config = require("omega.config").values
 
 cmp_mod.configs = {
     ["nvim-cmp"] = function()
@@ -71,7 +72,7 @@ cmp_mod.configs = {
                 },
             },
         }
-        if vim.tbl_contains({ "bottom", "top" }, omega.config.noice_cmdline_position) then
+        if vim.tbl_contains({ "bottom", "top" }, config.noice_cmdline_position) then
             noice_config.cmdline.view = nil
             noice_config.views = {
                 cmdline_popup = {
@@ -105,7 +106,7 @@ cmp_mod.configs = {
                     },
                 },
             }
-            if omega.config.noice_cmdline_position == "top" then
+            if config.noice_cmdline_position == "top" then
                 noice_config.views.cmdline_popup.position.row = 2
                 noice_config.views.popupmenu.position.row = 4
             end
@@ -161,7 +162,7 @@ cmp_mod.configs = {
             { "│", "CmpBorder" },
         }
 
-        local config = {
+        local cmp_config = {
             snippet = {
                 expand = function(args)
                     require("luasnip").lsp_expand(args.body)
@@ -322,8 +323,8 @@ cmp_mod.configs = {
                 ghost_text = true,
             },
         }
-        if omega.config.cmp_theme == "border" then
-            config.window = {
+        if config.cmp_theme == "border" then
+            cmp_config.window = {
                 completion = {
                     border = border,
                     scrollbar = "║",
@@ -333,7 +334,7 @@ cmp_mod.configs = {
                     scrollbar = "║",
                 },
             }
-            config.formatting = {
+            cmp_config.formatting = {
                 fields = {
                     "kind",
                     "abbr",
@@ -354,8 +355,8 @@ cmp_mod.configs = {
                     end,
                 }),
             }
-        elseif omega.config.cmp_theme == "no-border" then
-            config.window = {
+        elseif config.cmp_theme == "no-border" then
+            cmp_config.window = {
                 completion = {
                     border = {
                         { "▄", "CmpBorder" },
@@ -380,7 +381,7 @@ cmp_mod.configs = {
                     max_height = 12,
                 },
             }
-            config.formatting = {
+            cmp_config.formatting = {
                 fields = {
                     "kind",
                     "padding",
@@ -413,7 +414,7 @@ cmp_mod.configs = {
                 { name = "dap" },
             },
         })
-        cmp.setup(config)
+        cmp.setup(cmp_config)
 
         -- cmp.setup.cmdline(":", {
         --     sources = {
@@ -454,8 +455,8 @@ cmp_mod.configs = {
             engine = "nvim-cmp",
         })
         if ok then
-            table.insert(config.sources, { name = "neorg", priority = 6 })
-            cmp.setup(config)
+            table.insert(cmp_config.sources, { name = "neorg", priority = 6 })
+            cmp.setup(cmp_config)
         end
     end,
 }

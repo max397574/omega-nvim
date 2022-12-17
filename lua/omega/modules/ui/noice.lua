@@ -75,7 +75,7 @@ noice.configs = {
                 },
             },
         }
-        if vim.tbl_contains({ "bottom", "top" }, omega.config.noice_cmdline_position) then
+        if vim.tbl_contains({ "bottom", "top" }, config.noice_cmdline_position) then
             config.cmdline.view = nil
             config.views = {
                 cmdline_popup = {
@@ -109,7 +109,7 @@ noice.configs = {
                     },
                 },
             }
-            if omega.config.noice_cmdline_position == "top" then
+            if require("omega.config").values.noice_cmdline_position == "top" then
                 config.views.cmdline_popup.position.row = 2
                 config.views.popupmenu.position.row = 5
             end

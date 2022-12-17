@@ -1,4 +1,5 @@
 local heirline_mod = {}
+local config=require"omega.config".values
 
 heirline_mod.configs = {
     -- ["nvim-navic"] = function()
@@ -319,17 +320,17 @@ heirline_mod.configs = {
             },
         }
 
-        if omega.config.statusline == "round_colored_bg" then
+        if config.statusline == "round_colored_bg" then
             require("heirline").setup(
                 require("omega.modules.ui.heirline.round_colored_bg")
                 -- winbar_line
             )
-        elseif omega.config.statusline == "round_dark_bg" then
+        elseif config.statusline == "round_dark_bg" then
             require("heirline").setup(
                 require("omega.modules.ui.heirline.round_dark_bg")
                 -- winbar_line
             )
-        elseif omega.config.statusline == "round_blended" then
+        elseif config.statusline == "round_blended" then
             require("heirline").setup(
                 require("omega.modules.ui.heirline.round_blended")
                 -- winbar_line
