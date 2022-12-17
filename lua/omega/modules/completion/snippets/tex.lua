@@ -116,6 +116,8 @@ local tex_template = [=[
 \title{$1}
 \author{$2}
 
+\newcommand\ddfrac[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+
 \DeclareUrlCommand{\url}{%
     \def\UrlFont{\color{blue}\normalfont}%      Adding a little color 
     \def\UrlLeft##1\UrlRight{\underline{##1}}%  Underlining the url
