@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 
-local modules = require("omega.core.modules")
+_G.omega = {}
 
 local packer_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/packer.nvim"
 if vim.fn.isdirectory(packer_path) == 0 then
@@ -34,28 +34,34 @@ _G._packer = setmetatable(_G._packer or {}, {
     end,
 })
 
-local wk_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/which-key.nvim"
-if vim.fn.empty(vim.fn.glob(wk_path)) > 0 then
-    vim.notify("Bootstrapping which-key.nvim, please wait ...")
-    vim.fn.system({
-        "git",
-        "clone",
-        "--depth",
-        "1",
-        "https://github.com/max397574/which-key.nvim",
-        wk_path,
-    })
-end
-
-vim.cmd.packadd("which-key.nvim")
-
 require("omega.core.settings")
 require("omega.core.autocommands")
-require("omega.core.ui")
-
-modules.setup()
-modules.load()
+require("omega.colors").init(require("omega.config").values.colorscheme)
 
 vim.defer_fn(function()
-    require("omega.core.commands")
-end, 1)
+    local wk_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/which-key.nvim"
+    if vim.fn.empty(vim.fn.glob(wk_path)) > 0 then
+        vim.notify("Bootstrapping which-key.nvim, please wait ...")
+        vim.fn.system({
+            "git",
+            "clone",
+            "--depth",
+            "1",
+            "https://github.com/max397574/which-key.nvim",
+            wk_path,
+        })
+    end
+
+    vim.cmd.packadd("which-key.nvim")
+
+    -- require("omega.core.ui")
+
+    local modules = require("omega.core.modules")
+
+    modules.setup()
+    modules.load()
+
+    vim.defer_fn(function()
+        require("omega.core.commands")
+    end, 1)
+end, 0)
