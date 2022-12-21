@@ -138,51 +138,6 @@ wk.register({
         },
     },
 
-    ["P"] = {
-        name = " Packer",
-        S = {
-            function()
-                require("packer").status()
-            end,
-            "Status",
-        },
-        s = {
-            function()
-                require("packer").sync()
-            end,
-            "Sync",
-        },
-        c = {
-            function()
-                require("packer").compile()
-            end,
-            "Compile",
-        },
-        p = {
-            function()
-                require("packer").profile()
-            end,
-            "Profile",
-        },
-        i = {
-            function()
-                require("packer").install()
-            end,
-            "Install",
-        },
-        u = {
-            function()
-                require("packer").update()
-            end,
-            "Update",
-        },
-        C = {
-            function()
-                require("packer").clean()
-            end,
-            "Clean",
-        },
-    },
 }, {
     prefix = "<leader>",
     mode = "n",

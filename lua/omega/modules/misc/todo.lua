@@ -1,17 +1,10 @@
 ---@type OmegaModule
 local todo = {}
 
-todo.plugins = {
-    ["todo-comments.nvim"] = {
-        "folke/todo-comments.nvim",
-        cmd = { "TodoTrouble", "TodoTelescope", "TodoQuickFix", "TodoLocList" },
-    },
-}
-
 todo.configs = {
     ["todo-comments.nvim"] = function()
-        require("packer").loader("telescope.nvim")
-        require("packer").loader("trouble.nvim")
+        require("lazy").load("telescope.nvim")
+        require("lazy").load("trouble.nvim")
         require("todo-comments").setup()
     end,
 }

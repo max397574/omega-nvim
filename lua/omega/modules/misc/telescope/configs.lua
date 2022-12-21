@@ -11,9 +11,7 @@ local configs = {
         -- vim.defer_fn(function()
         --     vim.cmd.PackerLoad("neorg")
         -- end, 1)
-        -- require("packer").loader("nvim-treesitter")
-        -- require("packer").loader("telescope-ui-select.nvim")
-        require("packer").loader("lense.nvim")
+        require("lazy").load("lense.nvim")
         --- Pick any picker and use `cwd` as `cwd`
         ---@param cwd string The `cwd` to use
         local function pick_pickers(cwd)
@@ -115,7 +113,7 @@ local configs = {
             pick_pickers(dir)
         end
 
-        require"packer".loader("telescope-fzf-native.nvim")
+        require"lazy".load("telescope-fzf-native.nvim")
         local action_layout = require("telescope.actions.layout")
         local actions_layout = require("telescope.actions.layout")
         -- local fb_actions = require("telescope._extensions.file_browser.actions")

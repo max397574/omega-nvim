@@ -1,19 +1,5 @@
 local surround = {}
 
-surround.plugins = {
-    ["nvim-surround"] = {
-        "kylechui/nvim-surround",
-        keys = { "ys", "ds", "cs" },
-        setup = function()
-            vim.keymap.set("v", "S", function()
-                require("packer").loader("nvim-surround")
-                require("nvim-surround").visual_surround()
-            end, {})
-        end,
-        module = "nvim-surround",
-    },
-}
-
 surround.configs = {
     ["nvim-surround"] = function()
         local get_input = function(prompt)
