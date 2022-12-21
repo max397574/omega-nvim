@@ -1,9 +1,5 @@
 local insert_utils = {}
 
-insert_utils.plugins = {
-    ["jeskape.nvim"] = { "Krafi2/jeskape.nvim", event = "InsertEnter" },
-}
-
 insert_utils.configs = {
     ["jeskape.nvim"] = function()
         require("jeskape").setup({

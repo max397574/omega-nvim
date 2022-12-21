@@ -1,13 +1,5 @@
 local toggleterm = {}
 
-toggleterm.plugins = {
-    ["toggleterm.nvim"] = {
-        "akinsho/toggleterm.nvim",
-        keys = { "<leader>r", "<c-t>" },
-        module = { "toggleterm" },
-    },
-}
-
 toggleterm.configs = {
     ["toggleterm.nvim"] = function()
         require("toggleterm").setup({

@@ -1,12 +1,5 @@
 local comment = {}
 
-comment.plugins = {
-    ["Comment.nvim"] = {
-        "numToStr/Comment.nvim",
-        keys = { "<leader>c", "gb" },
-    },
-}
-
 comment.configs = {
     ["Comment.nvim"] = function()
         require("comment").setup({

@@ -1,12 +1,5 @@
 local which_key = {}
 
-which_key.plugins = {
-    ["which-key.nvim"] = {
-        "~/neovim_plugins/which-key.nvim",
-        -- "folke/which-key.nvim",
-    },
-}
-
 which_key.configs = {
     ["which-key.nvim"] = function()
         require("which-key").setup({

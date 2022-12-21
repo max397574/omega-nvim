@@ -1,9 +1,5 @@
 local blankline = {}
 
-blankline.plugins = {
-    ["indent-blankline.nvim"] = {},
-}
-
 blankline.configs = {
     ["indent-blankline.nvim"] = function()
         vim.g.indentLine_enabled = 1

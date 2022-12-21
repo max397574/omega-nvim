@@ -1,12 +1,5 @@
 local lua_lsp = {}
 
-lua_lsp.plugins = {
-    ["neodev.nvim"] = {
-        "folke/neodev.nvim",
-        ft = "lua",
-    },
-}
-
 lua_lsp.configs = {
     ["neodev.nvim"] = function()
         local lua_cmd = {

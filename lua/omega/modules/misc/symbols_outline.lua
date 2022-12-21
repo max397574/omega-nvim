@@ -1,12 +1,5 @@
 local symbols_outline = {}
 
-symbols_outline.plugins = {
-    ["symbols-outline.nvim"] = {
-        "simrat39/symbols-outline.nvim",
-        cmd = "SymbolsOutline",
-    },
-}
-
 symbols_outline.configs = {
     ["symbols-outline.nvim"] = function()
         require("symbols-outline").setup({ highlight_hovered_item = true })

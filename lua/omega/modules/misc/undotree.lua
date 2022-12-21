@@ -1,11 +1,5 @@
 ---@type OmegaModule
 local undotree = {}
-undotree.plugins = {
-    ["undotree"] = {
-        "mbbill/undotree",
-        cmd = "UndotreeToggle",
-    },
-}
 
 undotree.keybindings = function()
     require("which-key").register(

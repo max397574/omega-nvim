@@ -1,13 +1,6 @@
 ---@type OmegaModule
 local nvim_tree = {}
 
-nvim_tree.plugins = {
-    ["nvim-tree.lua"] = {
-        "kyazdani42/nvim-tree.lua",
-        cmd = { "NvimTreeToggle", "NvimTreeOpen" },
-    },
-}
-
 nvim_tree.configs = {
     ["nvim-tree.lua"] = function()
         vim.api.nvim_create_autocmd("BufEnter", {

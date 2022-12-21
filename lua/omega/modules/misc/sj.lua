@@ -1,12 +1,5 @@
 local sj = {}
 
-sj.plugins = {
-    ["sj.nvim"] = {
-        "woosaaahh/sj.nvim",
-        keys = { "/" },
-    },
-}
-
 sj.configs = {
     ["sj.nvim"] = function()
         require("sj").setup({

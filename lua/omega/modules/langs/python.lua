@@ -20,12 +20,6 @@ Then on lspconfig opts,
   end
 --]]
 local python = {}
-python.plugins = {
-    ["nvim-lsp-installer"] = {
-        "williamboman/nvim-lsp-installer",
-        ft = "python",
-    },
-}
 
 python.configs = {
     ["nvim-lsp-installer"] = function()
