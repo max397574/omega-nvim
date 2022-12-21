@@ -1,24 +1,5 @@
 local bufferline_mod = {}
 
-bufferline_mod.plugins = {
-    ["bufferline.nvim"] = {
-        "akinsho/bufferline.nvim",
-        opt = true,
-        setup = function()
-            vim.api.nvim_create_autocmd({ "BufAdd", "TabEnter" }, {
-                pattern = "*",
-                group = vim.api.nvim_create_augroup("BufferLineLazyLoading", {}),
-                callback = function()
-                    local count = #vim.fn.getbufinfo({ buflisted = 1 })
-                    if count >= 2 then
-                        require"packer".loader("bufferline.nvim")
-                    end
-                end,
-            })
-        end,
-    },
-}
-
 bufferline_mod.configs = {
     ["bufferline.nvim"] = function()
         local colors = require("omega.colors").get()

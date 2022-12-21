@@ -137,52 +137,6 @@ wk.register({
             "Copy to Clipboard",
         },
     },
-
-    ["P"] = {
-        name = " Packer",
-        S = {
-            function()
-                require("packer").status()
-            end,
-            "Status",
-        },
-        s = {
-            function()
-                require("packer").sync()
-            end,
-            "Sync",
-        },
-        c = {
-            function()
-                require("packer").compile()
-            end,
-            "Compile",
-        },
-        p = {
-            function()
-                require("packer").profile()
-            end,
-            "Profile",
-        },
-        i = {
-            function()
-                require("packer").install()
-            end,
-            "Install",
-        },
-        u = {
-            function()
-                require("packer").update()
-            end,
-            "Update",
-        },
-        C = {
-            function()
-                require("packer").clean()
-            end,
-            "Clean",
-        },
-    },
 }, {
     prefix = "<leader>",
     mode = "n",
@@ -600,6 +554,21 @@ wk.register({
             "Previous File",
         },
         t = { "<cmd>Telescope harpoon marks<CR>", "Telescope" },
+    },
+    L = {
+        name = " Lazy",
+        s = {
+            function()
+                require("lazy").sync()
+            end,
+            "Sync",
+        },
+        S = {
+            function()
+                require("lazy").show()
+            end,
+            "Show",
+        },
     },
 }, {
     prefix = "<leader>",

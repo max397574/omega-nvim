@@ -1,912 +1,486 @@
-local modules = {}
-function modules.bootstrap_packer()
-    local has_packer = pcall(require, "packer")
-    if not has_packer then
-        -- Packer Bootstrapping
-        local packer_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/packer.nvim"
-        if vim.fn.isdirectory(packer_path) == 0 then
-            vim.notify("Bootstrapping packer.nvim, please wait ...")
-            vim.fn.system({
-                "git",
-                "clone",
-                "--depth",
-                "1",
-                "https://github.com/wbthomason/packer.nvim",
-                packer_path,
+---@diagnostic disable: assign-type-mismatch
+require("lazy").setup({
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        config = function()
+            require("omega.modules.ui.blankline").configs["indent-blankline.nvim"]()
+        end,
+    },
+    {
+        "akinsho/bufferline.nvim",
+        init = function()
+            vim.api.nvim_create_autocmd({ "BufAdd", "TabEnter" }, {
+                pattern = "*",
+                group = vim.api.nvim_create_augroup("BufferLineLazyLoading", {}),
+                callback = function()
+                    local count = #vim.fn.getbufinfo({ buflisted = 1 })
+                    if count >= 2 then
+                        require("lazy").load("bufferline.nvim")
+                    end
+                end,
             })
-        end
-
-        vim.cmd.packadd("packer.nvim")
-    end
-end
-local module_sections = {
-    ["ui"] = {
-        ["blankline"] = {
-            {
-                "lukas-reineke/indent-blankline.nvim",
-                opt = true,
-                config = function()
-                    require("omega.modules.ui.blankline").configs["indent-blankline.nvim"]()
-                end,
-            },
-        },
-        ["bufferline"] = {
-            {
-                "akinsho/bufferline.nvim",
-                opt = true,
-                setup = function()
-                    vim.api.nvim_create_autocmd({ "BufAdd", "TabEnter" }, {
-                        pattern = "*",
-                        group = vim.api.nvim_create_augroup("BufferLineLazyLoading", {}),
-                        callback = function()
-                            local count = #vim.fn.getbufinfo({ buflisted = 1 })
-                            if count >= 2 then
-                                require("packer").loader("bufferline.nvim")
-                            end
-                        end,
-                    })
-                end,
-                config = function()
-                    require("omega.modules.ui.bufferline").configs["bufferline.nvim"]()
-                end,
-            },
-        },
-        ["devicons"] = {
-            {
-                "kyazdani42/nvim-web-devicons",
-                module = "nvim-web-devicons",
-            },
-        },
-        ["heirline"] = {
-            {
-                "rebelot/heirline.nvim",
-                config = function()
-                    require("omega.modules.ui.heirline").configs["heirline.nvim"]()
-                end,
-            },
-            -- {
-            --     "SmiteshP/nvim-navic",
-            --     ft = {
-            --         "python",
-            --         "html",
-            --         "typescript",
-            --         "zig",
-            --         "css",
-            --         "nix",
-            --         "rust",
-            --         "haskell",
-            --         "tex",
-            --         "vim",
-            --         "lua",
-            --     },
-            --     config = function()
-            --         require("omega.modules.ui.heirline").configs["nvim-navic"]()
-            --     end,
-            -- },
-        },
-        ["noice"] = {
-            {
-                "folke/noice.nvim",
-                opt = true,
-                setup = function()
-                    vim.defer_fn(function()
-                        require("packer").loader("noice.nvim")
-                    end, 0)
-                end,
-                config = function()
-                    require("omega.modules.ui.noice").configs["noice.nvim"]()
-                end,
-            },
-            {
-                "rcarriga/nvim-notify",
-                module = "notify",
-            },
-            {
-                "MunifTanjim/nui.nvim",
-                module = { "nui" },
-            },
-        },
+        end,
+        config = function()
+            require("omega.modules.ui.bufferline").configs["bufferline.nvim"]()
+        end,
     },
-    ["mappings"] = {
-        ["which_key"] = {
-            {
-                "~/neovim_plugins/which-key.nvim",
-                opt = true,
-                setup = function()
-                    vim.defer_fn(function()
-                        require("packer").loader("which-key.nvim")
-                    end, 0)
-                end,
-                config = function()
-                    require("omega.modules.mappings.which_key").configs["which-key.nvim"]()
-                    require("omega.core.mappings")
-                end,
-            },
-        },
+    {
+        "kyazdani42/nvim-web-devicons",
     },
-    ["core"] = {
-        ["omega"] = {
-            { "nvim-lua/plenary.nvim", module = "plenary" },
-            {
-                "wbthomason/packer.nvim",
-                cmd = {
-                    "PackerSnapshot",
-                    "PackerSnapshotRollback",
-                    "PackerSnapshotDelete",
-                    "PackerInstall",
-                    "PackerUpdate",
-                    "PackerSync",
-                    "PackerClean",
-                    "PackerCompile",
-                    "PackerStatus",
-                    "PackerProfile",
-                    "PackerLoad",
-                },
-            },
-            { "lewis6991/impatient.nvim" },
-        },
+    {
+        "rebelot/heirline.nvim",
+        lazy = false,
+        -- event = "VeryLazy",
+        config = function()
+            require("omega.modules.ui.heirline").configs["heirline.nvim"]()
+        end,
     },
-    ["langs"] = {
-        lua = {
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        config = function()
+            require("omega.modules.ui.noice").configs["noice.nvim"]()
+        end,
+    },
+    {
+        "rcarriga/nvim-notify",
+    },
+    {
+        "MunifTanjim/nui.nvim",
+    },
+    {
+        dir = "~/neovim_plugins/which-key.nvim",
+        init = function()
+            vim.defer_fn(function()
+                require("lazy").load("which-key.nvim")
+            end, 0)
+        end,
+        config = function()
+            require("omega.modules.mappings.which_key").configs["which-key.nvim"]()
+            require("omega.core.mappings")
+        end,
+    },
+    { "nvim-lua/plenary.nvim" },
+    {
+        "neovim/nvim-lspconfig",
+        config = function()
+            require("omega.modules.langs.main").configs["nvim-lspconfig"]()
+            require("omega.modules.langs.html")
+        end,
+        dependencies = {
             {
                 "folke/neodev.nvim",
                 config = function()
                     require("omega.modules.langs.lua").configs["neodev.nvim"]()
                 end,
-                after = "nvim-lspconfig",
             },
-        },
-        -- log = {
-        --     { "MTDL9/vim-log-highlighting", ft = "log" },
-        -- },
-        main = {
-            {
-                "neovim/nvim-lspconfig",
-                config = function()
-                    require("omega.modules.langs.main").configs["nvim-lspconfig"]()
-                    require("omega.modules.langs.html")
-                end,
-                opt = true,
-                setup = function()
-                    vim.defer_fn(function()
-                        require("packer").loader("nvim-lspconfig")
-                        omega.lsp_active = true
-                    end, 0)
-                end,
-            },
-
-            -- {
-            --     "ray-x/lsp_signature.nvim",
-            --     after = "nvim-lspconfig",
-            --     config = function()
-            --         require("omega.modules.langs.main").configs["lsp_signature.nvim"]()
-            --     end,
-            -- },
-        },
-        -- python,
-        rust = {
             {
                 "simrat39/rust-tools.nvim",
                 config = function()
                     require("omega.modules.langs.rust").configs["rust-tools.nvim"]()
                 end,
-                after = "nvim-lspconfig",
             },
         },
-        -- swift,
-        debugging = {
-            {
-                "mfussenegger/nvim-dap",
-                opt = true,
-                module = "dap",
-                config = function()
-                    require("omega.modules.langs.debugging").configs["nvim-dap"]()
-                end,
-            },
-            {
-                "rcarriga/nvim-dap-ui",
-                opt = true,
-                config = function()
-                    require("omega.modules.langs.debugging").configs["nvim-dap-ui"]()
-                end,
-            },
+        event = "BufReadPre",
+    },
+
+    {
+        "mfussenegger/nvim-dap",
+        config = function()
+            require("omega.modules.langs.debugging").configs["nvim-dap"]()
+        end,
+        dependencies = {
             {
                 "theHamsta/nvim-dap-virtual-text",
-                after = "nvim-dap",
             },
             {
                 "jbyuki/one-small-step-for-vimkind",
-                after = "nvim-dap",
             },
         },
     },
-    ["completion"] = {
-        annotations = {
-            {
-                "danymat/neogen",
-                module = { "neogen" },
-                requires = { "LuaSnip" },
-                config = function()
-                    require("omega.modules.completion.annotations.configs")["neogen"]()
-                end,
-            },
+    {
+        "rcarriga/nvim-dap-ui",
+        config = function()
+            require("omega.modules.langs.debugging").configs["nvim-dap-ui"]()
+        end,
+    },
+    {
+        "danymat/neogen",
+        config = function()
+            require("omega.modules.completion.annotations.configs")["neogen"]()
+        end,
+    },
+    {
+        "windwp/nvim-autopairs",
+        event = {
+            "InsertEnter",
         },
-        autopairs = {
-            {
-                "windwp/nvim-autopairs",
-                event = {
-                    "InsertEnter",
-                },
-                after = "nvim-cmp",
-                config = function()
-                    require("omega.modules.completion.autopairs").configs["nvim-autopairs"]()
-                end,
-            },
-        },
-        cmp = {
-            {
-                "~/neovim_plugins/nvim-cmp",
-                requires = { "nvim-autopairs" },
-                event = { "InsertEnter", "CmdLineEnter" },
-                config = function()
-                    require("omega.modules.completion.cmp").configs["nvim-cmp"]()
-                end,
-            },
+        config = function()
+            require("omega.modules.completion.autopairs").configs["nvim-autopairs"]()
+        end,
+    },
+    {
+        dir = "~/neovim_plugins/nvim-cmp",
+        event = { "InsertEnter" },
+        config = function()
+            require("omega.modules.completion.cmp").configs["nvim-cmp"]()
+        end,
+        dependencies = {
             {
                 "saadparwaiz1/cmp_luasnip",
-                after = "nvim-cmp",
             },
             {
                 "hrsh7th/cmp-emoji",
-                after = "nvim-cmp",
             },
-            -- {
-            --     "max397574/cmp-greek",
-            --     after = "nvim-cmp",
-            -- },
-            -- {
-            --     "hrsh7th/cmp-buffer",
-            --     after = "nvim-cmp",
-            -- },
-            -- {
-            --     "hrsh7th/cmp-nvim-lsp-signature-help",
-            --     after = "nvim-cmp",
-            -- },
             {
                 "hrsh7th/cmp-path",
-                after = "nvim-cmp",
             },
             {
                 "kdheepak/cmp-latex-symbols",
-                after = "nvim-cmp",
             },
-            -- {
-            --     "hrsh7th/cmp-calc",
-            --     after = "nvim-cmp",
-            -- },
             {
                 "hrsh7th/cmp-nvim-lua",
-                after = "nvim-cmp",
             },
             {
                 "hrsh7th/cmp-nvim-lsp",
-                after = "nvim-cmp",
-            },
-            -- {
-            --     "hrsh7th/cmp-cmdline",
-            --     after = "nvim-cmp",
-            -- },
-            -- {
-            --     "dmitmel/cmp-cmdline-history",
-            --     after = "nvim-cmp",
-            -- },
-            -- {
-            --     "rcarriga/cmp-dap",
-            --     after = "nvim-cmp",
-            -- },
-        },
-        snippets = {
-            {
-                "L3MON4D3/LuaSnip",
-                module = "luasnip",
-                config = function()
-                    require("omega.modules.completion.snippets").configs["LuaSnip"]()
-                end,
-            },
-            {
-                "~/neovim_plugins/friendly-snippets",
-                event = "InsertEnter",
-                after = "LuaSnip",
-            },
-        },
-        neocomplete = {
-            {
-                "~/neovim_plugins/neocomplete.nvim/",
-                event = "InsertEnter",
-                config = function()
-                    require("omega.modules.completion.neocomplete").configs["neocomplete.nvim"]()
-                end,
             },
         },
     },
-    ["misc"] = {
-        colorizer = {
+    {
+        "L3MON4D3/LuaSnip",
+        config = function()
+            require("omega.modules.completion.snippets").configs["LuaSnip"]()
+        end,
+        dependencies = {
             {
-                "xiyaowong/nvim-colorizer.lua",
-                cmd = { "ColorizerAttachToBuffer" },
-                config = function()
-                    require("omega.modules.misc.colorizer").configs["nvim-colorizer.lua"]()
-                end,
-            },
-        },
-        colorscheme_switcher = {
-            {
-                "~/neovim_plugins/colorscheme_switcher/",
-                module = { "colorscheme_switcher" },
-            },
-        },
-        -- colortils = {
-        --     {
-        --         "~/neovim_plugins/colortils.nvim/",
-        --         cmd = "Colortils",
-        --         config = function()
-        --             require("omega.modules.misc.colortils").configs["colortils.nvim"]()
-        --         end,
-        --     },
-        -- },
-        comment = {
-            {
-                "numToStr/Comment.nvim",
-                keys = { "<leader>c", "gb" },
-                config = function()
-                    require("omega.modules.misc.comment").configs["Comment.nvim"]()
-                end,
-            },
-        },
-        -- "dynamic_help",
-        formatter = {
-            {
-                "mhartington/formatter.nvim",
-                cmd = { "FormatWrite", "Format", "FormatLock" },
-                config = function()
-                    require("omega.modules.misc.formatter.configs")["formatter.nvim"]()
-                end,
-            },
-        },
-        gitlinker = {
-            {
-                "ruifm/gitlinker.nvim",
-                keys = { "<leader>gy" },
-                config = function()
-                    require("gitlinker").setup()
-                end,
-            },
-        },
-        gitsigns = {
-            {
-                "lewis6991/gitsigns.nvim",
-                opt = true,
-                setup = function()
-                    vim.api.nvim_create_autocmd({ "BufRead" }, {
-                        group = vim.api.nvim_create_augroup("gitsign_load", {}),
-                        callback = function()
-                            -- vim.fn.system("git -C " .. vim.fn.expand("%:p:h") .. " rev-parse")
-                            -- if vim.v.shell_error == 0 then
-                            --     vim.api.nvim_del_augroup_by_name("gitsign_load")
-                            --     vim.schedule(function()
-                            --         require("packer").loader("gitsigns.nvim")
-                            --     end)
-                            -- end
-                            local function onexit(code, _)
-                                if code == 0 then
-                                    vim.schedule(function()
-                                        require("packer").loader("gitsigns.nvim")
-                                    end)
-                                end
-                            end
-                            local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-                            if lines ~= { "" } then
-                                vim.loop.spawn("git", {
-                                    args = {
-                                        "ls-files",
-                                        "--error-unmatch",
-                                        vim.fn.expand("%"),
-                                    },
-                                }, onexit)
-                            end
-                        end,
-                    })
-                end,
-                config = function()
-                    require("omega.modules.misc.gitsigns").configs["gitsigns.nvim"]()
-                end,
-            },
-        },
-        -- harpoon = {
-        --     {
-        --         "ThePrimeagen/harpoon",
-        --         keys = { "<leader>H" },
-        --         config = function()
-        --             require("telescope").load_extension("harpoon")
-        --         end,
-        --     },
-        -- },
-        help_files = {
-            {
-                "nanotee/luv-vimdocs",
-                cmd = { "Telescope", "h" },
-            },
-            -- {
-            --     "milisims/nvim-luaref",
-            --     cmd = { "Telescope", "h" },
-            -- },
-            -- {
-            --     "~/neovim_plugins/help_files/",
-            --     cmd = { "Telescope", "h" },
-            -- },
-            -- {
-            --     "~/neovim_plugins/crefvim/",
-            --     cmd = { "Telescope", "h" },
-            -- },
-        },
-        insert_utils = {
-            {
-                "Krafi2/jeskape.nvim",
+                dir = "~/neovim_plugins/friendly-snippets",
                 event = "InsertEnter",
-                config = function()
-                    require("omega.modules.misc.insert_utils").configs["jeskape.nvim"]()
-                end,
             },
         },
-        lightspeed = {
-            {
-                "ggandor/lightspeed.nvim",
-                keys = { "S", "s", "f", "F" },
-                setup = function()
-                    vim.g.lightspeed_no_default_keymaps = true
-                    vim.keymap.set("n", "s", "<plug>Lightspeed_s")
-                    vim.keymap.set("n", "S", "<plug>Lightspeed_S")
-                    vim.keymap.set("n", "f", "<plug>Lightspeed_f")
-                    vim.keymap.set("n", "F", "<plug>Lightspeed_F")
-                end,
-                config = function()
-                    require("omega.modules.misc.lightspeed").configs["lightspeed.nvim"]()
-                end,
-            },
-        },
-        -- mkdir = {
-        --     {
-        --         "jghauser/mkdir.nvim",
-        --         event = "BufWritePre",
-        --         config = function()
-        --             require("mkdir")
-        --         end,
-        --     },
-        -- },
-        nabla = {
-            {
-                "jbyuki/nabla.nvim",
-                ft = {
-                    "tex",
-                    "norg",
-                },
-            },
-        },
-        neorg = {
-            {
-                "nvim-neorg/neorg",
-                -- "~/neovim_plugins/neorg",
-                ft = "norg",
-                setup = function()
-                    vim.filetype.add({
-                        extension = {
-                            norg = "norg",
-                        },
-                    })
-                end,
-                config = function()
-                    require("omega.modules.misc.neorg").configs["neorg"]()
-                end,
-                -- run = ":Neorg sync-parsers",
-            },
-            { "~/neovim_plugins/neorg-telescope/", after = "neorg" },
-            {
-                "~/neovim_plugins/neorg-context/",
-                after = "neorg",
-            },
-            {
-                "~/neovim_plugins/neorg-kanban/",
-                after = "neorg",
-            },
-            {
-                "~/neovim_plugins/neorg-zettelkasten/",
-                after = "neorg",
-            },
-        },
-        -- ["nvim-tree"] = {
-        --     {
-        --         "kyazdani42/nvim-tree.lua",
-        --         cmd = { "NvimTreeToggle", "NvimTreeOpen" },
-        --         config = function()
-        --             require("omega.modules.misc.nvim-tree").configs["nvim-tree.lua"]()
-        --         end,
-        --     },
-        -- },
-        paperplanes = {
-            {
-                "rktjmp/paperplanes.nvim",
-                cmd = { "PP" },
-                config = function()
-                    require("omega.modules.misc.paperplanes").configs["paperplanes.nvim"]()
-                end,
-            },
-        },
-        -- sj = {
-        --     {
-        --         "woosaaahh/sj.nvim",
-        --         keys = { "/" },
-        --         config = function()
-        --             require("omega.modules.misc.sj").configs["sj.nvim"]()
-        --         end,
-        --     },
-        -- },
-        surround = {
-            {
-                "kylechui/nvim-surround",
-                keys = { "ys", "ds", "cs" },
-                setup = function()
-                    vim.keymap.set("v", "S", function()
-                        require("packer").loader("nvim-surround")
-                        require("nvim-surround").visual_surround()
-                    end, {})
-                end,
-                module = "nvim-surround",
-                config = function()
-                    require("omega.modules.misc.surround").configs["nvim-surround"]()
-                end,
-            },
-        },
-        -- symbols_outline = {
-        --     {
-        --         "simrat39/symbols-outline.nvim",
-        --         cmd = "SymbolsOutline",
-        --         config = function()
-        --             require("omega.modules.misc.symbols_outline").configs["symbols-outline.nvim"]()
-        --         end,
-        --     },
-        -- },
-        telescope = {
-            {
-                "nvim-telescope/telescope.nvim",
-                config = function()
-                    require("omega.modules.misc.telescope.configs")["telescope.nvim"]()
-                    vim.api.nvim_create_user_command("Telescope", function(opts)
-                        require("telescope.command").load_command(unpack(opts.fargs))
-                    end, {
-                        nargs = "*",
-                        complete = function(_, line)
-                            local builtin_list = vim.tbl_keys(require("telescope.builtin"))
-                            local extensions_list =
-                                vim.tbl_keys(require("telescope._extensions").manager)
-
-                            local l = vim.split(line, "%s+")
-                            local n = #l - 2
-
-                            if n == 0 then
-                                return vim.tbl_filter(function(val)
-                                    return vim.startswith(val, l[2])
-                                end, vim.tbl_extend(
-                                    "force",
-                                    builtin_list,
-                                    extensions_list
-                                ))
-                            end
-
-                            if n == 1 then
-                                local is_extension = vim.tbl_filter(function(val)
-                                    return val == l[2]
-                                end, extensions_list)
-
-                                if #is_extension > 0 then
-                                    local extensions_subcommand_dict =
-                                        require("telescope.command").get_extensions_subcommand()
-                                    return vim.tbl_filter(function(val)
-                                        return vim.startswith(val, l[3])
-                                    end, extensions_subcommand_dict[l[2]])
-                                end
-                            end
-
-                            local options_list = vim.tbl_keys(require("telescope.config").values)
-                            return vim.tbl_filter(function(val)
-                                return vim.startswith(val, l[#l])
-                            end, options_list)
-                        end,
-                    })
-                end,
-                cmd = { "Telescope" },
-                -- setup = function()
-                -- vim.defer_fn(function()
-                --     vim.cmd.PackerLoad("telescope.nvim")
-                -- end, 0)
-                -- end,
-                module = {
-                    "telescope",
-                    "omega.modules.misc.telescope",
-                },
-            },
-            -- {
-            --     "xiyaowong/telescope-emoji.nvim",
-            --     config = function()
-            --         require("omega.modules.misc.telescope.configs")["telescope-emoji.nvim"]()
-            --     end,
-            --     after = "telescope.nvim",
-            -- },
-            {
-                "nvim-telescope/telescope-fzf-native.nvim",
-                run = "make",
-                after = "telescope.nvim",
-            },
-            -- { "nvim-telescope/telescope-symbols.nvim", after = "telescope.nvim" },
-            {
-                "nvim-telescope/telescope-file-browser.nvim",
-                after = "telescope.nvim",
-            },
-            -- {
-            --     "nvim-telescope/telescope-ui-select.nvim",
-            --     after = "telescope.nvim",
-            --     opt = true,
-            --     setup = function()
-            --         omega.ui_select = vim.ui.select
-            --         vim.ui.select = function(items, opts, on_choice)
-            --             vim.cmd.PackerLoad({
-            --                 "telescope.nvim",
-            --                 "telescope-ui-select.nvim",
-            --             })
-            --             vim.ui.select(items, opts, on_choice)
-            --         end
-            --     end,
-            -- },
-            { "~/neovim_plugins/lense.nvim", after = "telescope.nvim" },
-        },
-        -- todo = {
-        --     {
-        --         "folke/todo-comments.nvim",
-        --         cmd = { "TodoTrouble", "TodoTelescope", "TodoQuickFix", "TodoLocList" },
-        --         config = function()
-        --             require("omega.modules.misc.todo").configs["todo-comments.nvim"]()
-        --         end,
-        --     },
-        -- },
-        toggleterm = {
-            {
-                "akinsho/toggleterm.nvim",
-                keys = { "<leader>r", "<c-t>" },
-                module = { "toggleterm" },
-                config = function()
-                    require("omega.modules.misc.toggleterm").configs["toggleterm.nvim"]()
-                end,
-            },
-        },
-        -- "tomato",
-        treesitter = {
-            {
-                "nvim-treesitter/nvim-treesitter",
-                -- module = "nvim-treesitter",
-                opt = true,
-                setup = function()
-                    if not vim.tbl_contains({ "[packer]", "" }, vim.fn.expand("%")) then
-                        require("packer").loader("nvim-treesitter")
-                        require("packer").loader("indent-blankline.nvim")
-                    else
-                        vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
-                            callback = function()
-                                local file = vim.fn.expand("%")
-                                if not vim.tbl_contains({ "[packer]", "" }, file) then
-                                    require("packer").loader("nvim-treesitter")
-                                    require("packer").loader("indent-blankline.nvim")
-                                end
-                            end,
-                        })
+    },
+    {
+        dir = "~/neovim_plugins/neocomplete.nvim/",
+        event = "InsertEnter",
+        config = function()
+            require("omega.modules.completion.neocomplete").configs["neocomplete.nvim"]()
+        end,
+    },
+    {
+        "xiyaowong/nvim-colorizer.lua",
+        cmd = { "ColorizerAttachToBuffer" },
+        config = function()
+            require("omega.modules.misc.colorizer").configs["nvim-colorizer.lua"]()
+        end,
+    },
+    {
+        dir = "~/neovim_plugins/colorscheme_switcher/",
+    },
+    {
+        "numToStr/Comment.nvim",
+        keys = { "<leader>c", "gb" },
+        config = function()
+            require("omega.modules.misc.comment").configs["Comment.nvim"]()
+        end,
+    },
+    {
+        "mhartington/formatter.nvim",
+        cmd = { "FormatWrite", "Format", "FormatLock" },
+        config = function()
+            require("omega.modules.misc.formatter.configs")["formatter.nvim"]()
+        end,
+    },
+    {
+        "ruifm/gitlinker.nvim",
+        keys = { "<leader>gy" },
+        config = function()
+            require("gitlinker").setup()
+        end,
+    },
+    {
+        "lewis6991/gitsigns.nvim",
+        init = function()
+            vim.api.nvim_create_autocmd({ "BufRead" }, {
+                group = vim.api.nvim_create_augroup("gitsign_load", {}),
+                callback = function()
+                    local function onexit(code, _)
+                        if code == 0 then
+                            vim.schedule(function()
+                                require("lazy").load("gitsigns.nvim")
+                            end)
+                        end
+                    end
+                    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+                    if lines ~= { "" } then
+                        vim.loop.spawn("git", {
+                            args = {
+                                "ls-files",
+                                "--error-unmatch",
+                                vim.fn.expand("%"),
+                            },
+                        }, onexit)
                     end
                 end,
-                cmd = {
-                    "TSInstall",
-                    "TSBufEnable",
-                    "TSBufDisable",
-                    "TSEnable",
-                    "TSDisable",
-                    "TSModuleInfo",
-                },
-
-                config = function()
-                    require("omega.modules.misc.treesitter").configs["nvim-treesitter"]()
-                end,
+            })
+        end,
+        config = function()
+            require("omega.modules.misc.gitsigns").configs["gitsigns.nvim"]()
+        end,
+    },
+    {
+        "nanotee/luv-vimdocs",
+        -- cmd = { "Telescope", "h" },
+        cmd = { "Telescope" },
+    },
+    {
+        "Krafi2/jeskape.nvim",
+        event = "InsertEnter",
+        config = function()
+            require("omega.modules.misc.insert_utils").configs["jeskape.nvim"]()
+        end,
+    },
+    {
+        "ggandor/lightspeed.nvim",
+        -- keys = { "S", "s", "f", "F" },
+        -- init = function()
+        --     vim.g.lightspeed_no_default_keymaps = true
+        --     vim.keymap.set("n", "s", "<plug>Lightspeed_s")
+        --     vim.keymap.set("n", "S", "<plug>Lightspeed_S")
+        --     vim.keymap.set("n", "f", "<plug>Lightspeed_f")
+        --     vim.keymap.set("n", "F", "<plug>Lightspeed_F")
+        -- end,
+        event = "VeryLazy",
+        config = function()
+            require("omega.modules.misc.lightspeed").configs["lightspeed.nvim"]()
+        end,
+    },
+    {
+        "jbyuki/nabla.nvim",
+        ft = {
+            "tex",
+            "norg",
+        },
+    },
+    {
+        "nvim-neorg/neorg",
+        ft = "norg",
+        config = function()
+            require("omega.modules.misc.neorg").configs["neorg"]()
+        end,
+        dependencies = {
+            { dir = "~/neovim_plugins/neorg-telescope/" },
+            {
+                dir = "~/neovim_plugins/neorg-context/",
             },
             {
-                "nvim-treesitter/nvim-treesitter-refactor",
-                opt = true,
-                setup = function()
-                    vim.defer_fn(function()
-                        require("packer").loader("nvim-treesitter-refactor")
-                    end, 1)
+                dir = "~/neovim_plugins/neorg-kanban/",
+            },
+            {
+                dir = "~/neovim_plugins/neorg-zettelkasten/",
+            },
+        },
+        -- run = ":Neorg sync-parsers",
+    },
+    {
+        "rktjmp/paperplanes.nvim",
+        cmd = { "PP" },
+        config = function()
+            require("omega.modules.misc.paperplanes").configs["paperplanes.nvim"]()
+        end,
+    },
+    {
+        "kylechui/nvim-surround",
+        keys = { "ys", "ds", "cs" },
+        init = function()
+            vim.keymap.set("v", "S", function()
+                require("lazy").load("nvim-surround")
+                require("nvim-surround").visual_surround()
+            end, {})
+        end,
+        config = function()
+            require("omega.modules.misc.surround").configs["nvim-surround"]()
+        end,
+    },
+    {
+        "nvim-telescope/telescope.nvim",
+        config = function()
+            require("omega.modules.misc.telescope.configs")["telescope.nvim"]()
+            vim.api.nvim_create_user_command("Telescope", function(opts)
+                require("telescope.command").load_command(unpack(opts.fargs))
+            end, {
+                nargs = "*",
+                complete = function(_, line)
+                    local builtin_list = vim.tbl_keys(require("telescope.builtin"))
+                    local extensions_list = vim.tbl_keys(require("telescope._extensions").manager)
+
+                    local l = vim.split(line, "%s+")
+                    local n = #l - 2
+
+                    if n == 0 then
+                        return vim.tbl_filter(function(val)
+                            return vim.startswith(val, l[2])
+                        end, vim.tbl_extend(
+                            "force",
+                            builtin_list,
+                            extensions_list
+                        ))
+                    end
+
+                    if n == 1 then
+                        local is_extension = vim.tbl_filter(function(val)
+                            return val == l[2]
+                        end, extensions_list)
+
+                        if #is_extension > 0 then
+                            local extensions_subcommand_dict =
+                                require("telescope.command").get_extensions_subcommand()
+                            return vim.tbl_filter(function(val)
+                                return vim.startswith(val, l[3])
+                            end, extensions_subcommand_dict[l[2]])
+                        end
+                    end
+
+                    local options_list = vim.tbl_keys(require("telescope.config").values)
+                    return vim.tbl_filter(function(val)
+                        return vim.startswith(val, l[#l])
+                    end, options_list)
                 end,
-                after = "nvim-treesitter",
+            })
+        end,
+        cmd = { "Telescope" },
+        -- module = {
+        --     "telescope",
+        --     "omega.modules.misc.telescope",
+        -- },
+        dependencies = {
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make",
+            },
+            {
+                "nvim-telescope/telescope-file-browser.nvim",
+            },
+            { dir = "~/neovim_plugins/lense.nvim" },
+        },
+    },
+    {
+        "akinsho/toggleterm.nvim",
+        keys = { "<leader>r", "<c-t>" },
+        config = function()
+            require("omega.modules.misc.toggleterm").configs["toggleterm.nvim"]()
+        end,
+    },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        init = function()
+            if not vim.tbl_contains({ "[packer]", "" }, vim.fn.expand("%")) then
+                require("lazy").load("nvim-treesitter")
+                require("lazy").load("indent-blankline.nvim")
+            else
+                vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
+                    callback = function()
+                        local file = vim.fn.expand("%")
+                        if not vim.tbl_contains({ "[packer]", "" }, file) then
+                            require("lazy").load("nvim-treesitter")
+                            require("lazy").load("indent-blankline.nvim")
+                        end
+                    end,
+                })
+            end
+        end,
+        cmd = {
+            "TSInstall",
+            "TSBufEnable",
+            "TSBufDisable",
+            "TSEnable",
+            "TSDisable",
+            "TSModuleInfo",
+        },
+
+        config = function()
+            require("omega.modules.misc.treesitter").configs["nvim-treesitter"]()
+        end,
+        dependencies = {
+            {
+                "nvim-treesitter/nvim-treesitter-refactor",
             },
             {
                 "nvim-treesitter/nvim-treesitter-textobjects",
-                opt = true,
-                setup = function()
-                    vim.defer_fn(function()
-                        require("packer").loader("nvim-treesitter-textobjects")
-                    end, 1)
-                end,
-                after = "nvim-treesitter",
             },
             {
                 "RRethy/nvim-treesitter-endwise",
-                opt = true,
             },
-            -- {
-            --     "p00f/nvim-ts-rainbow",
-            --     after = "nvim-treesitter",
-            -- },
             {
                 "nvim-treesitter/playground",
-                opt = true,
-                -- cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
             },
-            {
-                "~/neovim_plugins/nvim-treehopper/",
-                module = "tsht",
-            },
-            -- {
-            --     "ziontee113/query-secretary",
-            --     keys = { "<leader>qw" },
-            -- },
-        },
-        trouble = {
-            {
-                "folke/trouble.nvim",
-                module = "trouble",
-                cmd = {
-                    "Trouble",
-                    "TroubleClose",
-                    "TroubleToggle",
-                    "TroubleRefresh",
-                    "TodoTrouble",
-                },
-                config = function()
-                    require("omega.modules.misc.trouble.configs")["trouble.nvim"]()
-                end,
-            },
-        },
-        -- undotree = {
-        --     {
-        --         "mbbill/undotree",
-        --         cmd = "UndotreeToggle",
-        --     },
-        -- },
-        -- venn = {
-        --     {
-        --         "jbyuki/venn.nvim",
-        --         cmd = { "VBox", "VBoxH", "VBoxD", "VBoxHO", "VBoxDO" },
-        --     },
-        -- },
-        -- "windows",
-    },
-    refactoring = {
-        ssr = {
-            { "cshuaimin/ssr.nvim", module = "ssr" },
         },
     },
-    -- games = {
-    --     cellular_automation = {
-    --         {
-    --             "eandrju/cellular-automaton.nvim",
-    --             cmd = "CellularAutomaton",
-    --         },
-    --     },
-    --     vimbegood = {
-    --         {
-    --             "~/neovim_plugins/vim-be-good",
-    --             cmd = "VimBeGood",
-    --             config = function()
-    --                 require("vim-be-good").setup()
-    --             end,
-    --         },
-    --     },
-    --     wordle = {
-    --         { "n-shift/wordle.nvim", cmd = "Wordle" },
-    --     },
-    -- },
-    standalone = {
-        { "elihunter173/dirbuf.nvim", cmd = "Dirbuf" },
-        -- {
-        --     "seandewar/killersheep.nvim",
-        --     config = function()
-        --         require("killersheep").setup({})
-        --     end,
-        -- },
-        -- {
-        --     "brymer-meneses/grammar-guard.nvim",
-        --     ft = { "tex" },
-        --     config = function()
-        --         require("grammar-guard").init()
-        --         require("lspconfig").grammar_guard.setup({
-        --             cmd = { vim.fn.expand("~").."/ltex-ls-15.2.0/bin/ltex-ls" },
-        --             settings = {
-        --                 ltex = {
-        --                     enabled = { "latex", "tex", "bib", "markdown" },
-        --                     language = "de-CH",
-        --                     diagnosticSeverity = "information",
-        --                     -- setenceCacheSize = 2000,
-        --                     -- additionalRules = {
-        --                     --     enablePickyRules = true,
-        --                     --     motherTongue = "en",
-        --                     -- },
-        --                     -- trace = { server = "verbose" },
-        --                     -- dictionary = {},
-        --                     -- disabledRules = {},
-        --                     -- hiddenFalsePositives = {},
-        --                 },
-        --             },
-        --         })
-        --     end,
-        --     requires = {
-        --         { "williamboman/nvim-lsp-installer", after = "grammar-guard.nvim" },
-        --     },
-        -- },
+    {
+        dir = "~/neovim_plugins/nvim-treehopper/",
     },
-}
-function modules.setup()
-    local packer = require("packer")
-    packer.init({
-        compile_path = vim.fn.stdpath("config") .. "/plugin/packer_compiled.lua",
-        git = {
-            clone_timeout = 300,
-            subcommands = {
-                -- Prevent packer from downloading all branches metadata to reduce cloning cost
-                -- for heavy size plugins like plenary (removed the '--no-single-branch' git flag)
-                install = "clone --depth %i --progress",
+    {
+        "folke/trouble.nvim",
+        cmd = {
+            "Trouble",
+            "TroubleClose",
+            "TroubleToggle",
+            "TroubleRefresh",
+            "TodoTrouble",
+        },
+        config = function()
+            require("omega.modules.misc.trouble.configs")["trouble.nvim"]()
+        end,
+    },
+    { "cshuaimin/ssr.nvim" },
+    { "elihunter173/dirbuf.nvim", cmd = "Dirbuf" },
+}, {
+    defaults = {
+        lazy = true,
+    },
+    dev = {
+        path = "~/neovim_plugins",
+        patterns = { "max397574" },
+    },
+    performance = {
+        rtp = {
+            paths = {
+                vim.fn.expand("~") .. "/.config/nvim",
+            },
+            disabled_plugins = {
+                "loaded_python3_provider",
+                "python_provider",
+                "node_provider",
+                "ruby_provider",
+                "perl_provider",
+                "2html_plugin",
+                "getscript",
+                "getscriptPlugin",
+                "gzip",
+                "tar",
+                "tarPlugin",
+                "rrhelper",
+                "vimball",
+                "vimballPlugin",
+                "zip",
+                "zipPlugin",
+                "tutor",
+                "rplugin",
+                "logiPat",
+                "netrwSettings",
+                "netrwFileHandlers",
+                "syntax",
+                "synmenu",
+                "optwin",
+                "compiler",
+                "bugreport",
+                "ftplugin",
+                "load_ftplugin",
+                "indent_on",
+                "netrwPlugin",
+                "tohtml",
+                "man"
             },
         },
-        max_jobs = 10,
-        display = {
-            done_sym = "",
-            error_syn = "×",
-            open_fn = function()
-                return require("packer.util").float({
-                    border = require("omega.utils").border(),
-                })
-            end,
-            keybindings = {
-                toggle_info = "<TAB>",
-            },
-        },
-        profile = {
-            enable = true,
-        },
-        snapshot = "stable",
-    })
-
-    packer.reset()
-end
-
-function modules.load()
-    local use = require("packer").use
-    for sec, sec_modules in pairs(module_sections) do
-        if sec == "standalone" then
-            for _, mod in ipairs(sec_modules) do
-                use(mod)
-            end
-        else
-            for _, module in pairs(sec_modules) do
-                for _, mod in ipairs(module) do
-                    use(mod)
-                end
-            end
-        end
-    end
-end
+    },
+})
 
 return modules

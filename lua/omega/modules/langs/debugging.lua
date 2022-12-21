@@ -1,26 +1,6 @@
 ---@type OmegaModule
 local debugging = {}
 
-debugging.plugins = {
-    ["nvim-dap"] = {
-        "mfussenegger/nvim-dap",
-        opt = true,
-        module = "dap",
-    },
-    ["nvim-dap-ui"] = {
-        "rcarriga/nvim-dap-ui",
-        opt = true,
-    },
-    ["nvim-dap-virtual-text"] = {
-        "theHamsta/nvim-dap-virtual-text",
-        after = "nvim-dap",
-    },
-    ["one-small-step-for-vimkind"] = {
-        "jbyuki/one-small-step-for-vimkind",
-        after = "nvim-dap",
-    },
-}
-
 debugging.configs = {
     ["nvim-dap"] = function()
         vim.fn.sign_define(
@@ -31,7 +11,7 @@ debugging.configs = {
             "DapStopped",
             { text = "⧐", texthl = "TSString", linehl = "", numhl = "" }
         )
-        require("packer").loader("nvim-dap-ui")
+        require("lazy").load("nvim-dap-ui")
         local dap = require("dap")
         dap.adapters.lldb = {
             type = "executable",
