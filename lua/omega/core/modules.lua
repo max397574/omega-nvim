@@ -50,11 +50,7 @@ require("lazy").setup({
     },
     {
         dir = "~/neovim_plugins/which-key.nvim",
-        init = function()
-            vim.defer_fn(function()
-                require("lazy").load("which-key.nvim")
-            end, 0)
-        end,
+        event = "VeryLazy",
         config = function()
             require("omega.modules.mappings.which_key").configs["which-key.nvim"]()
             require("omega.core.mappings")
@@ -192,8 +188,13 @@ require("lazy").setup({
     {
         "ruifm/gitlinker.nvim",
         keys = { "<leader>gy" },
+        init = function()
+            vim.keymap.set("x", "<leader>gy", function()
+                require("gitlinker").get_buf_range_url("v")
+            end)
+        end,
         config = function()
-            require("gitlinker").setup()
+            require("gitlinker").setup({ mappings = nil })
         end,
     },
     {
@@ -477,7 +478,7 @@ require("lazy").setup({
                 "indent_on",
                 "netrwPlugin",
                 "tohtml",
-                "man"
+                "man",
             },
         },
     },

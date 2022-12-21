@@ -471,12 +471,12 @@ local diagnostics = {
 local lsp_progress = {
     flexible = priorities.lsp,
     condition = function()
-        -- if not omega.lsp_active then
-        --     return false
-        -- end
-        if #vim.lsp.get_active_clients() == 0 then
+        if not omega.lsp_active then
             return false
         end
+        -- if #vim.lsp.get_active_clients() == 0 then
+        --     return false
+        -- end
         return true
     end,
     hl = { fg = colors.blue },

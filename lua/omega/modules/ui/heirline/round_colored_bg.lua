@@ -451,7 +451,12 @@ local round_progress = {
 
 local diagnostics = {
 
-    condition = conditions.has_diagnostics,
+    condition = function()
+        if not omega.lsp_active then
+            return false
+        end
+        return conditions.has_diagnostics()
+    end,
 
     static = {
         error_icon = " ",
