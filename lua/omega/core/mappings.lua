@@ -61,7 +61,7 @@ wk.register({
         O = {
             function()
                 local lines = {}
-                for i = 1, math.max(vim.v.count, 1) do
+                for _ = 1, math.max(vim.v.count, 1) do
                     table.insert(lines, "")
                 end
                 vim.api.nvim_buf_set_lines(
@@ -569,6 +569,48 @@ wk.register({
             end,
             "Show",
         },
+        p = {
+            function()
+                require("lazy").profile()
+            end,
+            "Profile",
+        },
+        i = {
+            function()
+                require("lazy").install()
+            end,
+            "Install",
+        },
+        u = {
+            function()
+                require("lazy").update()
+            end,
+            "Update",
+        },
+        l = {
+            function()
+                require("lazy").log()
+            end,
+            "Log",
+        },
+        d = {
+            function()
+                require("lazy").debug()
+            end,
+            "Debug",
+        },
+        h = {
+            function()
+                require("lazy").help()
+            end,
+            "Help",
+        },
+    },
+    l = {
+        function()
+            vim.cmd.Lazy()
+        end,
+        " Lazy",
     },
 }, {
     prefix = "<leader>",

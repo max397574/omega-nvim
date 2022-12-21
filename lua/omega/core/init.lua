@@ -7,8 +7,10 @@ require("omega.core.autocommands")
 -- require("omega.colors").init(require("omega.config").values.colorscheme)
 
 require("omega.core.modules")
-vim.defer_fn(function()
-    vim.defer_fn(function()
+vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
         require("omega.core.commands")
-    end, 1)
-end, 0)
+        require("omega.core.mappings")
+    end,
+})
