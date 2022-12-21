@@ -600,7 +600,11 @@ local word_count = {
 }
 
 local inactive_statusline = {
-    condition = not conditions.is_active,
+    condition = function()
+        local winid = vim.api.nvim_get_current_win()
+        local curwin = tonumber(vim.g.actual_curwin)
+        return winid ~= curwin
+    end,
     current_dir,
     file_name_block,
     align,

@@ -1,3 +1,4 @@
+---@diagnostic disable: assign-type-mismatch
 require("lazy").setup({
     {
         "lukas-reineke/indent-blankline.nvim",
@@ -36,11 +37,7 @@ require("lazy").setup({
     },
     {
         "folke/noice.nvim",
-        init = function()
-            vim.defer_fn(function()
-                require("lazy").load("noice.nvim")
-            end, 0)
-        end,
+        event = "VeryLazy",
         config = function()
             require("omega.modules.ui.noice").configs["noice.nvim"]()
         end,
@@ -84,12 +81,7 @@ require("lazy").setup({
                 end,
             },
         },
-        init = function()
-            vim.defer_fn(function()
-                require("lazy").load("nvim-lspconfig")
-                omega.lsp_active = true
-            end, 0)
-        end,
+        event = "BufReadPre",
     },
 
     {
@@ -129,7 +121,7 @@ require("lazy").setup({
     },
     {
         dir = "~/neovim_plugins/nvim-cmp",
-        event = { "InsertEnter", "CmdLineEnter" },
+        event = { "InsertEnter" },
         config = function()
             require("omega.modules.completion.cmp").configs["nvim-cmp"]()
         end,
@@ -248,14 +240,15 @@ require("lazy").setup({
     },
     {
         "ggandor/lightspeed.nvim",
-        keys = { "S", "s", "f", "F" },
-        init = function()
-            vim.g.lightspeed_no_default_keymaps = true
-            vim.keymap.set("n", "s", "<plug>Lightspeed_s")
-            vim.keymap.set("n", "S", "<plug>Lightspeed_S")
-            vim.keymap.set("n", "f", "<plug>Lightspeed_f")
-            vim.keymap.set("n", "F", "<plug>Lightspeed_F")
-        end,
+        -- keys = { "S", "s", "f", "F" },
+        -- init = function()
+        --     vim.g.lightspeed_no_default_keymaps = true
+        --     vim.keymap.set("n", "s", "<plug>Lightspeed_s")
+        --     vim.keymap.set("n", "S", "<plug>Lightspeed_S")
+        --     vim.keymap.set("n", "f", "<plug>Lightspeed_f")
+        --     vim.keymap.set("n", "F", "<plug>Lightspeed_F")
+        -- end,
+        event = "VeryLazy",
         config = function()
             require("omega.modules.misc.lightspeed").configs["lightspeed.nvim"]()
         end,
@@ -270,13 +263,6 @@ require("lazy").setup({
     {
         "nvim-neorg/neorg",
         ft = "norg",
-        init = function()
-            vim.filetype.add({
-                extension = {
-                    norg = "norg",
-                },
-            })
-        end,
         config = function()
             require("omega.modules.misc.neorg").configs["neorg"]()
         end,
@@ -416,19 +402,9 @@ require("lazy").setup({
         dependencies = {
             {
                 "nvim-treesitter/nvim-treesitter-refactor",
-                init = function()
-                    vim.defer_fn(function()
-                        require("lazy").load("nvim-treesitter-refactor")
-                    end, 1)
-                end,
             },
             {
                 "nvim-treesitter/nvim-treesitter-textobjects",
-                init = function()
-                    vim.defer_fn(function()
-                        require("lazy").load("nvim-treesitter-textobjects")
-                    end, 1)
-                end,
             },
             {
                 "RRethy/nvim-treesitter-endwise",
@@ -500,6 +476,8 @@ require("lazy").setup({
                 "load_ftplugin",
                 "indent_on",
                 "netrwPlugin",
+                "tohtml",
+                "man"
             },
         },
     },

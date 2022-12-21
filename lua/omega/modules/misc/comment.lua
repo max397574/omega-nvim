@@ -31,6 +31,4 @@ comment.configs = {
     end,
 }
 
-comment.keybindings = function() end
-
 return comment

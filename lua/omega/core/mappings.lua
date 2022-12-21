@@ -137,7 +137,6 @@ wk.register({
             "Copy to Clipboard",
         },
     },
-
 }, {
     prefix = "<leader>",
     mode = "n",
@@ -555,6 +554,21 @@ wk.register({
             "Previous File",
         },
         t = { "<cmd>Telescope harpoon marks<CR>", "Telescope" },
+    },
+    L = {
+        name = " Lazy",
+        s = {
+            function()
+                require("lazy").sync()
+            end,
+            "Sync",
+        },
+        S = {
+            function()
+                require("lazy").show()
+            end,
+            "Show",
+        },
     },
 }, {
     prefix = "<leader>",
