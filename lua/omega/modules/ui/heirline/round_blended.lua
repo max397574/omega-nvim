@@ -75,9 +75,7 @@ local vim_mode = {
     {
         mode_icon,
         {
-            provider = function()
-                return ""
-            end,
+            provider = "",
             hl = function(self)
                 local mode = self.mode:sub(1, 1)
                 return {
@@ -102,9 +100,7 @@ local work_dir_icon = {
 }
 
 local work_dir1 = {
-    provider = function()
-        return ""
-    end,
+    provider = "",
     hl = {
         fg = color_utils.blend_colors(colors.green, background_color, 0.15),
         bg = colors.black,
@@ -112,9 +108,7 @@ local work_dir1 = {
 }
 local work_dir2 = {
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = {
             fg = color_utils.blend_colors(colors.green, background_color, 0.15),
             bg = background_color,
@@ -128,9 +122,7 @@ local work_dir2 = {
     },
 }
 local work_dir3 = {
-    provider = function()
-        return ""
-    end,
+    provider = "",
     hl = {
         bg = colors.black,
         fg = background_color,
@@ -281,9 +273,7 @@ local file_name_block = {
     end,
 
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = {
             fg = color_utils.blend_colors(colors.blue, background_color, 0.15),
             bg = colors.black,
@@ -291,9 +281,7 @@ local file_name_block = {
     },
     file_icon,
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = {
             fg = color_utils.blend_colors(colors.blue, background_color, 0.15),
             bg = background_color,
@@ -309,9 +297,7 @@ local file_name_block = {
     file_name,
     file_flags,
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = {
             fg = background_color,
             bg = colors.black,
@@ -392,9 +378,7 @@ end
 
 local round_progress = {
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = function(_)
             return {
                 fg = color_utils.blend_colors(colors.purple, background_color, 0.15),
@@ -403,18 +387,14 @@ local round_progress = {
         end,
     },
     {
-        provider = function()
-            return "%3(%P%)"
-        end,
+        provider = "%3(%P%)",
         hl = {
             bg = color_utils.blend_colors(colors.purple, background_color, 0.15),
             fg = colors.purple,
         },
     },
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = function(_)
             return {
                 fg = color_utils.blend_colors(colors.purple, background_color, 0.15),
@@ -431,9 +411,7 @@ local round_progress = {
         end,
     },
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = function(_)
             return { fg = background_color, bg = "none" }
         end,
@@ -534,43 +512,33 @@ local lsp_progress = {
 
 local coords = {
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = {
             fg = color_utils.blend_colors(colors.orange, background_color, 0.15),
         },
     },
     {
-        provider = function()
-            return "  "
-        end,
+        provider = "  ",
         hl = {
             fg = colors.orange,
             bg = color_utils.blend_colors(colors.orange, background_color, 0.15),
         },
     },
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = {
             fg = color_utils.blend_colors(colors.orange, background_color, 0.15),
             bg = background_color,
         },
     },
     {
-        provider = function()
-            return "%4(%l%):%2c"
-        end,
+        provider = "%4(%l%):%2c",
         hl = function()
             return { fg = colors.orange, bg = background_color }
         end,
     },
     {
-        provider = function()
-            return ""
-        end,
+        provider = "",
         hl = { fg = background_color },
     },
 }
@@ -611,15 +579,13 @@ local word_count = {
                 fg = mode_colors[mode] or colors.blue,
             }
         end,
-        condition = conditions.is_active(),
+        condition = conditions.is_active,
     },
     {
         init = function(self)
             self.mode = vim.fn.mode(1)
         end,
-        provider = function()
-            return "█"
-        end,
+        provider = "█",
         hl = function(self)
             local mode = self.mode:sub(1, 1)
             return {
@@ -634,9 +600,7 @@ local word_count = {
 }
 
 local inactive_statusline = {
-    condition = function()
-        return not conditions.is_active()
-    end,
+    condition = not conditions.is_active,
     current_dir,
     file_name_block,
     align,

@@ -36,7 +36,7 @@ _G._packer = setmetatable(_G._packer or {}, {
 
 require("omega.core.settings")
 require("omega.core.autocommands")
-require("omega.colors").init(require("omega.config").values.colorscheme)
+-- require("omega.colors").init(require("omega.config").values.colorscheme)
 
 vim.defer_fn(function()
     local wk_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/which-key.nvim"

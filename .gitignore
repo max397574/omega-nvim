@@ -1,4 +1,5 @@
 xd
+clean
 .luarc.json
 test*
 /.DS_Store
@@ -39,3 +40,4 @@ startup
 nvchad_lua
 nvchad_startup
 omega_lua
+compile_options.lua

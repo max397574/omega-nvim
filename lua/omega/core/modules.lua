@@ -41,7 +41,7 @@ local module_sections = {
                         callback = function()
                             local count = #vim.fn.getbufinfo({ buflisted = 1 })
                             if count >= 2 then
-                                require"packer".loader("bufferline.nvim")
+                                require("packer").loader("bufferline.nvim")
                             end
                         end,
                     })
@@ -422,15 +422,15 @@ local module_sections = {
                 end,
             },
         },
-        harpoon = {
-            {
-                "ThePrimeagen/harpoon",
-                keys = { "<leader>H" },
-                config = function()
-                    require("telescope").load_extension("harpoon")
-                end,
-            },
-        },
+        -- harpoon = {
+        --     {
+        --         "ThePrimeagen/harpoon",
+        --         keys = { "<leader>H" },
+        --         config = function()
+        --             require("telescope").load_extension("harpoon")
+        --         end,
+        --     },
+        -- },
         help_files = {
             {
                 "nanotee/luv-vimdocs",
@@ -580,31 +580,73 @@ local module_sections = {
                 "nvim-telescope/telescope.nvim",
                 config = function()
                     require("omega.modules.misc.telescope.configs")["telescope.nvim"]()
+                    vim.api.nvim_create_user_command("Telescope", function(opts)
+                        require("telescope.command").load_command(unpack(opts.fargs))
+                    end, {
+                        nargs = "*",
+                        complete = function(_, line)
+                            local builtin_list = vim.tbl_keys(require("telescope.builtin"))
+                            local extensions_list =
+                                vim.tbl_keys(require("telescope._extensions").manager)
+
+                            local l = vim.split(line, "%s+")
+                            local n = #l - 2
+
+                            if n == 0 then
+                                return vim.tbl_filter(function(val)
+                                    return vim.startswith(val, l[2])
+                                end, vim.tbl_extend(
+                                    "force",
+                                    builtin_list,
+                                    extensions_list
+                                ))
+                            end
+
+                            if n == 1 then
+                                local is_extension = vim.tbl_filter(function(val)
+                                    return val == l[2]
+                                end, extensions_list)
+
+                                if #is_extension > 0 then
+                                    local extensions_subcommand_dict =
+                                        require("telescope.command").get_extensions_subcommand()
+                                    return vim.tbl_filter(function(val)
+                                        return vim.startswith(val, l[3])
+                                    end, extensions_subcommand_dict[l[2]])
+                                end
+                            end
+
+                            local options_list = vim.tbl_keys(require("telescope.config").values)
+                            return vim.tbl_filter(function(val)
+                                return vim.startswith(val, l[#l])
+                            end, options_list)
+                        end,
+                    })
                 end,
                 cmd = { "Telescope" },
-                setup = function()
-                    -- vim.defer_fn(function()
-                    --     vim.cmd.PackerLoad("telescope.nvim")
-                    -- end, 0)
-                end,
+                -- setup = function()
+                -- vim.defer_fn(function()
+                --     vim.cmd.PackerLoad("telescope.nvim")
+                -- end, 0)
+                -- end,
                 module = {
                     "telescope",
                     "omega.modules.misc.telescope",
                 },
             },
-            {
-                "xiyaowong/telescope-emoji.nvim",
-                config = function()
-                    require("omega.modules.misc.telescope.configs")["telescope-emoji.nvim"]()
-                end,
-                after = "telescope.nvim",
-            },
+            -- {
+            --     "xiyaowong/telescope-emoji.nvim",
+            --     config = function()
+            --         require("omega.modules.misc.telescope.configs")["telescope-emoji.nvim"]()
+            --     end,
+            --     after = "telescope.nvim",
+            -- },
             {
                 "nvim-telescope/telescope-fzf-native.nvim",
                 run = "make",
                 after = "telescope.nvim",
             },
-            { "nvim-telescope/telescope-symbols.nvim", after = "telescope.nvim" },
+            -- { "nvim-telescope/telescope-symbols.nvim", after = "telescope.nvim" },
             {
                 "nvim-telescope/telescope-file-browser.nvim",
                 after = "telescope.nvim",
@@ -626,15 +668,15 @@ local module_sections = {
             -- },
             { "~/neovim_plugins/lense.nvim", after = "telescope.nvim" },
         },
-        todo = {
-            {
-                "folke/todo-comments.nvim",
-                cmd = { "TodoTrouble", "TodoTelescope", "TodoQuickFix", "TodoLocList" },
-                config = function()
-                    require("omega.modules.misc.todo").configs["todo-comments.nvim"]()
-                end,
-            },
-        },
+        -- todo = {
+        --     {
+        --         "folke/todo-comments.nvim",
+        --         cmd = { "TodoTrouble", "TodoTelescope", "TodoQuickFix", "TodoLocList" },
+        --         config = function()
+        --             require("omega.modules.misc.todo").configs["todo-comments.nvim"]()
+        --         end,
+        --     },
+        -- },
         toggleterm = {
             {
                 "akinsho/toggleterm.nvim",
@@ -704,10 +746,10 @@ local module_sections = {
                 "RRethy/nvim-treesitter-endwise",
                 opt = true,
             },
-            {
-                "p00f/nvim-ts-rainbow",
-                after = "nvim-treesitter",
-            },
+            -- {
+            --     "p00f/nvim-ts-rainbow",
+            --     after = "nvim-treesitter",
+            -- },
             {
                 "nvim-treesitter/playground",
                 opt = true,
@@ -717,10 +759,10 @@ local module_sections = {
                 "~/neovim_plugins/nvim-treehopper/",
                 module = "tsht",
             },
-            {
-                "ziontee113/query-secretary",
-                keys = { "<leader>qw" },
-            },
+            -- {
+            --     "ziontee113/query-secretary",
+            --     keys = { "<leader>qw" },
+            -- },
         },
         trouble = {
             {
@@ -744,12 +786,12 @@ local module_sections = {
         --         cmd = "UndotreeToggle",
         --     },
         -- },
-        venn = {
-            {
-                "jbyuki/venn.nvim",
-                cmd = { "VBox", "VBoxH", "VBoxD", "VBoxHO", "VBoxDO" },
-            },
-        },
+        -- venn = {
+        --     {
+        --         "jbyuki/venn.nvim",
+        --         cmd = { "VBox", "VBoxH", "VBoxD", "VBoxHO", "VBoxDO" },
+        --     },
+        -- },
         -- "windows",
     },
     refactoring = {
@@ -757,28 +799,34 @@ local module_sections = {
             { "cshuaimin/ssr.nvim", module = "ssr" },
         },
     },
-    games = {
-        cellular_automation = {
-            {
-                "eandrju/cellular-automaton.nvim",
-                cmd = "CellularAutomaton",
-            },
-        },
-        vimbegood = {
-            {
-                "~/neovim_plugins/vim-be-good",
-                cmd = "VimBeGood",
-                config = function()
-                    require("vim-be-good").setup()
-                end,
-            },
-        },
-        wordle = {
-            { "n-shift/wordle.nvim", cmd = "Wordle" },
-        },
-    },
+    -- games = {
+    --     cellular_automation = {
+    --         {
+    --             "eandrju/cellular-automaton.nvim",
+    --             cmd = "CellularAutomaton",
+    --         },
+    --     },
+    --     vimbegood = {
+    --         {
+    --             "~/neovim_plugins/vim-be-good",
+    --             cmd = "VimBeGood",
+    --             config = function()
+    --                 require("vim-be-good").setup()
+    --             end,
+    --         },
+    --     },
+    --     wordle = {
+    --         { "n-shift/wordle.nvim", cmd = "Wordle" },
+    --     },
+    -- },
     standalone = {
         { "elihunter173/dirbuf.nvim", cmd = "Dirbuf" },
+        -- {
+        --     "seandewar/killersheep.nvim",
+        --     config = function()
+        --         require("killersheep").setup({})
+        --     end,
+        -- },
         -- {
         --     "brymer-meneses/grammar-guard.nvim",
         --     ft = { "tex" },
