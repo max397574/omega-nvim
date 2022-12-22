@@ -1,7 +1,7 @@
 local theme = require("omega.colors.base16").themes(vim.g.colors_name)
 local color_utils = require("omega.utils.colors")
 local colors = require("omega.colors").get()
-local config=require"omega.config".values
+local config = require("omega.config").values
 vim.g.terminal_color_4 = "#51afef"
 vim.g.terminal_color_12 = "#51afef"
 if config.cmp_theme == "border" then

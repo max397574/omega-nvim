@@ -23,7 +23,7 @@ local function filetypes()
 end
 
 add_cmd("Tmp", function(args)
-    require"lazy".load("nvim-lspconfig")
+    require("lazy").load("nvim-lspconfig")
     require("omega.extras").scratch_buf(args)
 end, {
     nargs = "?",
@@ -145,5 +145,4 @@ end, {
     nargs = "*",
 })
 
-add_cmd("CacheOmega",function()
-end,{})
+add_cmd("CacheOmega", function() end, {})

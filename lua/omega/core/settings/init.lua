@@ -11,7 +11,7 @@ opt.relativenumber = true
 opt.number = true
 opt.undofile = true
 opt.undodir = vim.fn.expand("~") .. "/.vim/undodir"
-    opt.foldlevel = 100
+opt.foldlevel = 100
 
 vim.defer_fn(function()
     opt.guicursor = "n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20"

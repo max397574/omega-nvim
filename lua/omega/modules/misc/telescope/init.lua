@@ -274,7 +274,7 @@ tele_mod.api = {
         require("telescope.builtin").current_buffer_fuzzy_find(opts)
     end,
     ["help_tags"] = function()
-                require("lazy").load({ plugins = { "luv-vimdocs" } })
+        require("lazy").load({ plugins = { "luv-vimdocs" } })
         local builtin = require("telescope.builtin")
         local opts = {
             prompt_title = "Help Tags",

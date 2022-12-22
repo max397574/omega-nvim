@@ -1,7 +1,7 @@
 local lsp_definitions = {}
 require("plenary.reload").reload_module("omega.modules.lsp")
 local ns = vim.api.nvim_create_namespace("lsp-definition")
-local config=require"omega.config".values
+local config = require("omega.config").values
 local extmarks = {}
 
 local function add_virtual_text(contents)

@@ -1,1 +1,1 @@
-require("omega.colors").init(require"omega.config".values.colorscheme)
+require("omega.colors").init(require("omega.config").values.colorscheme)

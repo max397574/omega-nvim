@@ -1,5 +1,5 @@
 local heirline_mod = {}
-local config=require"omega.config".values
+local config = require("omega.config").values
 
 heirline_mod.configs = {
     -- ["nvim-navic"] = function()

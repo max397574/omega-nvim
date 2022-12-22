@@ -52,7 +52,7 @@ ts_mod.configs = {
                 -- branch = "attached-modifiers",
             },
         }
-                require("lazy").load({ plugins = { "playground" } })
+        require("lazy").load({ plugins = { "playground" } })
 
         require("nvim-treesitter.configs").setup({
             ensure_installed = ts_parsers,
