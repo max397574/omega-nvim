@@ -85,7 +85,13 @@ return {
         "xiyaowong/nvim-colorizer.lua",
         cmd = { "ColorizerAttachToBuffer" },
         config = function()
-            require("omega.modules.misc.colorizer").configs["nvim-colorizer.lua"]()
+            require("colorizer").setup({
+                "*",
+            }, {
+                mode = "foreground",
+                hsl_fn = true,
+            })
+            vim.cmd.ColorizerAttachToBuffer()
         end,
     },
     {

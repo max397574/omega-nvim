@@ -42,6 +42,7 @@
   "playground": { "branch": "master", "commit": "3421bbbfec25a7c54ee041ffb9cb226b69b2b995" },
   "plenary.nvim": { "branch": "master", "commit": "4b7e52044bbb84242158d977a50c4cbcd85070c7" },
   "rust-tools.nvim": { "branch": "master", "commit": "99fd1238c6068d0637df30b6cee9a264334015e9" },
+  "sj.nvim": { "branch": "main", "commit": "2e06233c2076390d6f9dab0f166667e8703a59c6" },
   "ssr.nvim": { "branch": "main", "commit": "ce2ba65370c3e6ca2e84e652c9adfccb8611458e" },
   "telescope-file-browser.nvim": { "branch": "master", "commit": "cad567e11131a01f2934930c1efc8b1b09a0dc56" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "fab3e2212e206f4f8b3bbaa656e129443c9b802e" },
