@@ -15,7 +15,7 @@ require("lazy").setup({
                 callback = function()
                     local count = #vim.fn.getbufinfo({ buflisted = 1 })
                     if count >= 2 then
-                        require("lazy").load("bufferline.nvim")
+                        require("lazy").load({ plugins = { "bufferline.nvim" } })
                     end
                 end,
             })
@@ -206,7 +206,7 @@ require("lazy").setup({
                     local function onexit(code, _)
                         if code == 0 then
                             vim.schedule(function()
-                                require("lazy").load("gitsigns.nvim")
+                                require("lazy").load({ plugins = { "gitsigns.nvim" } })
                             end)
                         end
                     end
@@ -293,7 +293,7 @@ require("lazy").setup({
         keys = { "ys", "ds", "cs" },
         init = function()
             vim.keymap.set("v", "S", function()
-                require("lazy").load("nvim-surround")
+                require("lazy").load({ plugins = { "nvim-surround" } })
                 require("nvim-surround").visual_surround()
             end, {})
         end,
@@ -374,15 +374,15 @@ require("lazy").setup({
         "nvim-treesitter/nvim-treesitter",
         init = function()
             if not vim.tbl_contains({ "[packer]", "" }, vim.fn.expand("%")) then
-                require("lazy").load("nvim-treesitter")
-                require("lazy").load("indent-blankline.nvim")
+                require("lazy").load({ plugins = { "nvim-treesitter" } })
+                require("lazy").load({ plugins = { "indent-blankline.nvim" } })
             else
                 vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
                     callback = function()
                         local file = vim.fn.expand("%")
                         if not vim.tbl_contains({ "[packer]", "" }, file) then
-                            require("lazy").load("nvim-treesitter")
-                            require("lazy").load("indent-blankline.nvim")
+                            require("lazy").load({ plugins = { "nvim-treesitter" } })
+                            require("lazy").load({ plugins = { "indent-blankline.nvim" } })
                         end
                     end,
                 })

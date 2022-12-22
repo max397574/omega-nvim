@@ -11,7 +11,7 @@ neorg_mod.configs = {
         neorg.modules.load_module("external.zettelkasten", nil, {})
     end,
     ["neorg"] = function()
-        require("lazy").load("nabla.nvim")
+        require("lazy").load({ plugins = { "nabla.nvim" } })
         local neorg_callbacks = require("neorg.callbacks")
 
         require("neorg").setup({
@@ -289,9 +289,9 @@ neorg_mod.configs = {
                 noremap = true,
             })
         end)
-        require("lazy").load("neorg-context")
-        require("lazy").load("neorg-kanban")
-        require("lazy").load("neorg-zettelkasten")
+        require("lazy").load({ plugins = { "neorg-context" } })
+        require("lazy").load({ plugins = { "neorg-kanban" } })
+        require("lazy").load({ plugins = { "neorg-zettelkasten" } })
         neorg.modules.load_module("external.context", nil, {})
         neorg.modules.load_module("external.kanban", nil, {})
         neorg.modules.load_module("external.zettelkasten", nil, {})

@@ -143,8 +143,7 @@ cmp_mod.configs = {
             -- end
             return word
         end
-        require("lazy").load("nvim-autopairs")
-        require("lazy").load("LuaSnip")
+        require("lazy").load({ plugins = { "LuaSnip" } })
         local cmp_autopairs = require("nvim-autopairs.completion.cmp")
         cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
 

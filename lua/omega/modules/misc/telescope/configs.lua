@@ -4,14 +4,14 @@ local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
 local previewers = require("telescope.previewers")
 local conf = require("telescope.config").values
-local config=require"omega.config".values
+local config = require("omega.config").values
 
 local configs = {
     ["telescope.nvim"] = function()
         -- vim.defer_fn(function()
         --     vim.cmd.PackerLoad("neorg")
         -- end, 1)
-        require("lazy").load("lense.nvim")
+        require("lazy").load({ plugins = { "lense.nvim" } })
         --- Pick any picker and use `cwd` as `cwd`
         ---@param cwd string The `cwd` to use
         local function pick_pickers(cwd)
@@ -113,7 +113,7 @@ local configs = {
             pick_pickers(dir)
         end
 
-        require"lazy".load("telescope-fzf-native.nvim")
+        require("lazy").load({ plugins = { "telescope-fzf-native.nvim" } })
         local action_layout = require("telescope.actions.layout")
         local actions_layout = require("telescope.actions.layout")
         -- local fb_actions = require("telescope._extensions.file_browser.actions")

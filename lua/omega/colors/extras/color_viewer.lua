@@ -49,7 +49,7 @@ function color_viewer.view_colors()
     vim.api.nvim_win_set_option(win, "winblend", 0)
     vim.api.nvim_buf_set_option(buf, "modifiable", false)
     vim.api.nvim_buf_add_highlight(buf, ns, "Special", 0, 0, -1)
-    require("lazy").load("nvim-colorizer.lua")
+    require("lazy").load({ plugins = { "nvim-colorizer.lua" } })
     vim.cmd([[ColorizerAttachToBuffer]])
 end
 

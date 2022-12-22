@@ -11,7 +11,6 @@ debugging.configs = {
             "DapStopped",
             { text = "⧐", texthl = "TSString", linehl = "", numhl = "" }
         )
-        require("lazy").load("nvim-dap-ui")
         local dap = require("dap")
         dap.adapters.lldb = {
             type = "executable",

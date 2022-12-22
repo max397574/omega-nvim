@@ -3,8 +3,8 @@ local todo = {}
 
 todo.configs = {
     ["todo-comments.nvim"] = function()
-        require("lazy").load("telescope.nvim")
-        require("lazy").load("trouble.nvim")
+        require("lazy").load({ plugins = { "telescope.nvim" } })
+        require("lazy").load({ plugins = { "trouble.nvim" } })
         require("todo-comments").setup()
     end,
 }

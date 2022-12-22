@@ -29,7 +29,7 @@ ts_mod.configs = {
     ["nvim-treesitter"] = function()
         vim.api.nvim_create_autocmd("InsertEnter", {
             callback = function()
-                require("lazy").load("nvim-treesitter-endwise")
+                require("lazy").load({ plugins = { "nvim-treesitter-endwise" } })
             end,
         })
         local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
@@ -52,7 +52,7 @@ ts_mod.configs = {
                 -- branch = "attached-modifiers",
             },
         }
-        require"lazy".load("playground")
+                require("lazy").load({ plugins = { "playground" } })
 
         require("nvim-treesitter.configs").setup({
             ensure_installed = ts_parsers,

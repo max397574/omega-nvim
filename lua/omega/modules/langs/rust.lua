@@ -2,7 +2,7 @@ local rust_lsp = {}
 
 rust_lsp.configs = {
     ["rust-tools.nvim"] = function()
-        require("lazy").load("nvim-dap")
+        require("lazy").load({ plugins = { "nvim-dap" } })
         local function on_attach(client, bufnr)
             require("omega.modules.lsp.on_attach").setup(client, bufnr)
         end
