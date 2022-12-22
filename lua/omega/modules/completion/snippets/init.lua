@@ -97,11 +97,11 @@ snippets_mod.configs = {
         require("omega.modules.completion.snippets.tex")
         require("omega.modules.completion.snippets.tex_circuits")
         require("omega.modules.completion.snippets.tex_math")
-        require("luasnip.loaders.from_vscode").load({
-            paths = {
-                "~/.local/share/nvim/site/pack/packer/opt/friendly-snippets",
-            },
-        })
+        -- require("luasnip.loaders.from_vscode").load({
+        --     paths = {
+        --         "~/.local/share/nvim/site/pack/packer/opt/friendly-snippets",
+        --     },
+        -- })
         vim.keymap.set("i", "<c-i>", function()
             require("luasnip.extras.select_choice")()
         end, {})

@@ -49,7 +49,7 @@ require("lazy").setup({
         "MunifTanjim/nui.nvim",
     },
     {
-        dir = "~/neovim_plugins/which-key.nvim",
+        "max397574/which-key.nvim",
         event = "VeryLazy",
         config = function()
             require("omega.modules.mappings.which_key").configs["which-key.nvim"]()
@@ -116,7 +116,7 @@ require("lazy").setup({
         end,
     },
     {
-        dir = "~/neovim_plugins/nvim-cmp",
+        "max397574/nvim-cmp",
         event = { "InsertEnter" },
         config = function()
             require("omega.modules.completion.cmp").configs["nvim-cmp"]()
@@ -147,19 +147,6 @@ require("lazy").setup({
         config = function()
             require("omega.modules.completion.snippets").configs["LuaSnip"]()
         end,
-        dependencies = {
-            {
-                dir = "~/neovim_plugins/friendly-snippets",
-                event = "InsertEnter",
-            },
-        },
-    },
-    {
-        dir = "~/neovim_plugins/neocomplete.nvim/",
-        event = "InsertEnter",
-        config = function()
-            require("omega.modules.completion.neocomplete").configs["neocomplete.nvim"]()
-        end,
     },
     {
         "xiyaowong/nvim-colorizer.lua",
@@ -167,9 +154,6 @@ require("lazy").setup({
         config = function()
             require("omega.modules.misc.colorizer").configs["nvim-colorizer.lua"]()
         end,
-    },
-    {
-        dir = "~/neovim_plugins/colorscheme_switcher/",
     },
     {
         "numToStr/Comment.nvim",
@@ -268,15 +252,15 @@ require("lazy").setup({
             require("omega.modules.misc.neorg").configs["neorg"]()
         end,
         dependencies = {
-            { dir = "~/neovim_plugins/neorg-telescope/" },
+            { "max397574/neorg-telescope" },
             {
-                dir = "~/neovim_plugins/neorg-context/",
+                "max397574/neorg-context",
             },
             {
-                dir = "~/neovim_plugins/neorg-kanban/",
+                "max397574/neorg-kanban",
             },
             {
-                dir = "~/neovim_plugins/neorg-zettelkasten/",
+                "max397574/neorg-zettelkasten",
             },
         },
         -- run = ":Neorg sync-parsers",
@@ -360,7 +344,7 @@ require("lazy").setup({
             {
                 "nvim-telescope/telescope-file-browser.nvim",
             },
-            { dir = "~/neovim_plugins/lense.nvim" },
+            { "max397574/lense.nvim" },
         },
     },
     {
@@ -416,7 +400,7 @@ require("lazy").setup({
         },
     },
     {
-        dir = "~/neovim_plugins/nvim-treehopper/",
+        "max397574/nvim-treehopper",
     },
     {
         "folke/trouble.nvim",

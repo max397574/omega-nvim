@@ -1,4 +1,8 @@
-loadfile(vim.fn.stdpath("cache") .. "/omega/highlights")()
+if loadfile(vim.fn.stdpath("cache") .. "/omega/highlights") then
+    loadfile(vim.fn.stdpath("cache") .. "/omega/highlights")()
+else
+    require("omega.colors").compile_theme()
+end
 
 require("omega.core.settings")
 
