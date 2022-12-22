@@ -292,12 +292,10 @@ aucmd("InsertCharPre", {
 
 aucmd("BufWritePre", {
     callback = function()
-        local start = os.clock()
         local dir = vim.fn.expand("<afile>:p:h")
         if vim.fn.isdirectory(dir) == 0 then
             vim.fn.mkdir(dir, "p")
         end
-        print(os.clock() - start .. "s")
     end,
 })
 

@@ -1,6 +1,9 @@
-local configs = {}
+local formatter = {
+    "mhartington/formatter.nvim",
+    cmd = { "FormatWrite", "Format", "FormatLock" },
+}
 
-configs["formatter.nvim"] = function()
+formatter.config = function()
     require("formatter").setup({
         filetype = {
             lua = {
@@ -63,4 +66,4 @@ configs["formatter.nvim"] = function()
     })
 end
 
-return configs
+return formatter

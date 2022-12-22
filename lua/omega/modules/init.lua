@@ -8,14 +8,6 @@ return {
     {
         "MunifTanjim/nui.nvim",
     },
-    {
-        dir = "~/neovim_plugins/which-key.nvim",
-        event = "VeryLazy",
-        config = function()
-            require("omega.modules.mappings.which_key").configs["which-key.nvim"]()
-            require("omega.core.mappings")
-        end,
-    },
     { "nvim-lua/plenary.nvim" },
     {
         "neovim/nvim-lspconfig",
@@ -82,10 +74,11 @@ return {
         },
     },
     {
+        enabled = false,
         dir = "~/neovim_plugins/neocomplete.nvim/",
         event = "InsertEnter",
         config = function()
-            require("omega.modules.completion.neocomplete").configs["neocomplete.nvim"]()
+            require("neocomplete").setup()
         end,
     },
     {
@@ -97,13 +90,6 @@ return {
     },
     {
         dir = "~/neovim_plugins/colorscheme_switcher/",
-    },
-    {
-        "mhartington/formatter.nvim",
-        cmd = { "FormatWrite", "Format", "FormatLock" },
-        config = function()
-            require("omega.modules.misc.formatter.configs")["formatter.nvim"]()
-        end,
     },
     {
         "ruifm/gitlinker.nvim",
@@ -123,13 +109,6 @@ return {
         cmd = { "Telescope" },
     },
     {
-        "Krafi2/jeskape.nvim",
-        event = "InsertEnter",
-        config = function()
-            require("omega.modules.misc.insert_utils").configs["jeskape.nvim"]()
-        end,
-    },
-    {
         "jbyuki/nabla.nvim",
         ft = {
             "tex",
@@ -140,7 +119,10 @@ return {
         "rktjmp/paperplanes.nvim",
         cmd = { "PP" },
         config = function()
-            require("omega.modules.misc.paperplanes").configs["paperplanes.nvim"]()
+            require("paperplanes").setup({
+                register = "+",
+                provider = "paste.rs",
+            })
         end,
     },
     {

@@ -55,7 +55,7 @@ local function setup_cmd()
 end
 
 telescope.config = function()
-    require("omega.modules.misc.telescope.configs")["telescope.nvim"]()
+    require("omega.modules.telescope.configs")["telescope.nvim"]()
     setup_cmd()
 end
 
