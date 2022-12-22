@@ -41,3 +41,5 @@ nvchad_lua
 nvchad_startup
 omega_lua
 compile_options.lua
+.repro
+repro.lua
