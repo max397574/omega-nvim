@@ -212,7 +212,7 @@ aucmd("FileType", {
 aucmd("CmdLineEnter", {
     once = true,
     callback = function()
-        require("omega.modules.misc.normal_cmdline").setup()
+        require("omega.extras.normal_cmdline").setup()
     end,
     desc = "Set up normal_cmdline",
 })
