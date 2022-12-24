@@ -7,6 +7,9 @@ require("lazy").setup("omega.modules", {
         path = "~/neovim_plugins",
         patterns = { "max397574" },
     },
+	diff={
+		cmd="git",
+	},
     performance = {
         rtp = {
             paths = {

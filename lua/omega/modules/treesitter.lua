@@ -31,7 +31,7 @@ local ts_parsers = {
     "help",
     "julia",
     "vim",
-    "norg",
+    -- "norg",
     "zig",
     "diff",
 }

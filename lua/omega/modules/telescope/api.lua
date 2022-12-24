@@ -1,6 +1,4 @@
-local tele_mod = {}
-
-tele_mod.api = {
+return {
     ["colorscheme_switcher"] = function()
         local pickers = require("telescope.pickers")
         local conf = require("telescope.config").values
@@ -168,6 +166,7 @@ tele_mod.api = {
                 "%.png",
                 "%.jpg",
                 "%.jpeg",
+                "%.norg",
             },
             layout_config = {
                 prompt_position = "top",
@@ -202,6 +201,7 @@ tele_mod.api = {
                 "%.svg",
                 "%.otf",
                 "%.ttf",
+                "%.norg",
             },
             preview = {
                 hide_on_startup = false,
@@ -210,5 +210,3 @@ tele_mod.api = {
         builtin.live_grep(opts)
     end,
 }
-
-return tele_mod

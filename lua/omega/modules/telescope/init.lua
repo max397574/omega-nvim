@@ -59,4 +59,6 @@ telescope.config = function()
     setup_cmd()
 end
 
+telescope.api = require("omega.modules.telescope.api")
+
 return telescope

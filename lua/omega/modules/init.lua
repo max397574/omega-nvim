@@ -132,13 +132,6 @@ return {
         end,
     },
     {
-        "akinsho/toggleterm.nvim",
-        keys = { "<leader>r", "<c-t>" },
-        config = function()
-            require("omega.modules.misc.toggleterm").configs["toggleterm.nvim"]()
-        end,
-    },
-    {
         dir = "~/neovim_plugins/nvim-treehopper/",
     },
     {
@@ -151,7 +144,7 @@ return {
             "TodoTrouble",
         },
         config = function()
-            require("omega.modules.misc.trouble.configs")["trouble.nvim"]()
+           require"trouble".setup() 
         end,
     },
     { "cshuaimin/ssr.nvim" },

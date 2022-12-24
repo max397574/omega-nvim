@@ -125,13 +125,13 @@ neorg_mod.config = function()
                     },
                 },
             },
-            ["core.gtd.base"] = {
-                config = {
-                    workspace = "gtd",
-                    -- workspace = "example_ws",
-                    exclude = { "notes" },
-                },
-            },
+            -- ["core.gtd.base"] = {
+            --     config = {
+            --         workspace = "gtd",
+            --         -- workspace = "example_ws",
+            --         exclude = { "notes" },
+            --     },
+            -- },
             ["core.norg.qol.toc"] = {
                 config = {
                     close_split_on_jump = false,
@@ -151,8 +151,8 @@ neorg_mod.config = function()
                     extensions = "all",
                 },
             },
-            ["external.context"]={},
-            ["external.kanban"]={},
+            -- ["external.context"]={},
+            -- ["external.kanban"]={},
             ["external.zettelkasten"]={},
         },
         logger = {
@@ -181,9 +181,9 @@ neorg_mod.config = function()
                 },
 
                 -- Keys for managing GTD
-                { neorg_leader .. "tc", "core.gtd.base.capture" },
-                { neorg_leader .. "tv", "core.gtd.base.views" },
-                { neorg_leader .. "te", "core.gtd.base.edit" },
+                -- { neorg_leader .. "tc", "core.gtd.base.capture" },
+                -- { neorg_leader .. "tv", "core.gtd.base.views" },
+                -- { neorg_leader .. "te", "core.gtd.base.edit" },
 
                 -- Keys for managing notes
                 { neorg_leader .. "nn", "core.norg.dirman.new.note" },

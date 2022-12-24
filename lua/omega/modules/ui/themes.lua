@@ -1,3 +1,0 @@
-local themes = {}
-
-return themes
