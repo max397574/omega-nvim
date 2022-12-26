@@ -166,7 +166,6 @@ return {
                 "%.png",
                 "%.jpg",
                 "%.jpeg",
-                "%.norg",
             },
             layout_config = {
                 prompt_position = "top",
@@ -201,7 +200,6 @@ return {
                 "%.svg",
                 "%.otf",
                 "%.ttf",
-                "%.norg",
             },
             preview = {
                 hide_on_startup = false,
