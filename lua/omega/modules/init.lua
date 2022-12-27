@@ -9,28 +9,6 @@ return {
         "MunifTanjim/nui.nvim",
     },
     { "nvim-lua/plenary.nvim" },
-    {
-        "neovim/nvim-lspconfig",
-        config = function()
-            require("omega.modules.langs.main").configs["nvim-lspconfig"]()
-            require("omega.modules.langs.html")
-        end,
-        dependencies = {
-            {
-                "folke/neodev.nvim",
-                config = function()
-                    require("omega.modules.langs.lua").configs["neodev.nvim"]()
-                end,
-            },
-            {
-                "simrat39/rust-tools.nvim",
-                config = function()
-                    require("omega.modules.langs.rust").configs["rust-tools.nvim"]()
-                end,
-            },
-        },
-        event = "BufReadPre",
-    },
 
     {
         "mfussenegger/nvim-dap",
@@ -144,7 +122,7 @@ return {
             "TodoTrouble",
         },
         config = function()
-           require"trouble".setup() 
+            require("trouble").setup()
         end,
     },
     { "cshuaimin/ssr.nvim" },

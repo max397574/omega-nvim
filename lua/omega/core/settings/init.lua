@@ -16,6 +16,7 @@ opt.foldlevel = 100
 vim.defer_fn(function()
     opt.guicursor = "n-v-sm:block,i-c-ci-ve:ver25,r-cr-o:hor20"
     opt.showmode = false
+    opt.splitkeep = "screen"
     vim.opt.fillchars = {
         eob = " ",
         vert = "║",
