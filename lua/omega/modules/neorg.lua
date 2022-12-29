@@ -153,7 +153,7 @@ neorg_mod.config = function()
             },
             -- ["external.context"]={},
             -- ["external.kanban"]={},
-            ["external.zettelkasten"]={},
+            ["external.zettelkasten"] = {},
         },
         logger = {
             level = "warn",

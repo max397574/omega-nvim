@@ -127,4 +127,5 @@ return {
     },
     { "cshuaimin/ssr.nvim" },
     { "elihunter173/dirbuf.nvim", cmd = "Dirbuf" },
+    { dir = "~/neovim_plugins/neo-news.nvim" },
 }
