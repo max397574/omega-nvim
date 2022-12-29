@@ -1,6 +1,6 @@
 local comment = {
     "numToStr/Comment.nvim",
-    keys = { "<leader>c", "gb" },
+    keys = { "<leader>c", "gb", { "<leader>c", mode = "x" } },
 }
 
 comment.config = function()
