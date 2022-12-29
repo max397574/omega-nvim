@@ -142,13 +142,11 @@ noice.config = function()
         })
         vim.wo[winnr].winhighlight = "FloatBorder:NoiceCmdlineIcon"
         local index
-        -- TODO: fix with <esc>
         vim.ui.input({ prompt = "Select item: " }, function(idx)
             vim.api.nvim_win_close(winnr, true)
             index = tonumber(idx)
         end)
         if index == nil or index > #lines then
-            -- vim.notify("Aborted")
             return
         end
         on_choice(items[index])
