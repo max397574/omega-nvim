@@ -1,2 +1,2 @@
-; extends
+;; extends
 (inline_comment)@comment

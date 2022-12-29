@@ -9,6 +9,9 @@ base16.themes = function(theme)
     if theme == "nil" or theme == nil then
         theme = config.colorscheme
     end
+    if theme == "habmax" then
+        theme = config.colorscheme
+    end
     return require("themes." .. theme .. "-base16")
 end
 return base16

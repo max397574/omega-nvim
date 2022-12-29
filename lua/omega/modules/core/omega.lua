@@ -1,3 +1,0 @@
-local omega = {}
-
-return omega

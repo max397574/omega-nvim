@@ -1,3 +1,0 @@
-local wordle = {}
-
-return wordle

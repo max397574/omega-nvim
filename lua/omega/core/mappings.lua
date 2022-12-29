@@ -428,83 +428,6 @@ vim.keymap.set("n", "<leader>qw", function()
     require("query-secretary").query_window_initiate()
 end, { desc = "Write Query" })
 
--- toggleterm
-local exp = vim.fn.expand
-
-local files = {
-    python = "python3 -i " .. exp("%:t"),
-    julia = "julia " .. exp("%:t"),
-    lua = "lua " .. exp("%:t"),
-    applescript = "osascript " .. exp("%:t"),
-    c = "gcc -o temp " .. exp("%:t") .. " && ./temp && rm ./temp",
-    cpp = "clang++ -o temp " .. exp("%:t") .. " && ./temp && rm ./temp",
-    java = "javac " .. exp("%:t") .. " && java " .. exp("%:t:r") .. " && rm *.class",
-    rust = "cargo run",
-    javascript = "node " .. exp("%:t"),
-    typescript = "tsc " .. exp("%:t") .. " && node " .. exp("%:t:r") .. ".js",
-}
-
-local function run_file()
-    vim.cmd.w()
-    local command = files[vim.bo.filetype]
-    if vim.bo.filetype == "rust" then
-        if vim.tbl_isempty(vim.fs.find("cargo.toml", { upward = true })) then
-            local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-            local file = io.open(vim.fn.stdpath("data") .. "/temp", "w")
-            if not file then
-                return
-            end
-            for _, line in ipairs(lines) do
-                file:write(line)
-            end
-            file:close()
-            command = "rustc -o "
-                .. vim.fn.stdpath("data")
-                .. "/tmp "
-                .. vim.fn.expand("%")
-                .. " && "
-                .. vim.fn.stdpath("data")
-                .. "/tmp"
-                .. "&& rm "
-                .. vim.fn.stdpath("data")
-                .. "/tmp"
-
-            require("toggleterm.terminal").Terminal
-                :new({ cmd = command, close_on_exit = false, direction = "float" })
-                :toggle()
-            print("Running: " .. command)
-            return
-        end
-    end
-    if command ~= nil then
-        require("toggleterm.terminal").Terminal
-            :new({ cmd = command, close_on_exit = false })
-            :toggle()
-        print("Running: " .. command)
-    end
-end
-local function toggle_lazygit()
-    require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", close_on_exit = true }):toggle()
-end
-
-vim.keymap.set("n", "<leader>r", function()
-    run_file()
-end, { noremap = true })
-vim.keymap.set("n", "<c-t>", function()
-    require("toggleterm.terminal").Terminal:new({ close_on_exit = true }):toggle()
-end, {
-    noremap = true,
-    silent = true,
-})
-vim.keymap.set("n", "<c-g>", function()
-    toggle_lazygit()
-end, {
-    noremap = true,
-    silent = true,
-})
-vim.keymap.set("t", "<c-g>", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true })
-vim.keymap.set("t", "<c-t>", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true })
-
 -- colorizer
 wk.register(
     { c = { "<cmd>ColorizerAttachToBuffer<cr>", "Colorizer" } },
@@ -623,7 +546,7 @@ wk.register({
         name = " Colors",
         p = {
             function()
-                require("omega.modules.misc.telescope").api.colorscheme_switcher()
+                require("omega.modules.telescope").api.colorscheme_switcher()
             end,
             "Pick",
         },
@@ -639,7 +562,7 @@ wk.register({
         name = " Find",
         f = {
             function()
-                require("omega.modules.misc.telescope").api.find_files()
+                require("omega.modules.telescope").api.find_files()
             end,
             "File",
         },
@@ -652,7 +575,7 @@ wk.register({
     },
     ["/"] = {
         function()
-            require("omega.modules.misc.telescope").api.live_grep()
+            require("omega.modules.telescope").api.live_grep()
         end,
         " Live Grep",
     },
@@ -672,14 +595,14 @@ wk.register({
         },
         h = {
             function()
-                require("omega.modules.misc.telescope").api.help_tags()
+                require("omega.modules.telescope").api.help_tags()
             end,
             "Tags",
         },
     },
     ["."] = {
         function()
-            require("omega.modules.misc.telescope").api.file_browser()
+            require("omega.modules.telescope").api.file_browser()
         end,
         " File Browser",
     },
@@ -704,7 +627,7 @@ wk.register({
     mode = "n",
 })
 vim.keymap.set("n", "<c-s>", function()
-    require("omega.modules.misc.telescope").api.buffer_fuzzy()
+    require("omega.modules.telescope").api.buffer_fuzzy()
 end, { noremap = true })
 
 -- trouble

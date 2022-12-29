@@ -1,3 +1,0 @@
-local formatter = {}
-
-return formatter

@@ -212,7 +212,7 @@ aucmd("FileType", {
 aucmd("CmdLineEnter", {
     once = true,
     callback = function()
-        require("omega.modules.misc.normal_cmdline").setup()
+        require("omega.extras.normal_cmdline").setup()
     end,
     desc = "Set up normal_cmdline",
 })
@@ -292,12 +292,10 @@ aucmd("InsertCharPre", {
 
 aucmd("BufWritePre", {
     callback = function()
-        local start = os.clock()
         local dir = vim.fn.expand("<afile>:p:h")
         if vim.fn.isdirectory(dir) == 0 then
             vim.fn.mkdir(dir, "p")
         end
-        print(os.clock() - start .. "s")
     end,
 })
 

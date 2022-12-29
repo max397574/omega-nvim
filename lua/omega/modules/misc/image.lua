@@ -1,3 +1,0 @@
-local image = {}
-
-return image
