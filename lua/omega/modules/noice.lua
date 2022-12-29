@@ -117,55 +117,41 @@ noice.config = function()
     end
     require("noice").setup(config)
 
+    ---@diagnostic disable-next-line: duplicate-set-field
     vim.ui.select = function(items, opts, on_choice)
-        local Menu = require("nui.menu")
         opts.format_item = opts.format_item or tostring
-
+        local buf = vim.api.nvim_create_buf(false, true)
         local lines = {}
-        for _, item in ipairs(items) do
-            local text, _ = opts.format_item(item)
-            table.insert(lines, Menu.item(text))
+        for i, item in ipairs(items) do
+            local text = opts.format_item(item)
+            table.insert(lines, i .. ". " .. text)
         end
-        local menu = Menu({
-            position = "50%",
-            size = {
-                width = "60%",
-                height = #items,
-            },
-            border = {
-                style = "single",
-                text = {
-                    top = opts.prompt and opts.prompt or "Select on of:",
-                    top_align = "center",
-                },
-            },
-            win_options = {
-                winhighlight = "Normal:Normal,FloatBorder:NoiceConfirmBorder",
-            },
-        }, {
-            lines = lines,
-            max_width = 20,
-            keymap = {
-                focus_next = { "j", "<Down>", "<Tab>" },
-                focus_prev = { "k", "<Up>", "<S-Tab>" },
-                close = { "<Esc>", "<C-c>", "q" },
-                submit = { "<CR>", "<Space>" },
-            },
-            on_close = function()
-                print("Aborted")
-            end,
-            on_submit = function(item)
-                local idx
-                for i, it in ipairs(items) do
-                    if opts.format_item(it) == item.text then
-                        idx = i
-                    end
-                end
-                on_choice(items[idx], idx)
-            end,
-        })
 
-        menu:mount()
+        vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+        local height = vim.api.nvim_win_get_height(0)
+        local width = require("omega.utils").longest(lines)
+        local winnr = vim.api.nvim_open_win(buf, false, {
+            relative = "editor",
+            width = math.max(width, 10),
+            height = #lines,
+            style = "minimal",
+            border = "single",
+            row = height - #items - 2,
+            col = 2,
+            title = { { "Choices", "NoiceCmdlineIcon" } },
+        })
+        vim.wo[winnr].winhighlight = "FloatBorder:NoiceCmdlineIcon"
+        local index
+        -- TODO: fix with <esc>
+        vim.ui.input({ prompt = "Select item: " }, function(idx)
+            vim.api.nvim_win_close(winnr, true)
+            index = tonumber(idx)
+        end)
+        if index == nil or index > #lines then
+            -- vim.notify("Aborted")
+            return
+        end
+        on_choice(items[index])
     end
 end
 
