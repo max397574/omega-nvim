@@ -1,6 +1,16 @@
 --- Utils for omega-nvim
 local utils = {}
 
+function utils.longest(items)
+    local longest = 0
+    for _, item in pairs(items) do
+        if #item > longest then
+            longest = #item
+        end
+    end
+    return longest
+end
+
 -- view messages in a buffer
 function utils.view_messages()
     local buf = vim.api.nvim_create_buf(false, true)
