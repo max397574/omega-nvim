@@ -99,7 +99,7 @@ snippets_mod.configs = {
         require("omega.modules.completion.snippets.tex_math")
         require("luasnip.loaders.from_vscode").load({
             paths = {
-                "~/.local/share/nvim/site/pack/packer/opt/friendly-snippets",
+                "~/neovim_plugins/friendly-snippets",
             },
         })
         vim.keymap.set("i", "<c-i>", function()

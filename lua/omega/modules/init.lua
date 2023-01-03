@@ -128,4 +128,5 @@ return {
     { "cshuaimin/ssr.nvim" },
     { "elihunter173/dirbuf.nvim", cmd = "Dirbuf" },
     { dir = "~/neovim_plugins/neo-news.nvim" },
+    { dir = "~/neovim_plugins/tomato.nvim", config = true, lazy = false },
 }

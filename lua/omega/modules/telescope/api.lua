@@ -167,6 +167,7 @@ return {
                 "%.jpg",
                 "%.jpeg",
                 ".repro/*",
+                ".DS_Store"
             },
             layout_config = {
                 prompt_position = "top",
@@ -202,6 +203,7 @@ return {
                 "%.otf",
                 "%.ttf",
                 ".repro/*",
+                ".DS_Store"
             },
             preview = {
                 hide_on_startup = false,
