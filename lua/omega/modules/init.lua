@@ -129,4 +129,18 @@ return {
     { "elihunter173/dirbuf.nvim", cmd = "Dirbuf" },
     { dir = "~/neovim_plugins/neo-news.nvim" },
     { dir = "~/neovim_plugins/tomato.nvim", config = true, lazy = false },
+    {
+        "stevearc/oil.nvim",
+        cmd = "Oil",
+        config = {
+            win_options = {
+                conceallevel = 0,
+            },
+            float = {
+                win_options = {
+                    winblend = 0,
+                },
+            },
+        },
+    },
 }
