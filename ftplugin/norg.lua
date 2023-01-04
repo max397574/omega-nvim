@@ -2,7 +2,7 @@ vim.bo.shiftwidth = 2
 vim.o.conceallevel = 2
 vim.bo.commentstring = "#%s"
 vim.wo.spell = true
-vim.bo.spelllang = "de,en"
+vim.bo.spelllang = "en"
 
 local wk = require("which-key")
 

@@ -691,3 +691,14 @@ wk.register({
 vim.keymap.set("x", "<leader>Rs", function()
     require("ssr").open()
 end)
+
+vim.keymap.set("n", "zg", function()
+    if vim.bo.spelllang == "en" then
+        vim.bo.spellfile = vim.fn.expand("~") .. "/.config/nvim/spell/en.utf-8.add"
+    elseif vim.bo.spelllang == "de" then
+        vim.bo.spellfile = vim.fn.expand("~") .. "/.config/nvim/spell/de.utf-8.add"
+    else
+        vim.bo.spellfile = vim.fn.expand("~") .. "/.config/nvim/spell/en.utf-8.add"
+    end
+    vim.cmd.normal({ args = { "zg" }, bang = true })
+end)
