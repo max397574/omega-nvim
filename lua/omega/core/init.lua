@@ -10,5 +10,6 @@ vim.api.nvim_create_autocmd("User", {
     callback = function()
         require("omega.core.commands")
         require("omega.core.mappings")
+        require("omega.core.abbreviations")
     end,
 })
