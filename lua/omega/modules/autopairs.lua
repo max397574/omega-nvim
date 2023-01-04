@@ -14,6 +14,8 @@ autopairs.config = function()
     npairs.add_rule(Rule("$", "$", "tex"))
     npairs.remove_rule("[")
     npairs.add_rule(Rule("[", "]", "-norg"))
+    npairs.remove_rule("(")
+    npairs.add_rule(Rule("(", ")", "-norg"))
 end
 
 return autopairs
