@@ -143,4 +143,8 @@ return {
             },
         },
     },
+    {
+        dir = "~/neovim_plugins/tmpfile.nvim/",
+        config = true,
+    },
 }
