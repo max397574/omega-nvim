@@ -268,30 +268,30 @@ cmp.config = function()
                     behavior = cmp.ConfirmBehavior.Insert,
                 }),
             }),
-            ["<C-l>"] = cmp.mapping(function(fallback)
-                if luasnip.choice_active() then
-                    require("luasnip").change_choice(1)
-                elseif neogen.jumpable() then
-                    vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
-                else
-                    fallback()
-                end
-            end, {
-                "i",
-                "s",
-            }),
-            ["<C-h>"] = cmp.mapping(function(fallback)
-                if luasnip.choice_active() then
-                    require("luasnip").change_choice(-1)
-                elseif neogen.jumpable(-1) then
-                    vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_prev()<CR>"), "")
-                else
-                    fallback()
-                end
-            end, {
-                "i",
-                "s",
-            }),
+            -- ["<C-l>"] = cmp.mapping(function(fallback)
+            --     if luasnip.choice_active() then
+            --         require("luasnip").change_choice(1)
+            --     elseif neogen.jumpable() then
+            --         vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
+            --     else
+            --         fallback()
+            --     end
+            -- end, {
+            --     "i",
+            --     "s",
+            -- }),
+            -- ["<C-h>"] = cmp.mapping(function(fallback)
+            --     if luasnip.choice_active() then
+            --         require("luasnip").change_choice(-1)
+            --     elseif neogen.jumpable(-1) then
+            --         vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_prev()<CR>"), "")
+            --     else
+            --         fallback()
+            --     end
+            -- end, {
+            --     "i",
+            --     "s",
+            -- }),
         },
 
         sources = {
