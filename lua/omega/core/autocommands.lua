@@ -292,6 +292,9 @@ aucmd("InsertCharPre", {
 
 aucmd("BufWritePre", {
     callback = function()
+        if vim.tbl_contains({ "oil" }, vim.bo.ft) then
+            return
+        end
         local dir = vim.fn.expand("<afile>:p:h")
         if vim.fn.isdirectory(dir) == 0 then
             vim.fn.mkdir(dir, "p")
