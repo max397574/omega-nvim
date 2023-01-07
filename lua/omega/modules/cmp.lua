@@ -87,6 +87,12 @@ cmp.config = function()
                 opts = { skip = true },
             },
             {
+                view = "notify",
+                filter = { find = "^<" },
+                opts = { skip = true },
+            },
+
+            {
                 filter = {
                     event = "msg_show",
                     kind = "",
