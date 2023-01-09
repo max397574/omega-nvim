@@ -14,5 +14,10 @@
 (("return" @keyword) (#set! conceal ""))
 (("break" @keyword) (#set! conceal ""))
 (("!" @keyword) (#set! conceal ""))
+
 (scoped_identifier(scoped_identifier path: (scoped_identifier) @rust_path) (#set! conceal ""))
-(scoped_identifier(scoped_identifier path: (identifier) @rust_path) (#set! conceal ""))
+
+(scoped_identifier
+  (scoped_identifier
+    path: (identifier) @rust_path)
+  (#set! conceal ""))
