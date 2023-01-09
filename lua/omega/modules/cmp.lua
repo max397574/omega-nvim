@@ -141,8 +141,10 @@ cmp.config = function()
             noice_config.views.popupmenu.position.row = 4
         end
     end
-    require("plenary.reload").reload_module("noice")
-    require("noice").setup(noice_config)
+    if require("omega.modules.noice").enabled then
+        require("plenary.reload").reload_module("noice")
+        require("noice").setup(noice_config)
+    end
 
     local cmp = require("cmp")
     local types = require("cmp.types")

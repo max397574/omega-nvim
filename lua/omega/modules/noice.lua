@@ -1,6 +1,7 @@
 local noice = {
     "folke/noice.nvim",
     event = "VeryLazy",
+    enabled = false,
 }
 
 noice.config = function()
