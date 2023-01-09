@@ -232,7 +232,7 @@ map("v", "<leader>p", '"_dP', { noremap = true, silent = true })
 -- change case of word
 map("i", "<C-U>", "<ESC>b~hea", { noremap = true, silent = true })
 -- change case of second letter of word
-map("i", "<C-h>", "<esc>blgulhea", { noremap = true, silent = true })
+map("i", "<C-z>", "<esc>blgulhea", { noremap = true, silent = true })
 map("s", "t", "a<bs>t", { noremap = true })
 map("s", "f", "a<bs>f", { noremap = true })
 map("n", "<leader><tab>", "<c-^>", { noremap = true, desc = "Go to alternate file" })
