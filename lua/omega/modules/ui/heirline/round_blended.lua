@@ -533,9 +533,7 @@ local coords = {
     },
     {
         provider = "%4(%l%):%2c",
-        hl = function()
-            return { fg = colors.orange, bg = background_color }
-        end,
+        hl = { fg = colors.orange, bg = background_color },
     },
     {
         provider = "",

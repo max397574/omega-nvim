@@ -146,5 +146,10 @@ return {
     {
         dir = "~/neovim_plugins/tmpfile.nvim/",
         config = true,
+        cmd = "Tmp",
+    },
+    {
+        dir = "~/neovim_plugins/vim-apm",
+        cmd = "VimApm",
     },
 }

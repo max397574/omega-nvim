@@ -38,7 +38,7 @@ formatter.config = function()
             tex = {
                 function()
                     return {
-                        exe = "/usr/local/Cellar/latexindent/3.18_1/bin/latexindent",
+                        exe = "/usr/local/Cellar/latexindent/3.20.1/bin/latexindent",
                         args = {
                             "-g",
                             "/dev/null",

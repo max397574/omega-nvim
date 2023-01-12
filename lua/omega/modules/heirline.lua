@@ -1,6 +1,7 @@
 local heirline = {
     "rebelot/heirline.nvim",
     lazy = false,
+    enabled = true
 }
 
 local config = require("omega.config").values
@@ -321,7 +322,7 @@ heirline.config = function()
     elseif config.statusline == "round_blended" then
         require("heirline").setup(
             require("omega.modules.ui.heirline.round_blended")
-            -- winbar_line
+    --         -- winbar_line
         )
     end
 end
