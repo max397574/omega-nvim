@@ -22,14 +22,14 @@ local function filetypes()
     }
 end
 
-add_cmd("Tmp", function(args)
-    require("lazy").load({ plugins = { "nvim-lspconfig" } })
-    require("omega.extras").scratch_buf(args)
-end, {
-    nargs = "?",
-    complete = filetypes,
-    desc = "Open scratch buffer",
-})
+-- add_cmd("Tmp", function(args)
+--     require("lazy").load({ plugins = { "nvim-lspconfig" } })
+--     require("omega.extras").scratch_buf(args)
+-- end, {
+--     nargs = "?",
+--     complete = filetypes,
+--     desc = "Open scratch buffer",
+-- })
 
 add_cmd("CursorNodes", function()
     local node = require("nvim-treesitter.ts_utils").get_node_at_cursor()
