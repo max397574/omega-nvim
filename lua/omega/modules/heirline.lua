@@ -1,7 +1,7 @@
 local heirline = {
     "rebelot/heirline.nvim",
     lazy = false,
-    enabled = true
+    enabled = true,
 }
 
 local config = require("omega.config").values
@@ -311,18 +311,18 @@ heirline.config = function()
 
     if config.statusline == "round_colored_bg" then
         require("heirline").setup(
-            require("omega.modules.ui.heirline.round_colored_bg")
+            { statusline = require("omega.modules.ui.heirline.round_colored_bg") }
             -- winbar_line
         )
     elseif config.statusline == "round_dark_bg" then
         require("heirline").setup(
-            require("omega.modules.ui.heirline.round_dark_bg")
+            { statusline = require("omega.modules.ui.heirline.round_dark_bg") }
             -- winbar_line
         )
     elseif config.statusline == "round_blended" then
         require("heirline").setup(
-            require("omega.modules.ui.heirline.round_blended")
-    --         -- winbar_line
+            { statusline = require("omega.modules.ui.heirline.round_blended") }
+            -- winbar_line }
         )
     end
 end
