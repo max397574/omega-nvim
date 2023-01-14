@@ -1,7 +1,7 @@
 local noice = {
     "folke/noice.nvim",
     event = "VeryLazy",
-    enabled = false,
+    enabled = true,
 }
 
 noice.config = function()
@@ -65,11 +65,6 @@ noice.config = function()
             {
                 view = "notify",
                 filter = { find = "overly long" },
-                opts = { skip = true },
-            },
-            {
-                view = "notify",
-                filter = { find = "^<" },
                 opts = { skip = true },
             },
             {

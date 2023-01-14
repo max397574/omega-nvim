@@ -1,11 +1,11 @@
 local config = require("omega.config").values
 
-local cmp = {
+local cmp_module = {
     dir = "~/neovim_plugins/nvim-cmp",
     event = "InsertEnter",
 }
 
-cmp.dependencies = {
+cmp_module.dependencies = {
     {
         "saadparwaiz1/cmp_luasnip",
     },
@@ -26,7 +26,8 @@ cmp.dependencies = {
     },
 }
 
-cmp.config = function()
+cmp_module.config = function()
+    local cmp = require("cmp")
     local noice_config = {
         cmdline = {
             enabled = true,
@@ -146,33 +147,24 @@ cmp.config = function()
         require("noice").setup(noice_config)
     end
 
-    local cmp = require("cmp")
     local types = require("cmp.types")
     local luasnip = require("luasnip")
     local neogen = require("neogen")
     local str = require("cmp.utils.str")
     local kind = require("omega.modules.langs.kind")
 
-    local function get_abbr(vim_item, entry)
+    local function get_abbr(_, entry)
         local word = entry:get_insert_text()
         if entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet then
             word = vim.lsp.util.parse_snippet(word)
         end
         word = str.oneline(word)
-
-        -- concatenates the string
         local max = 50
         if string.len(word) >= max then
             local before = string.sub(word, 1, math.floor((max - 3) / 2))
             word = before .. "..."
         end
 
-        -- if
-        --     entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet
-        --     and string.sub(vim_item.abbr, -1, -1) == "~"
-        -- then
-        -- word = word .. "~"
-        -- end
         return word
     end
     require("lazy").load({ plugins = { "LuaSnip" } })
@@ -276,46 +268,15 @@ cmp.config = function()
                     behavior = cmp.ConfirmBehavior.Insert,
                 }),
             }),
-            -- ["<C-l>"] = cmp.mapping(function(fallback)
-            --     if luasnip.choice_active() then
-            --         require("luasnip").change_choice(1)
-            --     elseif neogen.jumpable() then
-            --         vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_next()<CR>"), "")
-            --     else
-            --         fallback()
-            --     end
-            -- end, {
-            --     "i",
-            --     "s",
-            -- }),
-            -- ["<C-h>"] = cmp.mapping(function(fallback)
-            --     if luasnip.choice_active() then
-            --         require("luasnip").change_choice(-1)
-            --     elseif neogen.jumpable(-1) then
-            --         vim.fn.feedkeys(t("<cmd>lua require('neogen').jump_prev()<CR>"), "")
-            --     else
-            --         fallback()
-            --     end
-            -- end, {
-            --     "i",
-            --     "s",
-            -- }),
         },
 
         sources = {
-            -- { name = "buffer", priority = 7, keyword_length = 4 },
             { name = "path", priority = 5 },
             { name = "emoji", priority = 3 },
             { name = "greek", priority = 1 },
             { name = "calc", priority = 4 },
-
-            -- { name = "cmdline", priority = 4 },
-            -- { name = "copilot", priority = 8 },
-            -- { name = "cmp_tabnine", priority = 8 },
-
             { name = "nvim_lsp", priority = 9 },
             { name = "luasnip", priority = 8 },
-            -- { name = "neorg", priority = 6 },
             { name = "latex_symbols", priority = 1 },
             { name = "nvim_lsp_signature_help", priority = 10 },
         },
@@ -329,12 +290,9 @@ cmp.config = function()
             if vim.bo.ft == "lua" then
                 return true
             end
-            -- if require("cmp_dap").is_dap_buffer() then
-            --     return true
-            -- end
             local lnum, col = vim.fn.line("."), math.min(vim.fn.col("."), #vim.fn.getline("."))
             for _, syn_id in ipairs(vim.fn.synstack(lnum, col)) do
-                syn_id = vim.fn.synIDtrans(syn_id) -- Resolve :highlight links
+                syn_id = vim.fn.synIDtrans(syn_id)
                 if vim.fn.synIDattr(syn_id, "name") == "Comment" then
                     return false
                 end
@@ -447,37 +405,6 @@ cmp.config = function()
     })
     cmp.setup(cmp_config)
 
-    -- cmp.setup.cmdline(":", {
-    --     sources = {
-    --         { name = "cmdline", group_index = 1, max_item_count = 5 },
-    --         -- { name = "cmdline" },
-    --         { name = "cmdline_history", group_index = 2, max_item_count = 5 },
-    --     },
-    --     formatting = {
-    --         fields = { "abbr" },
-    --         format = function(entry, item)
-    --             item.abbr = get_abbr(item, entry)
-    --             item.abbr_hl_group = "Function"
-    --             return item
-    --         end,
-    --     },
-    -- })
-    --
-    -- cmp.setup.cmdline("/", {
-    --     sources = {
-    --         { name = "cmdline_history" },
-    --         { name = "buffer" },
-    --     },
-    --     formatting = {
-    --         fields = { "abbr" },
-    --         format = function(entry, item)
-    --             item.abbr = get_abbr(item, entry)
-    --             item.abbr_hl_group = "Function"
-    --             return item
-    --         end,
-    --     },
-    -- })
-
     vim.api.nvim_set_hl(0, "NormalFloat", {})
     if not neorg then
         return
@@ -491,4 +418,4 @@ cmp.config = function()
     end
 end
 
-return cmp
+return cmp_module
