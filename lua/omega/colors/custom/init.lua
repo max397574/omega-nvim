@@ -1,4 +1,4 @@
-local theme = vim.g.colors_name
+local theme = require("omega.config").values.colorscheme
 
 local ok, highlights = pcall(require, "omega.colors.custom." .. theme)
 
