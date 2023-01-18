@@ -64,6 +64,24 @@ vim.g.colors_name="%s"
         end
         table.insert(lines, string.format([[vim.api.nvim_set_hl(0,"%s", {%s})]], group, options))
     end
+    local ok, highlights = pcall(require, "omega.colors.custom." .. vim.g.colors_name)
+    if ok then
+        for group, values in pairs(highlights) do
+            local options = ""
+            for optionname, value in pairs(values) do
+                if type(value) == "boolean" then
+                    value = tostring(value)
+                else
+                    value = '"' .. value .. '"'
+                end
+                options = options .. optionname .. "=" .. value .. ","
+            end
+            table.insert(
+                lines,
+                string.format([[vim.api.nvim_set_hl(0,"%s", {%s})]], group, options)
+            )
+        end
+    end
     table.insert(lines, "end)")
     local highlight_file = vim.fn.stdpath("cache") .. "/omega/highlights"
     local file = io.open(highlight_file, "wb")
