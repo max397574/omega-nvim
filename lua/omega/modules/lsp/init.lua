@@ -44,6 +44,7 @@ lsp.config = function()
             numhl = "Diagnostic" .. sign,
         })
     end
+            require("omega.modules.langs.html")
     -- vim.lsp.handlers["textDocument/hover"] =
     --     vim.lsp.with(vim.lsp.handlers.hover, { border = utils.border() })
     -- vim.lsp.handlers["textDocument/signatureHelp"] =
