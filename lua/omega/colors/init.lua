@@ -42,6 +42,8 @@ end
 
 -- credits to https://github.com/EdenEast/nightfox.nvim
 function colors.compile_theme()
+    vim.g.colors_name = require("omega.config").values.colorscheme
+    package.loaded["omega.colors.highlights"] = nil
     local highlights = require("omega.colors.highlights")
     local lines = {
         string.format(
