@@ -56,6 +56,15 @@ formatter.config = function()
                     }
                 end,
             },
+            query = {
+                function()
+                    return {
+                        exe = "~/programming/rust/query-fmt/target/debug/query-fmt",
+                        args = { vim.fn.expand("%"), "--preview" },
+                        stdin = true,
+                    }
+                end,
+            },
         },
     })
     vim.api.nvim_create_autocmd("User", {
