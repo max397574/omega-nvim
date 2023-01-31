@@ -322,6 +322,13 @@ ls.add_snippets(nil, {
             t({ "", "}" }),
         }),
     },
+    markdown = {
+        s({
+            trig = "details",
+        }, {
+            t({ "<details>", "<summary></summary>", "</details>" }),
+        }),
+    },
     gitcommit = {
         parse({ trig = "docs" }, gitcommit_docs),
         parse({ trig = "init" }, gitcommit_init),
