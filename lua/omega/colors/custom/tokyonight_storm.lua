@@ -10,4 +10,5 @@ return {
     ["TelescopeSelection"] = { fg = colors.blue, bg = colors.black2 },
     ["TelescopeSelectionCaret"] = { fg = colors.blue, bg = colors.black2 },
     ["IncSearch"] = { bg = colors.orange },
+    ["IndentBlanklineChar"] = { fg = colors.orange },
 }
