@@ -157,6 +157,9 @@ colors.get = function(theme)
     if theme == "nil" or theme == nil then
         theme = config.colorscheme
     end
+    if theme == "habamax" then
+        theme = config.colorscheme
+    end
     return require("hl_themes." .. theme)
 end
 
