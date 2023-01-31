@@ -157,4 +157,7 @@ return {
         dir = "~/neovim_plugins/vim-apm",
         cmd = "VimApm",
     },
+    {
+        "LunarVim/lunar.nvim",
+    },
 }

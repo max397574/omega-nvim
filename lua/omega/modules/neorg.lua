@@ -122,6 +122,7 @@ neorg_mod.config = function()
                     workspaces = {
                         example_ws = "~/neovim_plugins/example_workspaces/gtd/",
                         gtd = "~/gtd",
+                        notes = "~/notes",
                     },
                 },
             },
@@ -151,7 +152,8 @@ neorg_mod.config = function()
                     extensions = "all",
                 },
             },
-            -- ["external.context"]={},
+            ["core.integrations.telescope"] = {},
+            ["external.context"] = {},
             -- ["external.kanban"]={},
             ["external.zettelkasten"] = {},
         },
