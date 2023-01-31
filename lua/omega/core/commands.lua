@@ -31,6 +31,10 @@ end
 --     desc = "Open scratch buffer",
 -- })
 
+add_cmd("CompileTheme", function()
+    require("omega.colors").compile_theme()
+end, {})
+
 add_cmd("CursorNodes", function()
     local node = require("nvim-treesitter.ts_utils").get_node_at_cursor()
     while node do
