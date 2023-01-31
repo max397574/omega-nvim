@@ -1,2 +1,3 @@
 ;; extends
-(inline_comment)@comment
+
+(inline_comment) @comment

@@ -1,5 +1,4 @@
 ;; extends
-(
- function_definition
- (identifier)@function_definition
- )
+
+(function_definition
+  (identifier) @function_definition)
