@@ -11,7 +11,7 @@ wk.register({
     },
     ["S"] = {
         function()
-            vim.cmd.FormatWrite()
+            vim.cmd.Format()
         end,
         " Format",
     },
