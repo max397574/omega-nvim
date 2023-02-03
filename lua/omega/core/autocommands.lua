@@ -29,6 +29,33 @@ aucmd({ "BufEnter", "BufWinEnter" }, {
     desc = "Open folds in neorg",
 })
 
+aucmd("CursorHold", {
+    group = vim.api.nvim_create_augroup("lsp_float", {}),
+    callback = function()
+        vim.diagnostic.open_float()
+    end,
+})
+
+-- aucmd({ "TextYankPost" }, {
+--     callback = function()
+--         -- if vim.v.event.regname == "+" then
+--         local contents = vim.split(vim.fn.getreg("+"), "\n")
+--         local min_spaces = 10000
+--         local new_contents = {}
+--         if not contents or #contents == 1 then
+--             return
+--         end
+--         for _, line in ipairs(contents) do
+--             min_spaces = math.min(min_spaces, #(line:match("^%s*")))
+--         end
+--         for _, line in ipairs(contents) do
+--             table.insert(new_contents, line:sub(min_spaces, -1))
+--         end
+--         vim.fn.setreg("+", new_contents)
+--         -- end
+--     end,
+-- })
+
 aucmd("FileType", {
     pattern = "plaintex",
     callback = function()
