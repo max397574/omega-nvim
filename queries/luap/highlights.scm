@@ -4,7 +4,8 @@
 
 (".") @punctuation.delimiter
 
-[(anchor_end)
+[
+ (anchor_end)
  "^"
 ] @punctuation.special
 
@@ -15,7 +16,11 @@
  ")"
 ] @punctuation.bracket
 
-[(zero_or_more)(shortest_zero_or_more)(one_or_more)(zero_or_one)
+[
+ (zero_or_more)
+ (shortest_zero_or_more)
+ (one_or_more)
+ (zero_or_one)
 ] @keyword.operator
 
 (class) @keyword

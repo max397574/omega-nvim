@@ -1,4 +1,6 @@
 ;; extends
 
-[(if_statement)(else_statement)
+[
+ (if_statement)
+ (else_statement)
 ] @fold
