@@ -4,7 +4,7 @@ config.values = {
     use_impatient = true,
     -- "round_colored_bg"|"round_dark_bg"|"round_blended"
     statusline = "round_blended",
-    colorscheme = "tokyonight_storm",
+    colorscheme = "onedark",
     light_colorscheme = "everforest",
     --- string "float_all_borders"|"custom_bottom_no_borders"
     telescope_theme = "float_all_borders",
