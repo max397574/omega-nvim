@@ -129,8 +129,8 @@ colors.init = function(theme, reload)
         package.loaded["omega"] = nil
         package.loaded["bufferline"] = nil
         package.loaded["heirline"] = nil
-        require("omega.modules.ui.bufferline").configs["bufferline.nvim"]()
-        require("omega.modules.ui.heirline").configs["heirline.nvim"]()
+        require("omega.modules.bufferline").config()
+        require("omega.modules.heirline").config()
         loadfile(vim.fn.stdpath("cache") .. "/omega/highlights")()
         require("omega.colors.custom")
         require("colorscheme_switcher").new_scheme()
