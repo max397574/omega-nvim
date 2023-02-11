@@ -339,6 +339,12 @@ wk.register({ g = { name = " Git", y = "Copy Link" } }, { mode = "v", prefix 
 wk.register({
     g = {
         name = " Git",
+        b = {
+            function()
+                require("gitsigns").blame_line()
+            end,
+            "Blame Line",
+        },
         h = {
             name = "Hunk",
             s = {
