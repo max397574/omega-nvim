@@ -1,5 +1,6 @@
 local autopairs = {
     "windwp/nvim-autopairs",
+    enabled = false,
     event = "InsertEnter",
 }
 

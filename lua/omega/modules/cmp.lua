@@ -168,8 +168,10 @@ cmp_module.config = function()
         return word
     end
     require("lazy").load({ plugins = { "LuaSnip" } })
-    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+    if require("omega.modules.autopairs").enabled then
+        local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+        cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+    end
 
     local function t(string)
         return vim.api.nvim_replace_termcodes(string, true, true, true)
