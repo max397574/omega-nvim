@@ -87,3 +87,7 @@ Those files are required to get the plugin specs for packer and the configuratio
 ### Colors folder
 Inside this folders there are files which are used to define highlights.
 This is done like nvchad did in the past (before they changed it to base46).
+
+## ❤️ Support
+If you like the projects I do and they can help you in your life you can support my work with [github sponsors](https://github.com/sponsors/max397574).
+Every support motivates me to continue working on my open source projects.
