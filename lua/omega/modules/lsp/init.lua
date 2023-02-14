@@ -10,12 +10,12 @@ lsp.dependencies = {
             require("omega.modules.langs.lua")
         end,
     },
-    {
-        "simrat39/rust-tools.nvim",
-        config = function()
-            require("omega.modules.langs.rust")
-        end,
-    },
+    -- {
+    --     "simrat39/rust-tools.nvim",
+    --     config = function()
+    --         require("omega.modules.langs.rust")
+    --     end,
+    -- },
 }
 
 lsp.config = function()
@@ -92,6 +92,26 @@ lsp.config = function()
         -- rust_analyzer = {
         --     root_dir = root_pattern("Cargo.toml", "rust-project.json", ".git"),
         -- },
+        rust_analyzer = {
+            standalone = true,
+            settings = {
+                ["rust-analyzer"] = {
+                    editor = {
+                        formatOnType = true,
+                    },
+                    checkOnSave = {
+                        command = "clippy",
+                    },
+                    hover = {
+                        actions = {
+                            references = {
+                                enable = true,
+                            },
+                        },
+                    },
+                },
+            },
+        },
         hls = {
             root_dir = root_pattern(
                 ".git",

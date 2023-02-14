@@ -1,35 +1,9 @@
 return {
-    {
-        "nvim-tree/nvim-web-devicons",
-    },
-    {
-        "rcarriga/nvim-notify",
-    },
-    {
-        "MunifTanjim/nui.nvim",
-    },
+    { "nvim-tree/nvim-web-devicons" },
+    { "rcarriga/nvim-notify" },
+    { "MunifTanjim/nui.nvim" },
     { "nvim-lua/plenary.nvim" },
 
-    {
-        "mfussenegger/nvim-dap",
-        config = function()
-            require("omega.modules.langs.debugging").configs["nvim-dap"]()
-        end,
-        dependencies = {
-            {
-                "theHamsta/nvim-dap-virtual-text",
-            },
-            {
-                "jbyuki/one-small-step-for-vimkind",
-            },
-        },
-    },
-    {
-        "rcarriga/nvim-dap-ui",
-        config = function()
-            require("omega.modules.langs.debugging").configs["nvim-dap-ui"]()
-        end,
-    },
     {
         "danymat/neogen",
         config = function()
@@ -150,7 +124,9 @@ return {
     },
     {
         dir = "~/neovim_plugins/tmpfile.nvim/",
-        config = true,
+        config = function()
+            require("tmpfile").setup()
+        end,
         cmd = "Tmp",
     },
     {
@@ -160,4 +136,5 @@ return {
     {
         "LunarVim/lunar.nvim",
     },
+    { "folke/tokyonight.nvim", enbaled = false },
 }

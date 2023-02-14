@@ -68,4 +68,4 @@ require("neodev").setup({
     runtime_path = runtime_path_completion,
     lspconfig = sumneko_lua_server,
 })
-require("lspconfig")["sumneko_lua"].setup(sumneko_lua_server)
+require("lspconfig")["lua_ls"].setup(sumneko_lua_server)

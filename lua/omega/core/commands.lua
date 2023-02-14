@@ -149,4 +149,29 @@ end, {
     nargs = "*",
 })
 
+add_cmd("Check", function()
+    local bufnr = 0
+    local source = vim.treesitter.get_parser(bufnr, "lua"):parse()[1]:root()
+    local query = vim.treesitter.query.parse_query("lua", "(identifier)@match")
+    local names = {}
+    local nodes = {}
+    local index = 1
+    for _, node in query:iter_captures(source, bufnr) do
+        index = index + 1
+        local name = vim.treesitter.query.get_node_text(node, 0, {})
+        if name then
+            if not names.name then
+                names[name] = {
+                    amount = 0,
+                    nodes = {},
+                }
+            end
+            names[name].amount = names[name].amount + 1
+            table.insert(names[name].nodes, index)
+            nodes[index] = node
+        end
+    end
+    vim.pretty_print(names)
+end, {})
+
 add_cmd("CacheOmega", function() end, {})

@@ -41,8 +41,8 @@ function colors.create_colorscheme()
 end
 
 -- credits to https://github.com/EdenEast/nightfox.nvim
-function colors.compile_theme()
-    vim.g.colors_name = require("omega.config").values.colorscheme
+function colors.compile_theme(theme)
+    vim.g.colors_name = theme or require("omega.config").values.colorscheme
     package.loaded["omega.colors.highlights"] = nil
     local highlights = require("omega.colors.highlights")
     local lines = {
@@ -114,6 +114,7 @@ colors.init = function(theme, reload)
     package.loaded["omega.colors.highlights" or false] = nil
     package.loaded["omega.colors.highlights"] = nil
     package.loaded["omega.colors.custom"] = nil
+    require("omega.colors").compile_theme(theme)
     loadfile(vim.fn.stdpath("cache") .. "/omega/highlights")()
 
     require("omega.colors.custom")

@@ -267,42 +267,6 @@ end, { noremap = true, expr = true })
 wk.register({
     d = {
         name = " Debug",
-        s = {
-            name = "Step",
-            o = {
-                function()
-                    require("dap").step_out()
-                end,
-                "Out",
-            },
-            O = {
-                function()
-                    require("dap").step_over()
-                end,
-                "Over",
-            },
-            i = {
-                function()
-                    require("dap").step_into()
-                end,
-                "Into",
-            },
-        },
-        b = {
-            name = "Breakpoint",
-            t = {
-                function()
-                    require("dap").toggle_breakpoint()
-                end,
-                "Toggle",
-            },
-        },
-        R = {
-            function()
-                require("dap").run_to_cursor()
-            end,
-            "Run to cursor",
-        },
     },
 }, {
     mode = "n",
@@ -344,6 +308,14 @@ wk.register({
                 require("gitsigns").blame_line()
             end,
             "Blame Line",
+        },
+        B = {
+            function()
+                vim.ui.input({ prompt = "Branch Name: " }, function(input)
+                    vim.cmd("!git checkout -b " .. input)
+                end)
+            end,
+            "Switch Branch",
         },
         h = {
             name = "Hunk",

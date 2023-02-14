@@ -400,11 +400,6 @@ cmp_module.config = function()
             end,
         }
     end
-    require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-        sources = {
-            { name = "dap" },
-        },
-    })
     cmp.setup(cmp_config)
 
     vim.api.nvim_set_hl(0, "NormalFloat", {})
