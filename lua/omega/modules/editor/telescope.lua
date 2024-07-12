@@ -125,28 +125,28 @@ telescope.keys = {
         function()
             require("telescope.builtin").find_files()
         end,
-        desc = " Find file",
+        desc = "Find file",
     },
     {
         "<leader>/",
         function()
             require("telescope.builtin").live_grep()
         end,
-        desc = " Live Grep",
+        desc = "Live Grep",
     },
     {
         "<leader>.",
         function()
             require("telescope").extensions.file_browser.file_browser()
         end,
-        desc = " File Browser",
+        desc = "File Browser",
     },
     {
         "<leader>hh",
         function()
             require("telescope.builtin").help_tags()
         end,
-        desc = " Help tags",
+        desc = "Help tags",
     },
     {
         "<c-s>",
@@ -160,7 +160,7 @@ telescope.keys = {
         function()
             require("telescope.builtin").buffers()
         end,
-        desc = " Buffers",
+        desc = "Buffers",
     },
 }
 

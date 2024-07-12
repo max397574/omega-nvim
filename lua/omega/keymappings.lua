@@ -2,7 +2,7 @@ local map = vim.keymap.set
 
 map("i", "<m-cr>", "<cr>", { desc = "Return" })
 
-map({ "v", "n" }, "<leader>y", '"+y', { silent = true, desc = " Yank to clipboard" })
+map({ "v", "n" }, "<leader>y", '"+y', { silent = true, desc = "Yank to clipboard" })
 
 map("n", "<esc>", function()
     pcall(require("notify").dismiss)
@@ -11,7 +11,7 @@ end, { silent = true, desc = "Clear highlight from search and close notification
 
 map("n", "<leader>W", function()
     vim.cmd.w()
-end, { desc = "󰆓 Write" })
+end, { desc = "Save" })
 
 map("n", "<leader>io", function()
     local lines = {}
@@ -19,7 +19,7 @@ map("n", "<leader>io", function()
         table.insert(lines, "")
     end
     vim.api.nvim_buf_set_lines(0, vim.api.nvim_win_get_cursor(0)[1], vim.api.nvim_win_get_cursor(0)[1], false, lines)
-end, { desc = " Insert empty line below" })
+end, { desc = "Insert empty line below" })
 
 map("n", "<leader>iO", function()
     local lines = {}
@@ -33,12 +33,12 @@ map("n", "<leader>iO", function()
         false,
         lines
     )
-end, { desc = " Insert empty line above" })
+end, { desc = "Insert empty line above" })
 
-map("n", "<leader>ii", "i <esc>l", { desc = " Insert space before", noremap = true })
-map("n", "<leader>ia", "a <esc>h", { desc = " Insert space after", noremap = true })
+map("n", "<leader>ii", "i <esc>l", { desc = "Insert space before", noremap = true })
+map("n", "<leader>ia", "a <esc>h", { desc = "Insert space after", noremap = true })
 
-map("n", "<leader>p", '"0p', { desc = " Paste Last Yank", noremap = true })
+map("n", "<leader>p", '"0p', { desc = "Paste Last Yank", noremap = true })
 
 map("n", "0", function()
     local line = vim.fn.getline(vim.fn.line(".") --[[@as string]]) --[[@as string]]
@@ -64,35 +64,35 @@ end, {
 
 map("n", "<leader>Ls", function()
     require("lazy").sync()
-end, { desc = "󰏗 Lazy Sync" })
+end, { desc = "Lazy Sync" })
 
 map("n", "<leader>LS", function()
     require("lazy").show()
-end, { desc = "󰏗 Lazy Show" })
+end, { desc = "Lazy Show" })
 
 map("n", "<leader>Lp", function()
     require("lazy").profile()
-end, { desc = "󰏗 Lazy Profile" })
+end, { desc = "Lazy Profile" })
 
 map("n", "<leader>Li", function()
     require("lazy").install()
-end, { desc = "󰏗 Lazy Install" })
+end, { desc = "Lazy Install" })
 
 map("n", "<leader>Lu", function()
     require("lazy").update()
-end, { desc = "󰏗 Lazy Update" })
+end, { desc = "Lazy Update" })
 
 map("n", "<leader>Ll", function()
     require("lazy").log()
-end, { desc = "󰏗 Lazy Log" })
+end, { desc = "Lazy Log" })
 
 map("n", "<leader>Ld", function()
     require("lazy").debug()
-end, { desc = "󰏗 Lazy Debug" })
+end, { desc = "Lazy Debug" })
 
 map("n", "<leader>Lh", function()
     require("lazy").help()
-end, { desc = "󰏗 Lazy Help" })
+end, { desc = "Lazy Help" })
 
 map("n", "<leader>qn", function()
     vim.cmd.cnext()
@@ -116,34 +116,34 @@ end, { noremap = true, silent = true, desc = "Open helpfile of word under cursor
 
 map("n", "<leader>bn", function()
     require("omega.modules.ui.tabline").next_buf()
-end, { desc = " Buffer Next" })
+end, { desc = "Buffer Next" })
 
 map("n", "<leader>bp", function()
     require("omega.modules.ui.tabline").prev_buf()
-end, { desc = " Buffer Previous" })
+end, { desc = "Buffer Previous" })
 
 map("n", "<leader>bd", function()
     require("omega.modules.ui.tabline").close_buf(0)
-end, { desc = " Buffer Close" })
+end, { desc = "Buffer Close" })
 
 map("n", "<leader>tN", function()
     vim.cmd.tabnew()
-end, { desc = "  Tab New" })
+end, { desc = "Tab New" })
 
 map("n", "<leader>tr", function()
     require("omega.modules.ui.tabline").rename_tab()
-end, { desc = "  Tab Rename" })
+end, { desc = "Tab Rename" })
 
 map("n", "<leader>tn", function()
     vim.cmd.tabnext()
-end, { desc = "  Tab Next" })
+end, { desc = "Tab Next" })
 
 map("n", "<leader>tp", function()
     vim.cmd.tabprevious()
-end, { desc = "  Tab Previous" })
+end, { desc = "Tab Previous" })
 
 map("n", "<leader>td", function()
     require("omega.modules.ui.tabline").close_tab()
-end, { desc = "  Tab Close" })
+end, { desc = "Tab Close" })
 
 map("i", "<C-U>", "<ESC>b~hea", { silent = true })

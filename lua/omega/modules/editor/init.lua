@@ -98,4 +98,5 @@ return {
     require("omega.modules.editor.snippets"),
     require("omega.modules.editor.telescope"),
     require("omega.modules.editor.treesitter"),
+    require("omega.modules.editor.which_key"),
 }
