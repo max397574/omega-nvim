@@ -49,3 +49,25 @@ vim.api.nvim_create_user_command("ViewNorgSpec", function()
         end
     end, { buffer = true })
 end, { desc = "View Norg Specification" })
+
+vim.api.nvim_create_user_command("TypstWatch", function()
+    local job = vim.system({
+        "typst",
+        "watch",
+        ---@diagnostic disable-next-line: assign-type-mismatch
+        vim.fn.expand("%"),
+        "--open",
+        "/Applications/Skim.app/",
+    })
+    vim.api.nvim_buf_create_user_command(0, "TypstStop", function()
+        job:kill(9)
+        vim.api.nvim_buf_del_user_command(0, "TypstStop")
+    end, {})
+
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+        callback = function()
+            job:kill(9)
+            vim.api.nvim_buf_del_user_command(0, "TypstStop")
+        end,
+    })
+end, {})

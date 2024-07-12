@@ -200,3 +200,10 @@ autocmd("FileType", {
     end,
     desc = "Set formatoptions",
 })
+
+autocmd("User", {
+    pattern = "OmegaNewTheme",
+    callback = function(args)
+        require("colorscheme_switcher").new_scheme(args.data)
+    end,
+})
