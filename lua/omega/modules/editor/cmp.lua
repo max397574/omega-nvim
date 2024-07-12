@@ -1,6 +1,6 @@
 local cmp_module = {
     "max397574/nvim-cmp",
-    enabled = not _G.Enable_neocomplete,
+    enabled = require("omega.config").completion == "cmp",
     event = "InsertEnter",
     dependencies = {
         {
@@ -14,7 +14,7 @@ local cmp_module = {
         },
     },
     opts = function()
-        local config = require("omega.custom.config")
+        local config = require("omega.config")
         local luasnip = require("luasnip")
         local cmp = require("cmp")
         local kind = require("omega.modules.lsp.kind")
@@ -85,7 +85,7 @@ local cmp_module = {
                     item.menu = item.kind
                     item.menu_hl_group = ("CmpItemKindMenu%s"):format(item.kind)
                     item.padding = " "
-                    item.kind = kind.presets.default[item.kind] or ""
+                    item.kind = kind.icons[item.kind] or ""
                     item.source_hl_group = "CmpSource"
                     item.dup = ({
                         buffer = 1,

@@ -57,5 +57,7 @@ return {
     modules = {
         ---@type "telescope"|"fzf"
         picker = "telescope",
+        ---@type "neocomplete"|"cmp"
+        completion = "neocomplete",
     },
 }

@@ -1,6 +1,6 @@
 return {
     "max397574/neocomplete.nvim",
-    enabled = _G.Enable_neocomplete,
+    enabled = require("omega.config").completion == "neocomplete",
     event = "InsertEnter",
     dependencies = { "max397574/neocomplete-lsp" },
     config = function()
