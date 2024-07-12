@@ -1,6 +1,6 @@
 local lspkind = {}
 
-lspkinda.icons = {
+lspkind.icons = {
     Class = "  ",
     Color = "  ",
     Constant = "  ",
