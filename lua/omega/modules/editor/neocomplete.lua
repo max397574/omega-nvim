@@ -15,14 +15,24 @@ return {
         end)
 
         local luasnip = require("luasnip")
+
         vim.keymap.set("i", "<c-f>", function()
-            if luasnip.choice_active() then
+            if require("neocomplete").api.doc_is_open() then
+                require("neocomplete").api.scroll_docs(4)
+            elseif luasnip.choice_active() then
                 require("luasnip").change_choice(1)
+            else
+                vim.api.nvim_feedkeys(vim.keycode("<c-f>"), "n", false)
             end
         end)
+
         vim.keymap.set("i", "<c-d>", function()
-            if luasnip.choice_active() then
+            if require("neocomplete").api.doc_is_open() then
+                require("neocomplete").api.scroll_docs(-4)
+            elseif luasnip.choice_active() then
                 require("luasnip").change_choice(-1)
+            else
+                vim.api.nvim_feedkeys(vim.keycode("<c-f>"), "n", false)
             end
         end)
 
