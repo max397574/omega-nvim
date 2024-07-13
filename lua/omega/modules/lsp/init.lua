@@ -1,20 +1,4 @@
-local lsp = {
-    "neovim/nvim-lspconfig",
-    event = "BufReadPre",
-    dependencies = {
-        {
-            "mrcjkb/rustaceanvim",
-            lazy = false, -- This plugin is already lazy
-        },
-    },
-    opts = {
-        lua = {
-            plugins = { "neocomplete.nvim" },
-        },
-    },
-}
-
-function lsp.config(_, opts)
+local function lsp_config(_, opts)
     require("omega.modules.lsp.lua").setup(opts.lua)
 
     vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
@@ -102,5 +86,25 @@ function lsp.config(_, opts)
         severity_sort = true,
     })
 end
+
+local lsp = {
+    {
+        "neovim/nvim-lspconfig",
+        event = "BufReadPre",
+        config = lsp_config,
+        dependencies = {
+            {
+                "mrcjkb/rustaceanvim",
+                lazy = false, -- This plugin is already lazy
+            },
+        },
+        opts = {
+            lua = {
+                plugins = { "neocomplete.nvim" },
+            },
+        },
+    },
+    require("omega.modules.lsp.lua_types"),
+}
 
 return lsp
