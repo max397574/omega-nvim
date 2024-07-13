@@ -2,6 +2,9 @@ local which_key = {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
+        win = {
+            no_overlap = false,
+        },
         preset = "modern",
         icons = {
             rules = {
