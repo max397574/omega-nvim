@@ -23,4 +23,5 @@ return {
             },
         },
     },
+    { "max397574/tmpfile.nvim" },
 }
