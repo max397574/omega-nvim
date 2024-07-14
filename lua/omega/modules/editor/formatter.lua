@@ -6,6 +6,7 @@ return {
             yaml = { "yamlfmt" },
             typst = { "typstfmt" },
             rust = { "rustfmt" },
+            python = { "ruff_format" },
         },
     },
     init = function()

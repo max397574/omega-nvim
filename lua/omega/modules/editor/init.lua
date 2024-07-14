@@ -92,9 +92,10 @@ return {
             vim.api.nvim_set_hl(0, "NvimSurroundHighlight", { link = "CurSearch" })
         end,
     },
+    { "MagicDuck/grug-far.nvim", opts = {}, cmd = { "GrugFar" } },
     require("omega.modules.editor.formatter"),
     require("omega.modules.editor.cmp"),
-    require("omega.modules.editor.neocomplete"),
+    require("omega.modules.editor.care"),
     require("omega.modules.editor.snippets"),
     require("omega.modules.editor.telescope"),
     require("omega.modules.editor.treesitter"),

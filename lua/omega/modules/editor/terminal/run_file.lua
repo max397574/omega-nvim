@@ -1,7 +1,7 @@
 local exp = vim.fn.expand
 
 local files = {
-    python = "python3 -i " .. exp("%:t"),
+    python = "python " .. exp("%:t"),
     julia = "julia " .. exp("%:t"),
     lua = "lua " .. exp("%:t"),
     applescript = "osascript " .. exp("%:t"),

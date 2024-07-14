@@ -5,11 +5,10 @@ local telescope = {
     cmd = "Telescope",
 }
 
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
-
 ---@param prompt_bufnr number
 local function copy_file_name(prompt_bufnr)
+    local actions = require("telescope.actions")
+    local action_state = require("telescope.actions.state")
     local picker = action_state.get_current_picker(prompt_bufnr)
     local entries = picker:get_multi_selection()
     vim.fn.setreg("+", entries[1][1])

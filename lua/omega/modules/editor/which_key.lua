@@ -6,6 +6,7 @@ local which_key = {
             no_overlap = false,
         },
         preset = "modern",
+        show_help = false,
         icons = {
             rules = {
                 { pattern = "paste", icon = "", hl = "@string" },

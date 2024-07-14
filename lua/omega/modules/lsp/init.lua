@@ -1,5 +1,11 @@
 local function lsp_config(_, opts)
+    local function on_attach(client, bufnr)
+        require("omega.modules.lsp.on_attach").setup(client, bufnr)
+    end
+
     require("omega.modules.lsp.lua").setup(opts.lua)
+    require("omega.modules.lsp.python")
+    require("lspconfig").tailwindcss.setup({ on_attach = on_attach })
 
     vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
 
@@ -90,17 +96,26 @@ end
 local lsp = {
     {
         "neovim/nvim-lspconfig",
-        event = "BufReadPre",
+        lazy = false,
         config = lsp_config,
         dependencies = {
             {
                 "mrcjkb/rustaceanvim",
                 lazy = false, -- This plugin is already lazy
+                init = function()
+                    vim.g.rustaceanvim = {
+                        server = {
+                            on_attach = function(client, bufnr)
+                                require("omega.modules.lsp.on_attach").setup(client, bufnr)
+                            end,
+                        },
+                    }
+                end,
             },
         },
         opts = {
             lua = {
-                plugins = { "neocomplete.nvim" },
+                plugins = { "care.nvim" },
             },
         },
     },
