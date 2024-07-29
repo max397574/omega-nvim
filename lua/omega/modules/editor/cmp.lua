@@ -87,11 +87,11 @@ local cmp_module = {
                     item.padding = " "
                     item.kind = kind.icons[item.kind] or ""
                     item.source_hl_group = "CmpSource"
-                    item.dup = ({
-                        buffer = 1,
-                        path = 1,
-                        nvim_lsp = 0,
-                    })[entry.source.name] or 0
+                    -- item.dup = ({
+                    --     buffer = 1,
+                    --     path = 1,
+                    --     nvim_lsp = 0,
+                    -- })[entry.source.name] or 0
                     item.source = entry.source.name
                     if item.abbr == "" then
                         item.dup = 1

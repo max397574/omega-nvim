@@ -71,3 +71,26 @@ vim.api.nvim_create_user_command("TypstWatch", function()
         end,
     })
 end, {})
+
+vim.api.nvim_create_user_command("HideCursor", function()
+    local highlights = { "LspReferenceText", "LspReferenceRead", "LspReferenceWrite" }
+    local highlight_definitions = {}
+    for _, highlight in ipairs(highlights) do
+        highlight_definitions[highlight] = vim.api.nvim_get_hl(0, { name = highlight })
+        vim.api.nvim_set_hl(0, highlight, {})
+    end
+    local old_cursor = vim.go.guicursor
+    vim.api.nvim_set_hl(0, "HiddenCursor", { blend = 100, nocombine = true })
+    vim.go.guicursor = "a:HiddenCursor"
+    vim.o.relativenumber = false
+    vim.o.cursorline = false
+    vim.api.nvim_create_user_command("ShowCursor", function()
+        vim.api.nvim_del_user_command("ShowCursor")
+        for highlight, def in pairs(highlight_definitions) do
+            vim.api.nvim_set_hl(0, highlight, def)
+        end
+        vim.go.guicursor = old_cursor
+        vim.o.cursorline = true
+        vim.o.relativenumber = true
+    end, {})
+end, {})

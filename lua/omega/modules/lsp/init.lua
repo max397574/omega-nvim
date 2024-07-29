@@ -6,6 +6,7 @@ local function lsp_config(_, opts)
     require("omega.modules.lsp.lua").setup(opts.lua)
     require("omega.modules.lsp.python")
     require("lspconfig").tailwindcss.setup({ on_attach = on_attach })
+    require("lspconfig").typst_lsp.setup({ on_attach = on_attach })
 
     vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
 

@@ -26,6 +26,7 @@ local snippets = {
 
 function snippets.config(_, opts)
     require("luasnip").setup(opts)
+    require("omega.modules.editor.snippets.lua")
     local snip_expand = require("luasnip").snip_expand
     require("luasnip").snip_expand = function(...)
         vim.o.ul = vim.o.ul

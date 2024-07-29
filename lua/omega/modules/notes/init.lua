@@ -52,7 +52,7 @@ return {
             },
         },
         dependencies = {
-            { "nvim-neorg/neorg-telescope" },
+            { "nvim-neorg/neorg-telescope", dev = true },
             { "max397574/neorg-contexts" },
         },
         config = function(_, opts)

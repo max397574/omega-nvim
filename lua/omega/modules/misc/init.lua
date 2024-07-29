@@ -24,4 +24,27 @@ return {
         },
     },
     { "max397574/tmpfile.nvim" },
+    {
+        "ruifm/gitlinker.nvim",
+        opts = {
+            mappings = nil,
+        },
+        keys = {
+            {
+                "<leader>gy",
+                function()
+                    require("gitlinker").get_buf_range_url("n", {})
+                end,
+                desc = "Git Copy Permalink",
+            },
+            {
+                "<leader>gy",
+                function()
+                    require("gitlinker").get_buf_range_url("v", {})
+                end,
+                mode = "x",
+                desc = "Git Copy Permalink",
+            },
+        },
+    },
 }

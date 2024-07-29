@@ -38,6 +38,9 @@ function which_key.config(_, opts)
         { "<leader>v", desc = "View" },
         { "<leader>x", desc = "Error" },
         { "<leader>q", desc = "Quickfix" },
+        { "<leader>g", desc = "Git" },
+        { "<leader>f", desc = "Find" },
+        { "<leader>h", desc = "Help" },
     })
 end
 

@@ -7,6 +7,7 @@ return {
             typst = { "typstfmt" },
             rust = { "rustfmt" },
             python = { "ruff_format" },
+            markdown = { "prettier" },
         },
     },
     init = function()
