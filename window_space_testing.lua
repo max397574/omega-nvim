@@ -2,15 +2,15 @@ local buf = vim.api.nvim_create_buf(false, true)
 local winnr = vim.api.nvim_open_win(buf, true, {
     relative = "cursor",
     border = "rounded",
-    width = 5,
-    height = 6,
+    width = 115,
+    height = 4,
     row = 0,
     col = 0,
     style = "minimal",
 })
 local height = vim.api.nvim_win_get_height(winnr)
 local width = vim.api.nvim_win_get_width(winnr)
-vim.api.nvim_win_set_height(winnr, 10)
+-- vim.api.nvim_win_set_height(winnr, 10)
 print(height, width)
 vim.wo[winnr].winhighlight = "NormalFloat:Error"
 --  1234567

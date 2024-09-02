@@ -84,7 +84,9 @@ telescope.opts = {
             find_command = {
                 "rg", "-g", "!.git", "-g", "!.jj", "-g", "!*.aux", "-g", "!*.toc", "-g", "!*.out", "-g", "!*.log", "-g", "!*.png",
                 "-g", "!*.jpg", "-g", "!*.jpeg", "-g", "!.repro", "-g", "!*.idx", "-g", "!*.ind", "-g", "!*.ilg", "-g", "!*.fls",
-                "-g", "!*.pygtex", "-g", "!*.pygstyle", "-g", "!*.synctex.gz", "-g", "!*.fdb_latexmk", "-g", "!build/", "-g", "!node_modules/",
+                "-g", "!*.pygtex", "-g", "!*.pygstyle", "-g", "!*.synctex.gz", "-g", "!*.fdb_latexmk",
+                -- "-g", "!build/",
+                "-g", "!node_modules/",
                 "-g", "!.docusaurus/", "-g", "!target/", "-g", "!.DS_Store", "--files", "--hidden", "--no-ignore", "--smart-case",
             },
         },

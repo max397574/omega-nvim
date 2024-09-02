@@ -1,6 +1,7 @@
 local which_key = {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    ---@type wk.Opts
     opts = {
         win = {
             no_overlap = false,
