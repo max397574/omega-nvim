@@ -2,6 +2,8 @@ local function on_attach(client, bufnr)
     require("omega.modules.lsp.on_attach").setup(client, bufnr)
 end
 
+local root_pattern = require("omega.modules.lsp.util").root_pattern
+
 local settings = {
     on_attach = on_attach,
     flags = {
@@ -49,40 +51,47 @@ local settings = {
     },
 }
 
-local function setup(opts)
-    -- Taken and adapted from https://www.github.com/folke/neodev.nvim (Apache License 2.0)
-    local libraries = {}
+local root_files = {
+    ".luarc.json",
+    ".luarc.jsonc",
+    ".luacheckrc",
+    ".stylua.toml",
+    "stylua.toml",
+    "selene.toml",
+    "selene.yml",
+}
 
-    local function add(lib, filter)
-        ---@diagnostic disable-next-line: param-type-mismatch
-        for _, p in ipairs(vim.fn.expand(lib .. "/lua", false, true)) do
-            local plugin_name = vim.fn.fnamemodify(p, ":h:t")
-            p = vim.loop.fs_realpath(p)
-            if p and (not filter or filter[plugin_name]) then
-                table.insert(libraries, p)
+local function setup()
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "lua",
+        callback = function(args)
+            local function root_dir(fname)
+                local root = root_pattern(unpack(root_files))(fname)
+                if root and root ~= vim.env.HOME then
+                    return root
+                end
+                root = root_pattern("lua/")(fname)
+                if root then
+                    return root
+                end
+                return vim.fs.find(
+                    ".git",
+                    { type = "directory", path = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf)) }
+                ) or vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
             end
-        end
-    end
-
-    add("$VIMRUNTIME")
-
-    if opts.plugins then
-        ---@type table<string, boolean>
-        local filter
-        if type(opts.plugins) == "table" then
-            filter = {}
-            for _, p in pairs(opts.plugins) do
-                filter[p] = true
-            end
-        end
-        for _, plugin in ipairs(require("lazy").plugins()) do
-            add(plugin.dir, filter)
-        end
-    end
-
-    settings.settings.Lua.workspace.library = vim.fn.extend(settings.settings.Lua.workspace.library, libraries)
-
-    require("lspconfig")["lua_ls"].setup(settings)
+            vim.lsp.start({
+                name = "lua_ls",
+                cmd = { "lua-language-server" },
+                root_dir = root_dir(vim.api.nvim_buf_get_name(args.buf)),
+                autostart = true,
+                single_file_support = true,
+                log_level = vim.lsp.protocol.MessageType.Warning,
+                -- settings = {
+                --     exportPdf = "never",
+                -- },
+            })
+        end,
+    })
 end
 
 return { setup = setup }

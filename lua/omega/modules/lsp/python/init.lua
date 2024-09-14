@@ -4,8 +4,9 @@ local function on_attach(client, bufnr)
     require("omega.modules.lsp.on_attach").setup(client, bufnr)
 end
 
-local util = require("lspconfig.util")
 local py_utils = require("omega.modules.lsp.python.utils")
+
+local root_pattern = require("omega.modules.lsp.util").root_pattern
 
 local basedpyright_root_files = {
     "pyproject.toml",
@@ -29,7 +30,7 @@ local ruff_root_files = {
 local servers = {
     ruff = {
         root_dir = function(fname)
-            return util.root_pattern(unpack(ruff_root_files))(fname)
+            return root_pattern(unpack(ruff_root_files))(fname)
         end,
         on_attach = on_attach,
         init_options = {
@@ -45,7 +46,7 @@ local servers = {
     },
     basedpyright = {
         root_dir = function(fname)
-            return util.root_pattern(unpack(basedpyright_root_files))(fname)
+            return root_pattern(unpack(basedpyright_root_files))(fname)
         end,
         on_attach = on_attach,
         settings = {
@@ -65,9 +66,10 @@ local servers = {
     },
 }
 
-for server, config in pairs(servers) do
-    require("lspconfig")[server].setup(config)
-end
+-- TODO: readd
+-- for server, config in pairs(servers) do
+--     require("lspconfig")[server].setup(config)
+-- end
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),

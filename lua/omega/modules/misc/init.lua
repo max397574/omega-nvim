@@ -1,5 +1,19 @@
 return {
     { "elihunter173/dirbuf.nvim", config = true, cmd = { "Dirbuf" } },
+    { "chrisgrieser/nvim-rip-substitute", opts = {}, lazy = false },
+    {
+        "HakonHarnes/img-clip.nvim",
+        opts = { default = { dir_path = "imgs" } },
+        keys = {
+            {
+                "<c-p>",
+                function()
+                    require("img-clip").paste_image()
+                end,
+                desc = "Paste Image",
+            },
+        },
+    },
     { "max397574/colorscheme_switcher" },
     {
         "xiyaowong/nvim-colorizer.lua",

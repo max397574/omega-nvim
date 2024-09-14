@@ -4,7 +4,7 @@ return {
         formatters_by_ft = {
             lua = { "stylua" },
             yaml = { "yamlfmt" },
-            typst = { "typstfmt" },
+            typst = { "typstfmt", "typstyle" },
             rust = { "rustfmt" },
             python = { "ruff_format" },
             markdown = { "prettier" },

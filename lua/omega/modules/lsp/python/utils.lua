@@ -1,7 +1,5 @@
 local M = {}
 
-local path = require("lspconfig.util").path
-
 local function get_pipenv_dir()
     return vim.fn.trim(vim.fn.system("pipenv --venv"))
 end
@@ -32,19 +30,19 @@ local function get_python_dir(workspace)
         return vim.fn.trim(vim.fn.system("which python"))
     end
 
-    local poetry_match = vim.fn.glob(path.join(workspace, "poetry.lock"))
+    local poetry_match = vim.fn.glob(vim.fs.joinpath(workspace, "poetry.lock"))
     if poetry_match ~= "" then
         return get_poetry_dir()
     end
 
-    local pipenv_match = vim.fn.glob(path.join(workspace, "Pipfile.lock"))
+    local pipenv_match = vim.fn.glob(vim.fs.joinpath(workspace, "Pipfile.lock"))
     if pipenv_match ~= "" then
         return get_pipenv_dir()
     end
 
     -- Find and use virtualenv in workspace directory.
     for _, pattern in ipairs({ "*", ".*" }) do
-        local match = vim.fn.glob(path.join(workspace, pattern, "pyvenv.cfg"))
+        local match = vim.fn.glob(vim.fs.joinpath(workspace, pattern, "pyvenv.cfg"))
         if match ~= "" then
             return path.dirname(match)
         end
@@ -57,7 +55,7 @@ local _virtual_env = ""
 local _package = ""
 
 local function py_bin_dir()
-    return path.join(_virtual_env, "bin:")
+    return vim.fs.joinpath(_virtual_env, "bin:")
 end
 
 M.in_any_env = function()
@@ -84,13 +82,13 @@ end
 
 -- PEP 582 support
 M.pep582 = function(root_dir)
-    local pdm_match = vim.fn.glob(path.join(root_dir, "pdm.lock"))
+    local pdm_match = vim.fn.glob(vim.fs.joinpath(root_dir, "pdm.lock"))
     if pdm_match ~= "" then
         _package = get_pdm_package()
     end
 
     if _package ~= "" then
-        return path.join(_package, "lib")
+        return vim.fs.joinpath(_package, "lib")
     end
 end
 

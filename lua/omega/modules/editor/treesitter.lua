@@ -11,26 +11,8 @@ local treesitter = {
     },
 }
 
-treesitter.dependencies = {
-    { "nvim-treesitter/nvim-treesitter-textobjects" },
-}
-
 treesitter.opts = {
     highlight = { enable = true },
-    textobjects = {
-        select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-                -- You can use the capture groups defined in textobjects.scm
-                ["af"] = "@function.outer",
-                ["if"] = "@function.inner",
-                ["ac"] = "@class.outer",
-                ["ic"] = "@class.inner",
-                ["as"] = "@scope",
-            },
-        },
-    },
 }
 
 function treesitter.config(_, opts)
@@ -40,13 +22,13 @@ end
 
 function treesitter.init()
     if not vim.tbl_contains({ "" }, vim.fn.expand("%")) then
-        require("lazy").load({ plugins = { "nvim-treesitter", "nvim-treesitter-textobjects" } })
+        require("lazy").load({ plugins = { "nvim-treesitter" } })
     else
         vim.api.nvim_create_autocmd({ "BufRead", "BufWinEnter", "BufNewFile" }, {
             callback = function()
                 local file = vim.fn.expand("%")
                 if not vim.tbl_contains({ "" }, file) then
-                    require("lazy").load({ plugins = { "nvim-treesitter", "nvim-treesitter-textobjects" } })
+                    require("lazy").load({ plugins = { "nvim-treesitter" } })
                 end
             end,
         })

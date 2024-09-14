@@ -8,23 +8,13 @@ return {
                     j = { j = false },
                 },
                 i = {
-                    h = {
-                        h = "<esc>0i",
-                    },
                     [" "] = {
                         ["<TAB>"] = function()
                             vim.defer_fn(function()
                                 vim.o.ul = vim.o.ul
-                                require("luasnip").expand_or_jump()
+                                require("luasnip").expand()
                             end, 1)
                         end,
-                        ["<S-TAB>"] = function()
-                            vim.defer_fn(function()
-                                vim.o.ul = vim.o.ul
-                                require("luasnip").jump(-1)
-                            end, 1)
-                        end,
-                        [" "] = "<left>",
                     },
                 },
             },

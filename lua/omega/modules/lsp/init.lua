@@ -1,12 +1,18 @@
-local function lsp_config(_, opts)
+local function lsp_config()
     local function on_attach(client, bufnr)
         require("omega.modules.lsp.on_attach").setup(client, bufnr)
     end
 
-    require("omega.modules.lsp.lua").setup(opts.lua)
+    require("omega.modules.lsp.lua").setup()
     require("omega.modules.lsp.python")
-    require("lspconfig").tailwindcss.setup({ on_attach = on_attach })
-    require("lspconfig").typst_lsp.setup({ on_attach = on_attach })
+
+    vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+            on_attach(vim.lsp.get_client_by_id(args.data.client_id), args.buf)
+        end,
+        group = vim.api.nvim_create_augroup("lsp-attach", {}),
+    })
+    -- require("lspconfig").tailwindcss.setup({ on_attach = on_attach })
 
     vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
 
@@ -18,6 +24,21 @@ local function lsp_config(_, opts)
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = require("omega.utils").border(),
         title = "Signature",
+    })
+
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "typst",
+        callback = function(args)
+            vim.lsp.start({
+                name = "typst-lsp",
+                cmd = { "typst-lsp" },
+                root_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf)),
+                autostart = true,
+                settings = {
+                    exportPdf = "never",
+                },
+            })
+        end,
     })
 
     -- jump to the first definition automatically if two definitions are on same line (for luals `local x = function()`)
@@ -94,31 +115,25 @@ local function lsp_config(_, opts)
     })
 end
 
+lsp_config()
+
 local lsp = {
     {
-        "neovim/nvim-lspconfig",
-        lazy = false,
-        config = lsp_config,
-        dependencies = {
-            {
-                "mrcjkb/rustaceanvim",
-                lazy = false, -- This plugin is already lazy
-                init = function()
-                    vim.g.rustaceanvim = {
-                        server = {
-                            on_attach = function(client, bufnr)
-                                require("omega.modules.lsp.on_attach").setup(client, bufnr)
-                            end,
-                        },
-                    }
-                end,
-            },
-        },
-        opts = {
-            lua = {
-                plugins = { "care.nvim" },
-            },
-        },
+        "mrcjkb/rustaceanvim",
+        lazy = false, -- This plugin is already lazy
+        init = function()
+            vim.g.rustaceanvim = {
+                server = {
+                    on_attach = function(client, bufnr)
+                        require("omega.modules.lsp.on_attach").setup(client, bufnr)
+                    end,
+                },
+            }
+        end,
+    },
+    {
+        "max397574/typst-tools.nvim",
+        ft = "typst",
     },
     require("omega.modules.lsp.lua_types"),
 }
