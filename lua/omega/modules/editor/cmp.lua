@@ -79,27 +79,27 @@ local cmp_module = {
                     max_height = 12,
                 },
             },
-            formatting = {
-                fields = fields,
-                format = function(entry, item)
-                    item.menu = item.kind
-                    item.menu_hl_group = ("CmpItemKindMenu%s"):format(item.kind)
-                    item.padding = " "
-                    item.kind = kind.icons[item.kind] or ""
-                    item.source_hl_group = "CmpSource"
-                    -- item.dup = ({
-                    --     buffer = 1,
-                    --     path = 1,
-                    --     nvim_lsp = 0,
-                    -- })[entry.source.name] or 0
-                    item.source = entry.source.name
-                    if item.abbr == "" then
-                        item.dup = 1
-                    end
-
-                    return item
-                end,
-            },
+            -- formatting = {
+            --     fields = fields,
+            --     format = function(entry, item)
+            --         item.menu = item.kind
+            --         item.menu_hl_group = ("CmpItemKindMenu%s"):format(item.kind)
+            --         item.padding = " "
+            --         item.kind = kind.icons[item.kind] or ""
+            --         item.source_hl_group = "CmpSource"
+            --         -- item.dup = ({
+            --         --     buffer = 1,
+            --         --     path = 1,
+            --         --     nvim_lsp = 0,
+            --         -- })[entry.source.name] or 0
+            --         item.source = entry.source.name
+            --         if item.abbr == "" then
+            --             item.dup = 1
+            --         end
+            --
+            --         return item
+            --     end,
+            -- },
             mapping = {
                 ["<C-f>"] = cmp.mapping(function(fallback)
                     if cmp.visible() and cmp.get_selected_entry() then

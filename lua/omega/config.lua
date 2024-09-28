@@ -31,10 +31,10 @@ return {
                 },
             },
         },
-        cmp = {
+        completion = {
             --- What type of border to add
-            ---@type "half"|"none"|"rounded"
-            border = "half",
+            ---@type "half"|"none"|"rounded"|"up_to_edge"
+            border = "up_to_edge",
             --- How the icons should look
             ---@type "blended"|"fg_colored"
             icons = "blended",

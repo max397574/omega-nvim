@@ -7,6 +7,9 @@ return {
                 t = {
                     j = { j = false },
                 },
+                v = {
+                    j = { k = false },
+                },
                 i = {
                     [" "] = {
                         ["<TAB>"] = function()
@@ -103,6 +106,7 @@ return {
         end,
     },
     { "MagicDuck/grug-far.nvim", opts = {}, cmd = { "GrugFar" } },
+    require("omega.modules.editor.ki"),
     require("omega.modules.editor.formatter"),
     require("omega.modules.editor.cmp"),
     require("omega.modules.editor.care"),

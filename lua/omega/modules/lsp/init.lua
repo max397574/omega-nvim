@@ -3,8 +3,45 @@ local function lsp_config()
         require("omega.modules.lsp.on_attach").setup(client, bufnr)
     end
 
+    local root_pattern = require("omega.modules.lsp.util").root_pattern
+
     require("omega.modules.lsp.lua").setup()
     require("omega.modules.lsp.python")
+
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "html",
+        callback = function(args)
+            local root_files = {
+                "tailwind.config.js",
+                "tailwind.config.cjs",
+                "tailwind.config.mjs",
+                "tailwind.config.ts",
+                "postcss.config.js",
+                "postcss.config.cjs",
+                "postcss.config.mjs",
+                "postcss.config.ts",
+            }
+            local function root_dir(fname)
+                local root = root_pattern(unpack(root_files))(fname)
+                if root and root ~= vim.env.HOME then
+                    return root
+                end
+                return vim.fs.find(
+                    ".git",
+                    { type = "directory", path = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf)) }
+                ) or vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
+            end
+
+            vim.lsp.start({
+                name = "tailwindcss",
+                cmd = { "tailwindcss-language-server", "--stdio" },
+                root_dir = root_dir(vim.api.nvim_buf_get_name(args.buf)),
+                autostart = true,
+                single_file_support = true,
+                log_level = vim.lsp.protocol.MessageType.Warning,
+            })
+        end,
+    })
 
     vim.api.nvim_create_autocmd("LspAttach", {
         callback = function(args)
@@ -24,21 +61,6 @@ local function lsp_config()
     vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = require("omega.utils").border(),
         title = "Signature",
-    })
-
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = "typst",
-        callback = function(args)
-            vim.lsp.start({
-                name = "typst-lsp",
-                cmd = { "typst-lsp" },
-                root_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf)),
-                autostart = true,
-                settings = {
-                    exportPdf = "never",
-                },
-            })
-        end,
     })
 
     -- jump to the first definition automatically if two definitions are on same line (for luals `local x = function()`)
@@ -133,9 +155,37 @@ local lsp = {
     },
     {
         "max397574/typst-tools.nvim",
-        ft = "typst",
+        opts = {
+            lsp = {
+                on_attach = function(client, bufnr)
+                    require("omega.modules.lsp.on_attach").setup(client, bufnr)
+                end,
+            },
+            formatter = {
+                conform_nvim = true,
+                formatters = {
+                    -- "typstfmt",
+                    "typstyle",
+                },
+            },
+        },
+        lazy = false,
     },
     require("omega.modules.lsp.lua_types"),
+    {
+        "chomosuke/typst-preview.nvim",
+        ft = "typst",
+        opts = {
+            open_cmd = 'open -a Firefox "%s"',
+            follow_cursor = false,
+            dependencies_bin = {
+                ["tinymist"] = "tinymist",
+            },
+        },
+        build = function()
+            require("typst-preview").update()
+        end,
+    },
 }
 
 return lsp

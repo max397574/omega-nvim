@@ -31,8 +31,12 @@ local function lsp_highlight_document(client, bufnr)
 end
 
 function on_attach.setup(client, bufnr)
-    if client.server_capabilities.codeActionProvider then
+    if client.server_capabilities.codeActionProvider and client.name ~= "tinymist" then
         require("omega.modules.lsp.available_code_action").setup(bufnr)
+    end
+    if client.name == "tinymist" then
+        -- vim.lsp.semantic_tokens.stop(bufnr, client.id)
+        client.server_capabilities.semanticTokensProvider = nil
     end
     local opts = { noremap = true, silent = true, buffer = bufnr }
     -- TODO: remove default gr mappings after 0.11 release

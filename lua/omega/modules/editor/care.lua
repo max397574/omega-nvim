@@ -2,6 +2,7 @@ return {
     "max397574/care.nvim",
     enabled = require("omega.config").modules.completion == "care",
     lazy = false,
+    -- event = "InsertEnter",
     dependencies = {
         "max397574/care-cmp",
         "max397574/cmp-greek",
@@ -9,84 +10,156 @@ return {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-emoji",
         "saadparwaiz1/cmp_luasnip",
-        "hrsh7th/cmp-path",
+        -- "hrsh7th/cmp-path",
     },
     config = function()
-        local labels = { "q", "w", "r", "t", "z", "i", "o" }
+        local labels = { "q", "w", "r", "t", "z", "i" }
 
-        require("care").setup({
-            ui = {
-                menu = {
-                    max_height = 30,
+        require("care.sources.path").setup()
 
-                    format_entry = function(entry, data)
-                        local labels = { "q", "w", "r", "t", "z", "i", "o" }
-                        local completion_item = entry.completion_item
-                        local type_icons = require("care.config").options.ui.type_icons or {}
-                        local color = require("care.presets.utils").GetColor(entry)
-                        local entry_kind = type(completion_item.kind) == "string" and completion_item.kind
-                            or require("care.utils.lsp").get_kind_name(completion_item.kind)
-                        return {
-                            {
-                                {
-                                    " " .. require("care.presets.utils").LabelEntries(labels)(entry, data) .. " ",
-                                    "Comment",
-                                },
-                            },
-                            {
-                                { completion_item.label .. " ", data.deprecated and "Comment" or "@care.entry" },
-                                color
-                                        and {
-                                            " ",
-                                            require("care.presets.utils").GetHighlightForHex(color) or "@care.entry",
-                                        }
-                                    or nil,
-                            },
-                            {
-                                {
-                                    " " .. (type_icons[entry_kind] or type_icons.Text) .. " ",
-                                    ("@care.type.blended.%s"):format(entry_kind),
-                                },
-                            },
-                            {
-                                {
-                                    " (" .. data.source_name .. ") ",
-                                    ("@care.type.fg.%s"):format(entry_kind),
-                                },
-                            },
-                        }
-                    end,
-                    alignments = { "left", "left", "left", "center" },
-                    scrollbar = {
-                        -- character = "║",
-                        character = "┃",
+        local demo = false
+        if demo then
+            vim.cmd([[hi clear @care.menu]])
+            vim.cmd([[hi link @care.border @comment]])
+            require("care").setup({
+                ui = {
+                    menu = {
+                        border = "none",
+
+                        format_entry = require("care.presets").Atom,
+                        -- format_entry = function(entry, data)
+                        --     local components = require("care.presets.components")
+                        --     return {
+                        --         components.Padding(1),
+                        --         components.Label(entry, data, false),
+                        --         components.Padding(1),
+                        --         components.KindName(entry, false, "@comment"),
+                        --         components.Padding(1),
+                        --         components.ColoredBlock(entry, " "),
+                        --         -- components.Padding(1),
+                        --     }
+                        -- end,
                     },
                 },
-                ghost_text = { enabled = false },
-            },
-            sources = {
-                lsp = {
-                    filter = function(entry)
-                        return entry.completion_item.kind ~= 1
-                    end,
-                    -- priority = 5,
-                    -- enabled = false,
-                },
-                cmp_buffer = {
-                    -- priority = 5,
-                    enabled = false,
-                },
-            },
-            -- completion_events = {},
-            preselect = false,
-            selection_behavior = "insert",
-            sorting_direction = "away-from-cursor",
-            snippet_expansion = function(body)
-                require("luasnip").lsp_expand(body)
-            end,
+            })
+        else
+            local border
+            local border_config = require("omega.config").ui.completion.border
+            if border_config == "half" then
+                border = {
+                    -- { "▄", "@care.border" },
+                    -- { "▄", "@care.border" },
+                    -- { "▄", "@care.border" },
+                    -- { "█", "@care.border" },
+                    -- { "▀", "@care.border" },
+                    -- { "▀", "@care.border" },
+                    -- { "▀", "@care.border" },
+                    -- { "█", "@care.border" },
+                    { "▗", "@care.border" },
+                    { "▄", "@care.border" },
+                    { "▖", "@care.border" },
+                    { "▌", "@care.border" },
+                    { "▘", "@care.border" },
+                    { "▀", "@care.border" },
+                    { "▝", "@care.border" },
+                    { "▐", "@care.border" },
+                }
+            elseif border_config == "rounded" then
+                border = {
+                    { "╭", "@care.border" },
+                    { "─", "@care.border" },
+                    { "╮", "@care.border" },
+                    { "│", "@care.border" },
+                    { "╯", "@care.border" },
+                    { "─", "@care.border" },
+                    { "╰", "@care.border" },
+                    { "│", "@care.border" },
+                }
+            elseif border_config == "none" then
+                border = ""
+            elseif border_config == "up_to_edge" then
+                border = {
+                    -- { "🭽", "@care.border" },
+                    -- { "▔", "@care.border" },
+                    -- { "🭾", "@care.border" },
+                    -- { "▕", "@care.border" },
+                    -- { "🭿", "@care.border" },
+                    -- { "▁", "@care.border" },
+                    -- { "🭼", "@care.border" },
+                    -- { "▏", "@care.border" },
+                    { "🬕", "@care.border" },
+                    { "🬂", "@care.border" },
+                    { "🬨", "@care.border" },
+                    { "▐", "@care.border" },
+                    { "🬷", "@care.border" },
+                    { "🬭", "@care.border" },
+                    { "🬲", "@care.border" },
+                    { "▌", "@care.border" },
+                }
+            end
+            require("care").setup({
+                ui = {
+                    menu = {
+                        border = border,
+                        max_height = 30,
 
-            debug = false,
-        })
+                        format_entry = function(entry, data)
+                            -- return require("care.presets").Default(entry, data)
+                            local labels = { "q", "w", "r", "t", "z", "i" }
+                            local components = require("care.presets.components")
+                            local preset_utils = require("care.presets.utils")
+                            return {
+                                components.ShortcutLabel(labels, entry, data),
+                                components.Label(entry, data, true),
+                                components.KindIcon(entry, "blended"),
+                                {
+                                    {
+                                        " (" .. data.source_name .. ") ",
+                                        preset_utils.kind_highlight(entry, "fg"),
+                                    },
+                                },
+                            }
+                        end,
+                        alignments = { "left", "left", "left", "center" },
+                        scrollbar = {
+                            -- character = "║",
+                            character = "┃",
+                        },
+                    },
+                    ghost_text = { enabled = false },
+                },
+                sources = {
+                    lsp = {
+                        filter = function(entry)
+                            return entry.completion_item.kind ~= 1
+                        end,
+                        -- max_entries = 3,
+                        -- priority = 5,
+                        -- enabled = false,
+                    },
+                    cmp_buffer = {
+                        -- priority = 5,
+                        enabled = false,
+                    },
+                    cmp_path = {
+                        enabled = false,
+                    },
+                    path = {
+                        priority = 1000,
+                    },
+                },
+                -- completion_events = {},
+                preselect = false,
+                selection_behavior = "insert",
+                sorting_direction = "away-from-cursor",
+                snippet_expansion = function(body)
+                    require("luasnip").lsp_expand(body)
+                end,
+                -- max_view_entries = 10,
+
+                debug = false,
+            })
+        end
 
         -- Keymappings
         for i, label in ipairs(labels) do

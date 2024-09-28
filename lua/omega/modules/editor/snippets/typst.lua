@@ -29,7 +29,6 @@ local function in_math()
     local node = vim.treesitter.get_node()
 
     while node do
-        print(node:type())
         if node:type() == "source_file" then
             return false
         elseif vim.tbl_contains({ "math" }, node:type()) then
@@ -59,68 +58,7 @@ local function math_snip(trigger)
 end
 
 ls.add_snippets("typst", {
-    s(math_snip("vec"), {
-        c(1, {
-            sn(1, { t("vec("), i(1), t(", "), i(2), t(")"), i(0) }),
-            sn(2, {
-                t("vec("),
-                i(1),
-                t(", "),
-                i(2),
-                t(", "),
-                i(3),
-                t(")"),
-                i(0),
-            }),
-            sn(3, { t("vec("), i(1, "v"), t("_1, "), reuse(1), t("_2)"), i(0) }),
-            sn(4, {
-                t("vec("),
-                i(1, "v"),
-                t("_1, "),
-                reuse(1),
-                t("_2, "),
-                reuse(1),
-                t("_3)"),
-                i(0),
-            }),
-            sn(5, {
-                t("vec("),
-                i(1, "v"),
-                t("_1, "),
-                reuse(1),
-                t("_2, dots.v, "),
-                reuse(1),
-                t("_"),
-                i(2, "n"),
-                t(")"),
-                i(0),
-            }),
-        }),
-    }),
-    s(math_snip("seq"), {
-        i(1, "a"),
-        t("_1, "),
-        reuse(1),
-        t("_2, "),
-        t("..., "),
-        reuse(1),
-        t("_n"),
-        i(0),
-    }),
-    s(math_snip("sum"), {
-        c(1, { t("limits(sum)"), t("sum") }),
-        t("_"),
-        c(2, {
-            sn(1, { i(1, "j") }),
-            sn(2, { t("("), i(1, "j"), t("="), i(2, "1"), t(")") }),
-        }),
-        t("^"),
-        c(3, {
-            sn(1, { i(1, "n") }),
-            sn(2, { t("("), i(1, "n"), t(")") }),
-        }),
-        i(0),
-    }),
+    -- can also use #truth-table()
     s("fntable", {
         c(1, {
             t({
@@ -151,10 +89,5 @@ ls.add_snippets("typst", {
             }),
         }),
     }),
-    s(math_snip("genmatrix"), {
-        t({
-            "mat(a_(1,1), a_(1,2), ..., a_(1,n);a_(2,1), a_(2,2), ..., a_(2,n);dots.v, dots.v, dots.down, dots.v;a_(m,1), a_(m,2), ..., a_(m,n);)",
-        }),
-    }),
-    s("sum", {}),
+    s("red", fmt("#text(red)[{}]", { i(1) })),
 })
