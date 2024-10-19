@@ -115,4 +115,5 @@ return {
     require("omega.modules.editor.treesitter"),
     require("omega.modules.editor.which_key"),
     require("omega.modules.editor.terminal"),
+    require("omega.modules.editor.autopairs"),
 }

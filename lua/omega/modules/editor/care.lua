@@ -3,6 +3,7 @@ return {
     enabled = require("omega.config").modules.completion == "care",
     lazy = false,
     -- event = "InsertEnter",
+    -- event = "InsertEnter",
     dependencies = {
         "max397574/care-cmp",
         "max397574/cmp-greek",
@@ -97,6 +98,7 @@ return {
                     { "▌", "@care.border" },
                 }
             end
+            -- border = "none"
             require("care").setup({
                 ui = {
                     menu = {
@@ -122,11 +124,20 @@ return {
                         end,
                         alignments = { "left", "left", "left", "center" },
                         scrollbar = {
+                            enabled = true,
                             -- character = "║",
                             character = "┃",
                         },
                     },
-                    ghost_text = { enabled = false },
+                    ghost_text = {
+                        -- enabled = false
+                        -- position = "inline",
+                    },
+                    docs_view = {
+                        max_height = 7,
+                        -- border = "none",
+                        scrollbar = { enabled = true },
+                    },
                 },
                 sources = {
                     lsp = {
@@ -192,6 +203,22 @@ return {
                 require("luasnip").change_choice(1)
             else
                 vim.api.nvim_feedkeys(vim.keycode("<c-f>"), "n", false)
+            end
+        end)
+
+        vim.keymap.set({ "i" }, "<ScrollWheelDown>", function()
+            if require("care").api.is_open() then
+                require("care").api.select_next(1)
+            else
+                vim.api.nvim_feedkeys(vim.keycode("<ScrollWheelDown>"), "n", false)
+            end
+        end)
+
+        vim.keymap.set({ "i" }, "<ScrollWheelUp>", function()
+            if require("care").api.is_open() then
+                require("care").api.select_prev(1)
+            else
+                vim.api.nvim_feedkeys(vim.keycode("<ScrollWheelUp>"), "n", false)
             end
         end)
 

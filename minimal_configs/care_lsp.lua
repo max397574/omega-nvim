@@ -16,6 +16,21 @@ require("lazy.minit").repro({
                     require("care").api.complete()
                 end)
 
+		require('care').setup {
+          ui = {
+            menu = {
+              scrollbar = {
+                enabled = true,
+              },
+            },
+            docs_view = {
+              scrollbar = {
+                enabled = false,
+              },
+            },
+          },
+        }
+
                 vim.keymap.set("i", "<cr>", "<Plug>(CareConfirm)")
                 vim.keymap.set("i", "<c-e>", "<Plug>(CareClose)")
                 vim.keymap.set("i", "<c-j>", "<Plug>(CareSelectNext)")

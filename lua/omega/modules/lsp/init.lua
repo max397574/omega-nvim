@@ -7,36 +7,46 @@ local function lsp_config()
 
     require("omega.modules.lsp.lua").setup()
     require("omega.modules.lsp.python")
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
 
     vim.api.nvim_create_autocmd("FileType", {
-        pattern = "html",
+        pattern = "css",
         callback = function(args)
-            local root_files = {
-                "tailwind.config.js",
-                "tailwind.config.cjs",
-                "tailwind.config.mjs",
-                "tailwind.config.ts",
-                "postcss.config.js",
-                "postcss.config.cjs",
-                "postcss.config.mjs",
-                "postcss.config.ts",
-            }
-            local function root_dir(fname)
-                local root = root_pattern(unpack(root_files))(fname)
-                if root and root ~= vim.env.HOME then
-                    return root
-                end
-                return vim.fs.find(
-                    ".git",
-                    { type = "directory", path = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf)) }
-                ) or vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
-            end
-
+            vim.lsp.start({
+                name = "cssls",
+                cmd = { "vscode-css-language-server", "--stdio" },
+                root_dir = vim.fs.root(0, { "package.json", ".git" }),
+                filetypes = { "css", "scss", "less" },
+                capabilities = capabilities,
+                init_options = {
+                    provideFormatter = true,
+                },
+            })
+        end,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "html,css",
+        callback = function()
             vim.lsp.start({
                 name = "tailwindcss",
                 cmd = { "tailwindcss-language-server", "--stdio" },
-                root_dir = root_dir(vim.api.nvim_buf_get_name(args.buf)),
+                root_dir = vim.fs.root(0, { "package.json", ".git" }),
                 autostart = true,
+                single_file_support = true,
+                log_level = vim.lsp.protocol.MessageType.Warning,
+            })
+        end,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = "html,typescript,javascript",
+        callback = function()
+            vim.lsp.start({
+                name = "ts_ls",
+                cmd = { "typescript-language-server", "--stdio" },
+                root_dir = vim.fs.root(0, { "package.json", ".git" }),
+                autostart = true,
+                init_options = { hostInfo = "neovim" },
                 single_file_support = true,
                 log_level = vim.lsp.protocol.MessageType.Warning,
             })

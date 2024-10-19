@@ -20,7 +20,7 @@ local cmp_module = {
         local kind = require("omega.modules.lsp.kind")
 
         local border
-        if config.ui.cmp.border == "half" then
+        if config.ui.completion.border == "half" then
             border = {
                 { "▄", "CmpBorder" },
                 { "▄", "CmpBorder" },
@@ -31,9 +31,9 @@ local cmp_module = {
                 { "▀", "CmpBorder" },
                 { "█", "CmpBorder" },
             }
-        elseif config.ui.cmp.border == "none" then
+        elseif config.ui.completion.border == "none" then
             border = "none"
-        elseif config.ui.cmp.border == "rounded" then
+        elseif config.ui.completion.border == "rounded" then
             border = {
                 { "╭", "CmpBorder" },
                 { "─", "CmpBorder" },
@@ -51,7 +51,7 @@ local cmp_module = {
             kind_icon = "kind",
             text = "abbr",
         }
-        for _, field in ipairs(config.ui.cmp.fields) do
+        for _, field in ipairs(config.ui.completion.fields) do
             table.insert(fields, field_aliases[field] or field)
             table.insert(fields, "padding")
         end

@@ -3,7 +3,17 @@ return {
     { "chrisgrieser/nvim-rip-substitute", opts = {}, lazy = false },
     {
         "HakonHarnes/img-clip.nvim",
-        opts = { default = { dir_path = "imgs" } },
+        opts = {
+            default = {
+                dir_path = "imgs",
+                file_name = function()
+                    local file_name = vim.fn.input("File name: ")
+                    local timestamp = os.date("%Y-%m-%d-%H-%M-%S")
+                    return file_name .. "-" .. timestamp
+                end,
+                prompt_for_file_name = false,
+            },
+        },
         keys = {
             {
                 "<c-p>",
