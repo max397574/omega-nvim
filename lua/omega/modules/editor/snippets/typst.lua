@@ -90,4 +90,8 @@ ls.add_snippets("typst", {
         }),
     }),
     s("red", fmt("#text(red)[{}]", { i(1) })),
+    s(math_snip("N"), fmt("bdu(N)({})", { i(1) })),
+    s(math_snip("R"), fmt("bdu(R)({})", { i(1) })),
+    s(math_snip("C"), fmt("bdu(C)({})", { i(1) })),
+    s(math_snip("LN"), fmt("bdu(L N)({})", { i(1) })),
 })

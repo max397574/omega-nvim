@@ -1,6 +1,7 @@
 return {
     { "elihunter173/dirbuf.nvim", config = true, cmd = { "Dirbuf" } },
     { "chrisgrieser/nvim-rip-substitute", opts = {}, lazy = false },
+    { "nvim-lua/plenary.nvim" },
     {
         "HakonHarnes/img-clip.nvim",
         opts = {

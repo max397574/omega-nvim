@@ -359,12 +359,6 @@ components.file_name = (function()
         hl = {
             bg = background_color,
         },
-        on_click = {
-            callback = function()
-                print(vim.fn.expand("%"))
-            end,
-            name = "print_file_name",
-        },
         condition = function()
             return not conditions.buffer_matches({
                 buftype = { "nofile", "hidden" },

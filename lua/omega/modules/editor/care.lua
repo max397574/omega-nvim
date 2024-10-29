@@ -3,7 +3,6 @@ return {
     enabled = require("omega.config").modules.completion == "care",
     lazy = false,
     -- event = "InsertEnter",
-    -- event = "InsertEnter",
     dependencies = {
         "max397574/care-cmp",
         "max397574/cmp-greek",
@@ -126,7 +125,13 @@ return {
                         scrollbar = {
                             enabled = true,
                             -- character = "║",
-                            character = "┃",
+                            character = (function()
+                                if border_config == "up_to_edge" then
+                                    return "▐"
+                                else
+                                    return "┃"
+                                end
+                            end)(),
                         },
                     },
                     ghost_text = {
@@ -148,11 +153,17 @@ return {
                         -- priority = 5,
                         -- enabled = false,
                     },
+                    cmp_luasnip = {
+                        -- max_entries = 2,
+                    },
                     cmp_buffer = {
                         -- priority = 5,
                         enabled = false,
                     },
                     cmp_path = {
+                        enabled = false,
+                    },
+                    cmp_calc = {
                         enabled = false,
                     },
                     path = {
@@ -168,7 +179,7 @@ return {
                 end,
                 -- max_view_entries = 10,
 
-                debug = false,
+                debug = true,
             })
         end
 
@@ -186,8 +197,23 @@ return {
         vim.keymap.set("i", "<c-p>", function()
             require("luasnip").jump(-1)
         end)
+
         vim.keymap.set("i", "<c-space>", function()
-            require("care").api.complete()
+            if require("care").api.is_open() then
+                local documentation = require("care").api.get_documentation()
+                if #documentation == 0 then
+                    return
+                end
+                local old_win = vim.api.nvim_get_current_win()
+                vim.cmd.wincmd("s")
+                local buf = vim.api.nvim_create_buf(false, true)
+                vim.bo[buf].ft = "markdown"
+                vim.api.nvim_buf_set_lines(buf, 0, -1, false, documentation)
+                vim.api.nvim_win_set_buf(0, buf)
+                vim.api.nvim_set_current_win(old_win)
+            else
+                require("care").api.complete()
+            end
         end)
 
         vim.keymap.set("i", "<c-x><c-f>", function()

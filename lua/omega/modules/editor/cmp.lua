@@ -1,5 +1,6 @@
 local cmp_module = {
     "max397574/nvim-cmp",
+    -- "max397574/cmp-testing",
     enabled = require("omega.config").modules.completion == "cmp",
     event = "InsertEnter",
     dependencies = {

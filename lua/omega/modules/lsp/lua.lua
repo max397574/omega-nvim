@@ -86,9 +86,7 @@ local function setup()
                 autostart = true,
                 single_file_support = true,
                 log_level = vim.lsp.protocol.MessageType.Warning,
-                -- settings = {
-                --     exportPdf = "never",
-                -- },
+                -- settings = settings,
             })
         end,
     })

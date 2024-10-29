@@ -16,20 +16,20 @@ require("lazy.minit").repro({
                     require("care").api.complete()
                 end)
 
-		require('care').setup {
-          ui = {
-            menu = {
-              scrollbar = {
-                enabled = true,
-              },
-            },
-            docs_view = {
-              scrollbar = {
-                enabled = false,
-              },
-            },
-          },
-        }
+                require("care").setup({
+                    ui = {
+                        menu = {
+                            scrollbar = {
+                                enabled = true,
+                            },
+                        },
+                        docs_view = {
+                            scrollbar = {
+                                enabled = false,
+                            },
+                        },
+                    },
+                })
 
                 vim.keymap.set("i", "<cr>", "<Plug>(CareConfirm)")
                 vim.keymap.set("i", "<c-e>", "<Plug>(CareClose)")
@@ -59,5 +59,9 @@ require("lazy.minit").repro({
                 require("lspconfig")["lua_ls"].setup({})
             end,
         },
+    },
+    dev = {
+        path = "~/4_ComputerScience/1_Programming/neovim_plugins/",
+        patterns = { "max397574" },
     },
 })

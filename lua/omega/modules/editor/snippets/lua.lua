@@ -109,6 +109,12 @@ ls.add_snippets("lua", {
         t(")"),
     }),
 
+    s("test", {
+        t("print("),
+        i(1, "test"),
+        t({ ")", "" }),
+    }),
+
     s(
         "M",
         fmta(

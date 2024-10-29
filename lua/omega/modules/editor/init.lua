@@ -10,6 +10,9 @@ return {
                 v = {
                     j = { k = false },
                 },
+                s = {
+                    j = { k = false },
+                },
                 i = {
                     [" "] = {
                         ["<TAB>"] = function()
