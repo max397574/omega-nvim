@@ -57,38 +57,54 @@ local function math_snip(trigger)
     }
 end
 
-ls.add_snippets("typst", {
-    -- can also use #truth-table()
-    s("fntable", {
+local rec_tbl_cell
+rec_tbl_cell = function()
+    return sn(nil, {
         c(1, {
-            t({
-                "#table(",
-                "  columns: 3,",
-                "  align: center,",
-                "  [$A$], [$B$], [$$],",
-                "  [0], [0], [0],",
-                "  [0], [1], [0],",
-                "  [1], [0], [0],",
-                "  [1], [1], [0],",
-                ")",
-            }),
-            t({
-                "#table(",
-                "  columns: 4,",
-                "  align: center,",
-                "  [$A$], [$B$], [$C$], [$$],",
-                "  [0], [0], [0], [0],",
-                "  [0], [0], [1], [0],",
-                "  [0], [1], [0], [0],",
-                "  [0], [1], [1], [0],",
-                "  [1], [0], [0], [0],",
-                "  [1], [0], [1], [0],",
-                "  [1], [1], [0], [0],",
-                "  [1], [1], [1], [0],",
-                ")",
+            t({ "" }),
+            sn(nil, {
+                c(1, { sn(nil, { t("["), i(1), t("],") }), sn(nil, { t("[$"), i(1), t("$],") }) }),
+                d(2, rec_tbl_cell, {}),
             }),
         }),
-    }),
+    })
+end
+
+ls.add_snippets("typst", {
+    s("para", fmt("#paragraph[{}]", { i(1) })),
+    s(
+        "fntable",
+        fmt(
+            [[#table(
+  fill: none,
+  stroke: none,
+  columns: {},
+  table.hline(y: 1),
+  table.vline(x: 1),
+  {}
+)]],
+            { i(1), d(2, rec_tbl_cell, {}) }
+        )
+    ),
+    s(
+        "pseudocode",
+        fmt(
+            [[#pseudocode-list(
+  title: smallcaps[test],
+  booktabs: true,
+)[
+  - _DoFanceStuff_$(A[1..n], b)$
+  - #line(length: 4cm, stroke: 2pt)
+  + code #h(1fr) $triangle$ _comment_
+  + *while* $l<= r$ *do*
+    + idk
+  + *return* "nicht gefunden"
+]
+]],
+            {}
+        )
+    ),
+
     s("red", fmt("#text(red)[{}]", { i(1) })),
     s(math_snip("N"), fmt("bdu(N)({})", { i(1) })),
     s(math_snip("R"), fmt("bdu(R)({})", { i(1) })),

@@ -161,22 +161,6 @@ autocmd({ "FileType" }, {
     desc = "Map q to close some buffers",
 })
 
-autocmd("CursorHold", {
-    group = vim.api.nvim_create_augroup("lsp_float", {}),
-    callback = function()
-        vim.diagnostic.open_float({
-            close_events = {
-                "CursorMoved",
-                "CursorMovedI",
-                "InsertCharPre",
-                "WinScrolled",
-                "CmdlineEnter",
-                "TextYankPost",
-            },
-        })
-    end,
-})
-
 autocmd("OptionSet", {
     callback = function(data)
         if data.match == "background" then

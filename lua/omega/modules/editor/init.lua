@@ -113,6 +113,7 @@ return {
     require("omega.modules.editor.formatter"),
     require("omega.modules.editor.cmp"),
     require("omega.modules.editor.care"),
+    require("omega.modules.editor.blink"),
     require("omega.modules.editor.snippets"),
     require("omega.modules.editor.telescope"),
     require("omega.modules.editor.treesitter"),

@@ -72,4 +72,19 @@ return {
             },
         },
     },
+    {
+        "echasnovski/mini.nvim",
+        lazy = false,
+        config = function()
+            require("mini.icons").setup({ style = "ascii" })
+        end,
+    },
+    { "onsails/lspkind.nvim", lazy = false, opts = {} },
+    {
+        "nvzone/volt",
+    },
+    {
+        "nvzone/typr",
+        cmd = "TyprStats",
+    },
 }

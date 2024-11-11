@@ -9,15 +9,22 @@ local function remove_sign()
 end
 
 local function update_sign(bufnr)
-    local params = vim.lsp.util.make_range_params()
+    local clients = vim.lsp.get_clients({ bufnr = 0 })
+    if #clients == 0 then
+        return
+    end
+    local params = vim.lsp.util.make_range_params(0, clients[1].offset_encoding or "utf-8")
+
     local line = params.range.start.line
     local context = { diagnostics = vim.diagnostic.get(bufnr, { lnum = line }) }
+    ---@diagnostic disable-next-line: inject-field
     params.context = context
     vim.lsp.buf_request_all(bufnr, "textDocument/codeAction", params, function(results)
         remove_sign()
         if not results or not results[1] then
             return
         end
+        ---@diagnostic disable-next-line: undefined-field
         if results[1].error then
             return
         end

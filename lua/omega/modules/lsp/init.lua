@@ -63,16 +63,6 @@ local function lsp_config()
 
     vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
 
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = require("omega.utils").border(),
-        title = "Help",
-    })
-
-    vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = require("omega.utils").border(),
-        title = "Signature",
-    })
-
     -- jump to the first definition automatically if two definitions are on same line (for luals `local x = function()`)
     vim.lsp.handlers["textDocument/definition"] = function(_, result, ctx)
         if not result or vim.tbl_isempty(result) then
@@ -143,6 +133,7 @@ local function lsp_config()
         underline = true,
         update_in_insert = false,
         virtual_text = false,
+        virtual_lines = true,
         severity_sort = true,
     })
 end
@@ -161,6 +152,15 @@ local lsp = {
                     end,
                 },
             }
+            for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
+                local default_diagnostic_handler = vim.lsp.handlers[method]
+                vim.lsp.handlers[method] = function(err, result, context, config)
+                    if err ~= nil and err.code == -32802 then
+                        return
+                    end
+                    return default_diagnostic_handler(err, result, context, config)
+                end
+            end
         end,
     },
     {

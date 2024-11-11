@@ -15,6 +15,8 @@ return {
     config = function()
         local labels = { "q", "w", "r", "t", "z", "i" }
 
+        require("lazy").load({ plugins = { "mini.nvim" } })
+
         require("care.sources.path").setup()
 
         local demo = false
@@ -100,6 +102,7 @@ return {
             -- border = "none"
             require("care").setup({
                 ui = {
+                    -- type_icons = "lspkind",
                     menu = {
                         border = border,
                         max_height = 30,
@@ -139,6 +142,7 @@ return {
                         -- position = "inline",
                     },
                     docs_view = {
+                        advanced_styling = true,
                         max_height = 7,
                         -- border = "none",
                         scrollbar = { enabled = true },
@@ -179,7 +183,7 @@ return {
                 end,
                 -- max_view_entries = 10,
 
-                debug = true,
+                debug = false,
             })
         end
 

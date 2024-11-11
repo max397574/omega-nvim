@@ -56,7 +56,7 @@ telescope.opts = {
         end,
         path_display = {
             shorten = {
-                len = 2,
+                len = 4,
                 exclude = { -1 },
             },
         },

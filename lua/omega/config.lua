@@ -57,7 +57,7 @@ return {
     modules = {
         ---@type "telescope"|"fzf"
         picker = "telescope",
-        ---@type "care"|"cmp"
+        ---@type "care"|"cmp"|"blink"|"none"
         completion = "care",
     },
 }
