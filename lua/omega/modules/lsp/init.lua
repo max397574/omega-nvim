@@ -105,6 +105,7 @@ local function lsp_config()
     vim.diagnostic.config({
         float = {
             focusable = true,
+            ---@diagnostic disable-next-line: assign-type-mismatch
             border = require("omega.utils").border(),
             scope = "cursor",
             title = "Diagnostics",

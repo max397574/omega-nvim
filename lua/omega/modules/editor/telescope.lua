@@ -1,7 +1,6 @@
 local config = require("omega.config")
 local telescope = {
     "nvim-telescope/telescope.nvim",
-    enabled = config.modules.picker == "telescope",
     cmd = "Telescope",
 }
 
@@ -114,56 +113,58 @@ telescope.dependencies = {
     { "nvim-telescope/telescope-file-browser.nvim" },
 }
 
-telescope.keys = {
-    {
-        "<c-r>",
-        mode = "c",
-        "<Plug>(TelescopeFuzzyCommandSearch)",
-    },
-    {
-        "<leader>ff",
-        mode = "n",
-        function()
-            require("telescope.builtin").find_files()
-        end,
-        desc = "Find file",
-    },
-    {
-        "<leader>/",
-        function()
-            require("telescope.builtin").live_grep()
-        end,
-        desc = "Live Grep",
-    },
-    {
-        "<leader>.",
-        function()
-            require("telescope").extensions.file_browser.file_browser()
-        end,
-        desc = "File Browser",
-    },
-    {
-        "<leader>hh",
-        function()
-            require("telescope.builtin").help_tags()
-        end,
-        desc = "Help tags",
-    },
-    {
-        "<c-s>",
-        function()
-            require("telescope.builtin").current_buffer_fuzzy_find()
-        end,
-        desc = "Current buffer fuzzy find",
-    },
-    {
-        "<leader>,",
-        function()
-            require("telescope.builtin").buffers()
-        end,
-        desc = "Buffers",
-    },
-}
+if config.modules.picker == "telescope" then
+    telescope.keys = {
+        {
+            "<c-r>",
+            mode = "c",
+            "<Plug>(TelescopeFuzzyCommandSearch)",
+        },
+        {
+            "<leader>ff",
+            mode = "n",
+            function()
+                require("telescope.builtin").find_files()
+            end,
+            desc = "Find file",
+        },
+        {
+            "<leader>/",
+            function()
+                require("telescope.builtin").live_grep()
+            end,
+            desc = "Live Grep",
+        },
+        {
+            "<leader>.",
+            function()
+                require("telescope").extensions.file_browser.file_browser()
+            end,
+            desc = "File Browser",
+        },
+        {
+            "<leader>hh",
+            function()
+                require("telescope.builtin").help_tags()
+            end,
+            desc = "Help tags",
+        },
+        {
+            "<c-s>",
+            function()
+                require("telescope.builtin").current_buffer_fuzzy_find()
+            end,
+            desc = "Current buffer fuzzy find",
+        },
+        {
+            "<leader>,",
+            function()
+                require("telescope.builtin").buffers()
+            end,
+            desc = "Buffers",
+        },
+    }
+end
 
 function telescope.config(_, opts)
     require("telescope").setup(opts)

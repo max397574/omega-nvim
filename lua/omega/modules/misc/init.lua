@@ -50,6 +50,11 @@ return {
     },
     { "max397574/tmpfile.nvim" },
     {
+        "lewis6991/gitsigns.nvim",
+        lazy = false,
+        opts = {},
+    },
+    {
         "ruifm/gitlinker.nvim",
         opts = {
             mappings = nil,
@@ -74,6 +79,7 @@ return {
     },
     {
         "echasnovski/mini.nvim",
+        enabled = false,
         lazy = false,
         config = function()
             require("mini.icons").setup({ style = "ascii" })

@@ -66,6 +66,7 @@ return {
         dependencies = {
             { "nvim-neorg/neorg-telescope", dev = true },
             { "max397574/neorg-contexts" },
+            { "max397574/neorg-snacks-picker" },
             { "benlubas/neorg-interim-ls" },
         },
         config = function(_, opts)
