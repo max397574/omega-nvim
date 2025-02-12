@@ -34,6 +34,7 @@ function which_key.config(_, opts)
     wk.add({
         { "<leader>i", desc = "Insert" },
         { "<leader>b", desc = "Buffer" },
+        { "<leader>P", desc = "Profiler" },
         { "<leader>t", desc = "Tab" },
         { "<leader>L", desc = "Lazy" },
         { "<leader>v", desc = "View" },

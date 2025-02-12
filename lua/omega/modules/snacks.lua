@@ -1,6 +1,9 @@
+---@diagnostic disable assign-type-mismatch
+
 local config = require("omega.config")
 local snacks = {
     "snacks.nvim",
+    -- dev = true,
 }
 
 ---@type snacks.Config
@@ -27,15 +30,55 @@ snacks.opts = {
                 end)
             end,
         },
+        sources = {
+            explorer = {
+                layout = {
+                    preview = "main",
+                    layout = {
+                        backdrop = false,
+                        width = 40,
+                        min_width = 40,
+                        height = 0,
+                        position = "left",
+                        border = "right",
+                        box = "vertical",
+                        {
+                            win = "input",
+                            height = 1,
+                            border = "rounded",
+                            title = "{title} {live} {flags}",
+                            title_pos = "center",
+                        },
+                        { win = "list", border = "none" },
+                        { win = "preview", title = "{preview}", height = 0.4, border = "top" },
+                    },
+                },
+            },
+        },
     },
     explorer = {},
+    dim = {
+        scope = {
+            min_size = 10,
+            max_size = 100,
+        },
+    },
     statuscolumn = {
         folds = {
             open = true,
         },
     },
-    scroll = {},
+    scroll = {
+        filter = function(buf)
+            return vim.g.snacks_scroll ~= false
+                and vim.b[buf].snacks_scroll ~= false
+                and vim.bo[buf].buftype ~= "terminal"
+                and vim.bo[buf].buftype ~= "snacks_picker_preview"
+        end,
+    },
 }
+
+snacks.keys = {}
 
 if config.modules.picker == "snacks" then
     -- stylua: ignore
@@ -44,7 +87,7 @@ if config.modules.picker == "snacks" then
 
         { "<leader>ff", function() Snacks.picker.files() end, desc = "Find file", },
         { "<leader>/", function() Snacks.picker.grep() end, desc = "Live Grep", },
-        { "<leader>.", function() Snacks.explorer.open() end, desc = "File Browser", },
+        { "<leader>.", function() Snacks.explorer.open({ layout = { preset = "sidebar" } }) end, desc = "File Browser", },
         { "<leader>,", function() Snacks.picker.buffers() end, desc = "File Browser", },
         { "<leader>hh", function() Snacks.picker.help() end, desc = "Help Pages" },
         { "<c-s>", function() Snacks.picker.lines() end, desc = "Current buffer fuzzy find" },
@@ -100,20 +143,46 @@ if config.modules.picker == "snacks" then
     }
 end
 
+-- stylua: ignore
+table.insert(snacks.keys, { "<leader>Ps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Bufer" })
+
 ---@param opts snacks.Config
 function snacks.config(_, opts)
-    if config.ui.picker.borders == "half_block_to_edge" then
+    -- Snacks.dim()
+    Snacks.toggle.profiler():map("<leader>Pp")
+    Snacks.toggle.profiler_highlights():map("<leader>Ph")
+
+    if config.ui.picker.borders == "half_block_to_edge" or config.ui.picker.borders == "up_to_edge" then
         opts.picker.layout = {
             cycle = true,
             layout = {
+                -- backdrop = false,
                 box = "horizontal",
+                dim = false,
                 width = 0.8,
                 min_width = 120,
                 height = 0.8,
                 {
                     box = "vertical",
-                    -- border = { "🬕", "🬂", "🬨", "▐", "🬷", "🬭", "🬲", "▌" },
-                    border = { "🬕", "🬂", "▌", "▌", "▌", "🬭", "🬲", "▌" },
+                    border = (config.ui.picker.borders == "half_block_to_edge" and {
+                        "🬕",
+                        "🬂",
+                        { "▌", "SnacksPickerBorderCenter" },
+                        { "▌", "SnacksPickerBorderCenter" },
+                        { "▌", "SnacksPickerBorderCenter" },
+                        "🬭",
+                        "🬲",
+                        "▌",
+                    } or {
+                        { "🮈", "SnacksPickerBorderCenter" },
+                        "▔",
+                        { "▍", "SnacksPickerBorderCenter" },
+                        { "▍", "SnacksPickerBorderCenter" },
+                        { "▍", "SnacksPickerBorderCenter" },
+                        "▁",
+                        { "🮈", "SnacksPickerBorderCenter" },
+                        { "🮈", "SnacksPickerBorderCenter" },
+                    }),
                     -- title = "{title} {live} {flags}",
                     title = { { " {title} {live} {flags}", "SnacksPickerBoxTitle" } },
                     { win = "input", height = 1, border = { "", "", "", "", "", "─", " ", "" } },
@@ -123,8 +192,26 @@ function snacks.config(_, opts)
                     win = "preview",
                     -- title = "{preview}",
                     title = { { "󰈔 {preview}", "SnacksPickerPreviewTitle" } },
-                    -- border = { "🬕", "🬂", "🬨", "▐", "🬷", "🬭", "🬲", "▌" },
-                    border = { "▐", "🬂", "🬨", "▐", "🬷", "🬭", "▐", "▐" },
+                    border = (config.ui.picker.borders == "half_block_to_edge" and {
+                        { "▐", "SnacksPickerBorderCenter" },
+                        "🬂",
+                        "🬨",
+                        "▐",
+                        "🬷",
+                        "🬭",
+                        { "▐", "SnacksPickerBorderCenter" },
+                        { "▐", "SnacksPickerBorderCenter" },
+                    } or {
+                        { "🮈", "SnacksPickerBorderCenter" },
+                        "▔",
+                        { "▍", "SnacksPickerBorderCenter" },
+                        { "▍", "SnacksPickerBorderCenter" },
+                        { "▍", "SnacksPickerBorderCenter" },
+                        "▁",
+                        { "🮈", "SnacksPickerBorderCenter" },
+                        { "🮈", "SnacksPickerBorderCenter" },
+                    }),
+
                     width = 0.5,
                 },
             },

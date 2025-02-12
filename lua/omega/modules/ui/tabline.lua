@@ -114,6 +114,15 @@ local function fg_bg_highlight(fg_group, bg_group)
     return highlight(group)
 end
 
+local function get_explorer_width()
+    for _, win in pairs(api.nvim_tabpage_list_wins(0)) do
+        if vim.bo[api.nvim_win_get_buf(win)].ft == "snacks_layout_box" then
+            return api.nvim_win_get_width(win)
+        end
+    end
+    return 0
+end
+
 local function get_file_info(name, bufnr)
     if name == " No Name " then
         local padding = "       "
@@ -193,8 +202,25 @@ local function tablist()
     end
 end
 
+local function explorer()
+    local explorer_width = get_explorer_width() + 3
+    local expl = ""
+    if explorer_width > 0 then
+        if explorer_width > #"Explorer" + 2 then
+            expl = "%#TablineFill#"
+                .. string.rep(" ", math.floor((explorer_width - #"Explorer" - 2) / 2))
+                .. fg_bg_highlight("Special", "TablineFill")
+                .. "Explorer"
+                .. string.rep(" ", math.ceil((explorer_width - #"Explorer" - 2) / 2))
+        else
+            expl = "%#TablineFill#" .. string.rep(" ", explorer_width)
+        end
+    end
+    return expl
+end
+
 function tabline.run()
-    return bufferlist() .. tablist()
+    return explorer() .. bufferlist() .. tablist()
 end
 
 return tabline

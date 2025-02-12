@@ -151,7 +151,20 @@ autocmd({ "FileType" }, {
     pattern = { "help", "qf", "lspinfo", "man", "tsplayground" },
     callback = function()
         vim.keymap.set("n", "q", function()
+            local buf = vim.api.nvim_get_current_buf()
             vim.cmd.close()
+            -- for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+            local bufs = vim.t.bufs
+            if bufs then
+                for i, bufnr in ipairs(bufs) do
+                    if bufnr == buf then
+                        table.remove(bufs, i)
+                        vim.t.bufs = bufs
+                        break
+                    end
+                end
+            end
+            -- end
         end, {
             noremap = true,
             silent = true,

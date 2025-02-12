@@ -96,20 +96,32 @@ return {
         cmd = { "Trouble" },
         opts = {},
 
+        ---@type trouble.Mode
+
         keys = {
-            { "<leader>xX", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
+            {
+                "<leader>xX",
+                -- "<cmd>Trouble diagnostics open<cr>",
+                function()
+                    require("trouble").toggle({ mode = "diagnostics" })
+                end,
+                desc = "Diagnostics (Trouble)",
+            },
             {
                 "<leader>xx",
-                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+                function()
+                    require("trouble").toggle({ mode = "diagnostics", filter = { buf = 0 } })
+                end,
                 desc = "Buffer Diagnostics (Trouble)",
             },
-            { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-            { "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
+            { "<leader>xl", "<cmd>Trouble loclist open<cr>", desc = "Location List (Trouble)" },
+            { "<leader>xq", "<cmd>Trouble qflist open<cr>", desc = "Quickfix List (Trouble)" },
             {
                 "<leader>qp",
                 function()
                     if require("trouble").is_open() then
-                        require("trouble").previous({ skip_groups = true, jump = true })
+                        ---@diagnostic disable-next-line: missing-fields, missing-parameter
+                        require("trouble").prev({ jump = true })
                     else
                         pcall(vim.cmd.cprev)
                     end
@@ -121,7 +133,7 @@ return {
                 function()
                     if require("trouble").is_open() then
                         ---@diagnostic disable-next-line: missing-fields, missing-parameter
-                        require("trouble").next({ skip_groups = true, jump = true })
+                        require("trouble").next({ jump = true })
                     else
                         pcall(vim.cmd.cnext)
                     end
