@@ -12,6 +12,7 @@ local basedpyright_root_files = {
     "pyproject.toml",
     "setup.py",
     "setup.cfg",
+    "main.py",
     "requirements.txt",
     "Pipfile",
     "pyrightconfig.json",
@@ -22,49 +23,44 @@ local basedpyright_root_files = {
 local ruff_root_files = {
     "pyproject.toml",
     "ruff.toml",
+    "main.py",
     ".ruff.toml",
     ".git",
     ".jj",
 }
 
-local servers = {
-    ruff = {
-        root_dir = function(fname)
-            return root_pattern(unpack(ruff_root_files))(fname)
-        end,
-        on_attach = on_attach,
-        init_options = {
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python",
+    callback = function()
+        vim.lsp.start({
+            name = "basedpyright",
+            cmd = { "basedpyright-langserver", "--stdio" },
+            root_dir = vim.fs.root(0, basedpyright_root_files),
             settings = {
-                logFile = "~/ruff.log",
-                logLevel = "trace",
-            },
-        },
-        on_new_config = function(new_config, new_root_dir)
-            new_config.settings.python.pythonPath = vim.fn.exepath("python")
-            new_config.cmd_env.PATH = py_utils.env(new_root_dir) .. new_config.cmd_env.PATH
-        end,
-    },
-    basedpyright = {
-        root_dir = function(fname)
-            return root_pattern(unpack(basedpyright_root_files))(fname)
-        end,
-        on_attach = on_attach,
-        settings = {
-            pyright = {
-                disableOrganizeImports = true,
-            },
-            python = {
-                analysis = {
-                    ignore = { "*" },
+                pyright = {
+                    disableOrganizeImports = true,
+                },
+                basedpyright = { analysis = { typeCheckingMode = "off" } },
+                python = {
+                    analysis = {
+                        ignore = { "*" },
+                    },
                 },
             },
-        },
-        on_new_config = function(new_config, new_root_dir)
-            new_config.settings.python.pythonPath = vim.fn.exepath("python")
-            new_config.cmd_env.PATH = py_utils.env(new_root_dir) .. new_config.cmd_env.PATH
-        end,
-    },
-}
+        })
+        vim.lsp.start({
+            name = "ruff",
+            cmd = { "ruff", "server" },
+            root_dir = vim.fs.root(0, ruff_root_files),
+            init_options = {
+                settings = {
+                    logFile = "~/ruff.log",
+                    logLevel = "trace",
+                },
+            },
+        })
+    end,
+})
 
 -- TODO: readd
 -- for server, config in pairs(servers) do

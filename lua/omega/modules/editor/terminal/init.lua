@@ -43,14 +43,14 @@ toggleterm.keys = {
         end,
         desc = " Run File",
     },
-    {
-        "<c-t>",
-        mode = { "n" },
-        function()
-            require("toggleterm.terminal").Terminal:new({ close_on_exit = true }):toggle()
-        end,
-        desc = "Open terminal",
-    },
+    -- {
+    --     "<c-t>",
+    --     mode = { "n" },
+    --     function()
+    --         require("toggleterm.terminal").Terminal:new({ close_on_exit = true }):toggle()
+    --     end,
+    --     desc = "Open terminal",
+    -- },
     "<c-g>",
     {
         "<c-g>",
@@ -61,9 +61,10 @@ toggleterm.keys = {
     },
     {
         "<c-t>",
-        mode = { "t" },
+        mode = { "n", "t" },
         function()
-            vim.cmd.ToggleTerm()
+            -- vim.cmd.ToggleTerm()
+            vim.cmd.FloatermToggle()
         end,
     },
 }

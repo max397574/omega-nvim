@@ -134,7 +134,7 @@ local function lsp_config()
         underline = true,
         update_in_insert = false,
         virtual_text = false,
-        virtual_lines = true,
+        virtual_lines = false,
         severity_sort = true,
     })
 end
@@ -173,10 +173,13 @@ local lsp = {
                 end,
             },
             formatter = {
-                conform_nvim = true,
+                conform_nvim = false,
                 formatters = {
-                    -- "typstfmt",
-                    "typstyle",
+                    "typstfmt",
+                    -- typstyle = {
+                    --     command = "typstyle",
+                    --     args = { "$FILENAME", "-i", "-l", "80", "--wrap-text" },
+                    -- },
                 },
             },
         },

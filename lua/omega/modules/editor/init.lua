@@ -1,6 +1,8 @@
 return {
     {
         "max397574/better-escape.nvim",
+        -- "Sam-programs/better-escape.nvim",
+        -- branch = "multiple_keys",
         event = "VeryLazy",
         opts = {
             mappings = {

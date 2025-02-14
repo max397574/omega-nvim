@@ -12,6 +12,24 @@ return {
         end,
     },
     {
+        "chrisgrieser/nvim-origami",
+        event = "VeryLazy",
+        opts = {
+            autoFold = {
+                enabled = false,
+                kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
+            },
+            foldKeymaps = {
+                setup = false, -- modifies `h` and `l`
+                hOnlyOpensOnFirstColumn = false,
+            },
+        },
+        init = function()
+            vim.opt.foldlevel = 99
+            vim.opt.foldlevelstart = 99
+        end,
+    },
+    {
         "folke/snacks.nvim",
         priority = 1000,
         lazy = false,

@@ -2,6 +2,14 @@ return {
     { "elihunter173/dirbuf.nvim", config = true, cmd = { "Dirbuf" } },
     { "chrisgrieser/nvim-rip-substitute", opts = {}, lazy = false },
     { "nvim-lua/plenary.nvim" },
+    { "nvzone/volt" },
+    {
+        "nvzone/floaterm",
+        opts = {
+            size = { h = 70, w = 80 },
+        },
+        cmd = "FloatermToggle",
+    },
     {
         "HakonHarnes/img-clip.nvim",
         opts = {

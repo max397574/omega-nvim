@@ -70,8 +70,24 @@ rec_tbl_cell = function()
     })
 end
 
+local function math_auto_snip(trigger)
+    return {
+        trig = trigger,
+        wordTrig = false,
+        snippetType = "autosnippet",
+    }
+end
+
+ls.add_snippets("typst", {
+    s(math_auto_snip("Rr"), fmt("RR", {})),
+})
+
 ls.add_snippets("typst", {
     s("para", fmt("#paragraph[{}]", { i(1) })),
+    s("def", fmt('#definition("{}")[{}]', { i(1), i(0) })),
+    s("env", fmt('#environment("{}")[{}]', { i(1), i(0) })),
+    s("lemma", fmt('#lemma("{}")[{}]', { i(1), i(0) })),
+    s("theorem", fmt('#theorem("{}")[{}]', { i(1), i(0) })),
     s(
         "fntable",
         fmt(
@@ -89,16 +105,18 @@ ls.add_snippets("typst", {
     s(
         "pseudocode",
         fmt(
-            [[#pseudocode-list(
-  title: smallcaps[test],
-  booktabs: true,
-)[
-  - _DoFanceStuff_$(A[1..n], b)$
-  - #line(length: 4cm, stroke: 2pt)
-  + code #h(1fr) $triangle$ _comment_
-  + *while* $l<= r$ *do*
-    + idk
-  + *return* "nicht gefunden"
+            [[#block(breakable: false)[
+  #pseudocode-list(
+    title: smallcaps[test],
+    booktabs: true,
+  )[
+    - _DoFanceStuff_$(A[1..n], b)$
+    - #line(length: 4cm, stroke: 2pt)
+    + code #h(1fr) $triangle$ _comment_
+    + *while* $l<= r$ *do*
+      + idk
+    + *return* "nicht gefunden"
+  ]
 ]
 ]],
             {}
@@ -110,4 +128,5 @@ ls.add_snippets("typst", {
     s(math_snip("R"), fmt("bdu(R)({})", { i(1) })),
     s(math_snip("C"), fmt("bdu(C)({})", { i(1) })),
     s(math_snip("LN"), fmt("bdu(L N)({})", { i(1) })),
+    s(math_snip("an"), fmt("({}_n)_(n>=1)", { i(1, "a") })),
 })

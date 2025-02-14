@@ -8,8 +8,19 @@ local snacks = {
 
 ---@type snacks.Config
 snacks.opts = {
-    indent = { enabled = true, chunk = { enabled = false } },
+    indent = {
+        enabled = true,
+        chunk = { enabled = false },
+        filter = function(buf)
+            local disabled_filetypes = { "typst" }
+            return vim.g.snacks_indent ~= false
+                and vim.b[buf].snacks_indent ~= false
+                and vim.bo[buf].buftype == ""
+                and not vim.tbl_contains(disabled_filetypes, vim.bo[buf].filetype)
+        end,
+    },
     picker = {
+        prompt = "  ",
         win = {
             input = {
                 keys = {
@@ -49,7 +60,7 @@ snacks.opts = {
                             title = "{title} {live} {flags}",
                             title_pos = "center",
                         },
-                        { win = "list", border = "none" },
+                        { win = "list", border = "none", wo = { signcolumn = "yes:1" } },
                         { win = "preview", title = "{preview}", height = 0.4, border = "top" },
                     },
                 },
@@ -69,11 +80,12 @@ snacks.opts = {
         },
     },
     scroll = {
+        enabled = false,
         filter = function(buf)
             return vim.g.snacks_scroll ~= false
                 and vim.b[buf].snacks_scroll ~= false
                 and vim.bo[buf].buftype ~= "terminal"
-                and vim.bo[buf].buftype ~= "snacks_picker_preview"
+                and vim.bo[buf].filetype ~= "snacks_picker_preview"
         end,
     },
 }
@@ -191,7 +203,12 @@ function snacks.config(_, opts)
                 {
                     win = "preview",
                     -- title = "{preview}",
-                    title = { { "󰈔 {preview}", "SnacksPickerPreviewTitle" } },
+                    title = { { "󰈔 {preview} ", "SnacksPickerPreviewTitle" } },
+                    wo = {
+                        relativenumber = false,
+                        signcolumn = "no",
+                        statuscolumn = "",
+                    },
                     border = (config.ui.picker.borders == "half_block_to_edge" and {
                         { "▐", "SnacksPickerBorderCenter" },
                         "🬂",

@@ -39,8 +39,8 @@ vim.defer_fn(function()
         trail = "•",
     }
     opt.foldmethod = "expr" -- use treesitter for folding
+    opt.foldtext = ""
     opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-
     opt.grepprg = "rg --vimgrep --no-heading --smart-case"
     opt.grepformat:append("%f:%l:%c:%m")
 end, 1)

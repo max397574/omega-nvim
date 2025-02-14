@@ -1,8 +1,6 @@
 return {
     {
         "nvim-neorg/neorg",
-        -- dir = "~/neovim_plugins/neorg/",
-        -- commit = "d5965efe17e28a60cdbf14e97b87723a83f0c962",
         ft = "norg",
         cmd = { "Neorg" },
         opts = {
