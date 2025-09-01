@@ -7,7 +7,7 @@ map({ "v", "n" }, "<leader>y", '"+y', { silent = true, desc = "Yank to clipboard
 map("n", "<esc>", function()
     pcall(require("notify").dismiss)
     vim.cmd.nohl()
-end, { silent = true, desc = "Clear highlight from search and close notifications" })
+end, { silent = true })
 
 map("n", "<leader>W", function()
     vim.cmd.w()
@@ -62,38 +62,6 @@ end, {
     desc = "Change case of word under cursor",
 })
 
-map("n", "<leader>Ls", function()
-    require("lazy").sync()
-end, { desc = "Lazy Sync" })
-
-map("n", "<leader>LS", function()
-    require("lazy").show()
-end, { desc = "Lazy Show" })
-
-map("n", "<leader>Lp", function()
-    require("lazy").profile()
-end, { desc = "Lazy Profile" })
-
-map("n", "<leader>Li", function()
-    require("lazy").install()
-end, { desc = "Lazy Install" })
-
-map("n", "<leader>Lu", function()
-    require("lazy").update()
-end, { desc = "Lazy Update" })
-
-map("n", "<leader>Ll", function()
-    require("lazy").log()
-end, { desc = "Lazy Log" })
-
-map("n", "<leader>Ld", function()
-    require("lazy").debug()
-end, { desc = "Lazy Debug" })
-
-map("n", "<leader>Lh", function()
-    require("lazy").help()
-end, { desc = "Lazy Help" })
-
 map("n", "<leader>qn", function()
     vim.cmd.cnext()
 end, { desc = "Quickfix Next" })
@@ -109,10 +77,6 @@ map("n", "k", [[(v:count > 1 ? "m'" . v:count : '') . 'k']], { expr = true, desc
 
 map("v", ">", ">gv")
 map("v", "<", "<gv")
-
-map("n", "<C-f>", function()
-    vim.cmd(":vert :h " .. vim.fn.expand("<cword>"))
-end, { noremap = true, silent = true, desc = "Open helpfile of word under cursor" })
 
 map("n", "<leader>bn", function()
     require("omega.modules.ui.tabline").next_buf()

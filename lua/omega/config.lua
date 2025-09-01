@@ -55,9 +55,7 @@ return {
         },
     },
     modules = {
-        ---@type "telescope"|"fzf"|"snacks"
-        picker = "snacks",
-        ---@type "care"|"cmp"|"blink"|"none"
+        ---@type "care"
         completion = "care",
     },
 }

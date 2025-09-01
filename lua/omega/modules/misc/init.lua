@@ -1,6 +1,4 @@
 return {
-    { "elihunter173/dirbuf.nvim", config = true, cmd = { "Dirbuf" } },
-    { "chrisgrieser/nvim-rip-substitute", opts = {}, lazy = false },
     { "nvim-lua/plenary.nvim" },
     { "nvzone/volt" },
     {
@@ -85,20 +83,5 @@ return {
             },
         },
     },
-    {
-        "echasnovski/mini.nvim",
-        enabled = false,
-        lazy = false,
-        config = function()
-            require("mini.icons").setup({ style = "ascii" })
-        end,
-    },
     { "onsails/lspkind.nvim", lazy = false, opts = {} },
-    {
-        "nvzone/volt",
-    },
-    {
-        "nvzone/typr",
-        cmd = "TyprStats",
-    },
 }

@@ -68,99 +68,80 @@ snacks.opts = {
         },
     },
     explorer = {},
-    dim = {
-        scope = {
-            min_size = 10,
-            max_size = 100,
-        },
-    },
     statuscolumn = {
         folds = {
             open = true,
         },
     },
-    scroll = {
-        enabled = false,
-        filter = function(buf)
-            return vim.g.snacks_scroll ~= false
-                and vim.b[buf].snacks_scroll ~= false
-                and vim.bo[buf].buftype ~= "terminal"
-                and vim.bo[buf].filetype ~= "snacks_picker_preview"
-        end,
-    },
 }
 
-snacks.keys = {}
 
-if config.modules.picker == "snacks" then
-    -- stylua: ignore
-    snacks.keys = {
-        { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart open", },
+-- stylua: ignore
+snacks.keys = {
+    { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart open", },
 
-        { "<leader>ff", function() Snacks.picker.files() end, desc = "Find file", },
-        { "<leader>/", function() Snacks.picker.grep() end, desc = "Live Grep", },
-        { "<leader>.", function() Snacks.explorer.open({ layout = { preset = "sidebar" } }) end, desc = "File Browser", },
-        { "<leader>,", function() Snacks.picker.buffers() end, desc = "File Browser", },
-        { "<leader>hh", function() Snacks.picker.help() end, desc = "Help Pages" },
-        { "<c-s>", function() Snacks.picker.lines() end, desc = "Current buffer fuzzy find" },
+    { "<leader>ff", function() Snacks.picker.files() end, desc = "Find file", },
+    { "<leader>/", function() Snacks.picker.grep() end, desc = "Live Grep", },
+    { "<leader>.", function() Snacks.explorer.open({ layout = { preset = "sidebar" } }) end, desc = "File Browser", },
+    { "<leader>,", function() Snacks.picker.buffers() end, desc = "File Browser", },
+    { "<leader>hh", function() Snacks.picker.help() end, desc = "Help Pages" },
+    { "<c-s>", function() Snacks.picker.lines() end, desc = "Current buffer fuzzy find" },
 
-        -- Search
-        { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
-        { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search History" },
-        { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
-        { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Command History" },
-        { "<leader>sC", function() Snacks.picker.commands() end, desc = "Commands" },
-        { "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
-        { "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics" },
-        { "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
-        { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Highlights" },
-        { "<leader>si", function() Snacks.picker.icons() end, desc = "Icons" },
-        { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Jumps" },
-        { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
-        { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Location List" },
-        { "<leader>sM", function() Snacks.picker.man() end, desc = "Man Pages" },
-        { "<leader>sm", function() Snacks.picker.marks() end, desc = "Marks" },
-        { "<leader>sR", function() Snacks.picker.resume() end, desc = "Resume" },
-        { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
-        { "<leader>su", function() Snacks.picker.undo() end, desc = "Undotree" },
-        { "<leader>sp", function() Snacks.picker() end, desc = "Pickers" },
-        {
-            "<leader>sf",
-            function()
-                local Snacks = require("snacks")
-                Snacks.picker({
-                    finder = "proc",
-                    cmd = "fd",
-                    args = { "--type", "d", "--exclude", ".git" },
-                    title = "Select search directory",
-                    layout = {
-                        preset = "select",
-                    },
-                    actions = {
-                        confirm = function(picker, item)
-                            picker:close()
-                            vim.schedule(function()
-                                Snacks.picker.files({ cwd = item.file })
-                            end)
-                        end,
-                    },
-                    transform = function(item)
-                      item.file = item.text
-                      item.dir = true
+    -- Search
+    { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
+    { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search History" },
+    { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
+    { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Command History" },
+    { "<leader>sC", function() Snacks.picker.commands() end, desc = "Commands" },
+    { "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
+    { "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics" },
+    { "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
+    { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Highlights" },
+    { "<leader>si", function() Snacks.picker.icons() end, desc = "Icons" },
+    { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Jumps" },
+    { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
+    { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Location List" },
+    { "<leader>sM", function() Snacks.picker.man() end, desc = "Man Pages" },
+    { "<leader>sm", function() Snacks.picker.marks() end, desc = "Marks" },
+    { "<leader>sR", function() Snacks.picker.resume() end, desc = "Resume" },
+    { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
+    { "<leader>su", function() Snacks.picker.undo() end, desc = "Undotree" },
+    { "<leader>sp", function() Snacks.picker() end, desc = "Pickers" },
+    {
+        "<leader>sf",
+        function()
+            local Snacks = require("snacks")
+            Snacks.picker({
+                finder = "proc",
+                cmd = "fd",
+                args = { "--type", "d", "--exclude", ".git" },
+                title = "Select search directory",
+                layout = {
+                    preset = "select",
+                },
+                actions = {
+                    confirm = function(picker, item)
+                        picker:close()
+                        vim.schedule(function()
+                            Snacks.picker.files({ cwd = item.file })
+                        end)
                     end,
-                })
-            end,
-            desc = "Search in dir",
-        },
-    }
-end
+                },
+                transform = function(item)
+                  item.file = item.text
+                  item.dir = true
+                end,
+            })
+        end,
+        desc = "Search in dir",
+    },
+}
 
 -- stylua: ignore
 table.insert(snacks.keys, { "<leader>Ps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Bufer" })
 
 ---@param opts snacks.Config
 function snacks.config(_, opts)
-    -- Snacks.dim()
     Snacks.toggle.profiler():map("<leader>Pp")
     Snacks.toggle.profiler_highlights():map("<leader>Ph")
 

@@ -36,7 +36,6 @@ function which_key.config(_, opts)
         { "<leader>b", desc = "Buffer" },
         { "<leader>P", desc = "Profiler" },
         { "<leader>t", desc = "Tab" },
-        { "<leader>L", desc = "Lazy" },
         { "<leader>v", desc = "View" },
         { "<leader>x", desc = "Error" },
         { "<leader>q", desc = "Quickfix" },

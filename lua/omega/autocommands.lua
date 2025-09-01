@@ -67,9 +67,6 @@ autocmd({ "InsertEnter", "WinLeave", "CmdlineEnter" }, {
 -- Create directories inside which buffer is recursively
 autocmd("BufWritePre", {
     callback = function()
-        if vim.tbl_contains({ "oil" }, vim.bo.ft) then
-            return
-        end
         local dir = vim.fn.expand("<afile>:p:h")
         if vim.fn.isdirectory(dir) == 0 then
             vim.fn.mkdir(dir, "p")
@@ -103,16 +100,12 @@ autocmd("TextYankPost", {
     end,
 })
 
--- Enable bulitin treesitter
 autocmd("FileType", {
-    -- pattern = { "lua", "vim", "help", "c" },
     callback = function()
         pcall(vim.treesitter.start)
     end,
-    desc = "Enable bulitin treesitter",
 })
 
--- Strip indent from text yanked to clipboard
 autocmd({ "TextYankPost" }, {
     callback = function()
         if vim.v.event.regname ~= "+" then
@@ -137,7 +130,6 @@ autocmd({ "TextYankPost" }, {
     desc = "Strip indent from text yanked to clipboard",
 })
 
--- Highlight yanked text
 autocmd({ "TextYankPost" }, {
     pattern = "*",
     callback = function()

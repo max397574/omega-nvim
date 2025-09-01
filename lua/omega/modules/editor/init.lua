@@ -53,6 +53,8 @@ return {
         keys = {
             { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end },
             { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+            "d",
+            "y"
         },
         specs = {
             {
@@ -159,13 +161,9 @@ return {
         end,
     },
     { "MagicDuck/grug-far.nvim", opts = {}, cmd = { "GrugFar" } },
-    require("omega.modules.editor.ki"),
     require("omega.modules.editor.formatter"),
-    require("omega.modules.editor.cmp"),
     require("omega.modules.editor.care"),
-    require("omega.modules.editor.blink"),
     require("omega.modules.editor.snippets"),
-    require("omega.modules.editor.telescope"),
     require("omega.modules.editor.treesitter"),
     require("omega.modules.editor.which_key"),
     require("omega.modules.editor.terminal"),
