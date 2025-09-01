@@ -1,0 +1,54 @@
+[[language]]
+comment-token = "//"
+file-types = ["typ"]
+injection-regex = "typ"
+language-servers = ["tinymist"]
+name = "typst"
+scope = "source.typ"
+
+[[language]]
+comment-token = "#"
+file-types = ["nix"]
+injection-regex = "nix"
+language-servers = ["nixd"]
+name = "nix"
+scope = "source.nix"
+
+[language.indent]
+tab-width = 2
+unit = "  "
+
+[language-server.nixd]
+args = ["--inlay-hints=true"]
+command = "nixd"
+
+[language-server.nixd.config.nixd.nixpkgs]
+expr = "import <nixpkgs> { }"
+
+[language-server.nixd.config.nixd.options.home-manager]
+expr = "(builtins.getFlake ''/home/ladas552/Nix-Is-Unbreakable'').nixosConfigurations.NixToks.options.home-manager.users.type.getSubOptions []"
+
+[language-server.nixd.config.nixd.options.nix-on-droid]
+expr = "(builtins.getFlake ''/home/ladas552/Nix-Is-Unbreakable'').nixOnDroidConfigurations.NixMux.options"
+
+[language-server.nixd.config.nixd.options.nixos]
+expr = "(builtins.getFlake ''/home/ladas552/Nix-Is-Unbreakable'').nixosConfigurations.NixToks.options"
+
+[language-server.nixd.config.nixd.options.nixvim]
+expr = "(builtins.getFlake ''/home/ladas552/Nix-Is-Unbreakable'').packages.x86_64-linux.nixvim.options"
+
+[language-server.nixd.config.nixd.options.nvf]
+expr = "(builtins.getFlake ''/home/ladas552/Nix-Is-Unbreakable'').packages.x86_64-linux.nvf.neovimConfig"
+
+[language-server.tinymist]
+command = "tinymist"
+
+[language-server.tinymist.config]
+exportPdf = "onType"
+fontPaths = ["./fonts"]
+formatterMode = "typstyle"
+outputPath = "$root/$name"
+typstExtraArgs = ["src.typ"]
+
+[language-server.tinymist.config.capabilities]
+hoverProvider = false
