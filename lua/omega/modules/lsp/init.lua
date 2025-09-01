@@ -27,6 +27,7 @@ local function lsp_config()
 
             vim.keymap.set("n", "gD", vim.lsp.buf.implementation, opts)
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+            vim.keymap.set("n", "grc", vim.lsp.codelens.run, { desc = "lsp.codelens.run", buffer = bufnr })
         end,
         group = vim.api.nvim_create_augroup("lsp-on-attach", {}),
     })
@@ -187,11 +188,6 @@ local lsp = {
     {
         "max397574/typst-tools.nvim",
         opts = {
-            lsp = {
-                on_attach = function(client, bufnr)
-                    require("omega.modules.lsp.on_attach").setup(client, bufnr)
-                end,
-            },
             formatter = {
                 conform_nvim = false,
                 formatters = {

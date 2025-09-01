@@ -5,17 +5,10 @@ return {
     -- event = "InsertEnter",
     dependencies = {
         "max397574/care-cmp",
-        "max397574/cmp-greek",
-        "hrsh7th/cmp-calc",
-        "hrsh7th/cmp-buffer",
-        "hrsh7th/cmp-emoji",
         "saadparwaiz1/cmp_luasnip",
-        -- "hrsh7th/cmp-path",
     },
     config = function()
         local labels = { "q", "w", "r", "t", "z", "i" }
-
-        require("lazy").load({ plugins = { "mini.nvim" } })
 
         require("care.sources.path").setup()
 
@@ -29,18 +22,6 @@ return {
                         border = "none",
 
                         format_entry = require("care.presets").Atom,
-                        -- format_entry = function(entry, data)
-                        --     local components = require("care.presets.components")
-                        --     return {
-                        --         components.Padding(1),
-                        --         components.Label(entry, data, false),
-                        --         components.Padding(1),
-                        --         components.KindName(entry, false, "@comment"),
-                        --         components.Padding(1),
-                        --         components.ColoredBlock(entry, " "),
-                        --         -- components.Padding(1),
-                        --     }
-                        -- end,
                     },
                 },
             })
@@ -49,14 +30,6 @@ return {
             local border_config = require("omega.config").ui.completion.border
             if border_config == "half" then
                 border = {
-                    -- { "▄", "@care.border" },
-                    -- { "▄", "@care.border" },
-                    -- { "▄", "@care.border" },
-                    -- { "█", "@care.border" },
-                    -- { "▀", "@care.border" },
-                    -- { "▀", "@care.border" },
-                    -- { "▀", "@care.border" },
-                    -- { "█", "@care.border" },
                     { "▗", "@care.border" },
                     { "▄", "@care.border" },
                     { "▖", "@care.border" },
@@ -81,14 +54,6 @@ return {
                 border = ""
             elseif border_config == "up_to_edge" then
                 border = {
-                    -- { "🭽", "@care.border" },
-                    -- { "▔", "@care.border" },
-                    -- { "🭾", "@care.border" },
-                    -- { "▕", "@care.border" },
-                    -- { "🭿", "@care.border" },
-                    -- { "▁", "@care.border" },
-                    -- { "🭼", "@care.border" },
-                    -- { "▏", "@care.border" },
                     { "🬕", "@care.border" },
                     { "🬂", "@care.border" },
                     { "🬨", "@care.border" },
@@ -108,7 +73,6 @@ return {
                         max_height = 30,
 
                         format_entry = function(entry, data)
-                            -- return require("care.presets").Default(entry, data)
                             local labels = { "q", "w", "r", "t", "z", "i" }
                             local components = require("care.presets.components")
                             local preset_utils = require("care.presets.utils")
@@ -127,7 +91,6 @@ return {
                         alignments = { "left", "left", "left", "center" },
                         scrollbar = {
                             enabled = true,
-                            -- character = "║",
                             character = (function()
                                 if border_config == "up_to_edge" then
                                     return "▐"
@@ -153,22 +116,9 @@ return {
                         filter = function(entry)
                             return entry.completion_item.kind ~= 1
                         end,
-                        -- max_entries = 3,
-                        -- priority = 5,
-                        -- enabled = false,
                     },
                     cmp_luasnip = {
                         -- max_entries = 2,
-                    },
-                    cmp_buffer = {
-                        -- priority = 5,
-                        enabled = false,
-                    },
-                    cmp_path = {
-                        enabled = false,
-                    },
-                    cmp_calc = {
-                        enabled = false,
                     },
                     path = {
                         priority = 1000,
