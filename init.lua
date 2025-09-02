@@ -1,4 +1,5 @@
 local profile = false
+
 if profile then
     local snacks = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
     vim.opt.rtp:append(snacks)
@@ -12,4 +13,5 @@ end
 vim.loader.enable()
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
+vim.g.markview_cmp_loaded = true
 require("omega")

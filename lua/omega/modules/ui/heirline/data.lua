@@ -66,7 +66,9 @@ data.file_icons = {
     haskel = " ",
     hs = " ",
     ruby = " ",
-    norg = " ",
+    norg = " ",
+    typst = "",
+    typ = "",
     txt = " ",
 }
 

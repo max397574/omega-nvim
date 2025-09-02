@@ -49,3 +49,17 @@ vim.api.nvim_create_user_command("TypstWatch", function()
         end,
     })
 end, {})
+
+vim.api.nvim_create_user_command("TestCodeForces", function(args)
+    if args.args == "reuse" then
+        require("omega.utils").test_CF(true)
+    else
+        require("omega.utils").test_CF(false)
+    end
+end, {
+    desc = "Test a Code Forces submission",
+    nargs = "?",
+    complete = function()
+        return { "reuse" }
+    end,
+})

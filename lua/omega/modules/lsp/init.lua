@@ -2,6 +2,8 @@
 
 local function lsp_config()
     require("omega.modules.lsp.lua").setup()
+    require("omega.modules.lsp.python").setup()
+    require("omega.modules.lsp.ocaml").setup()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -12,8 +14,13 @@ local function lsp_config()
                 return
             end
             local bufnr = args.buf
-            if client.server_capabilities.codeActionProvider and client.name ~= "tinymist" then
-                require("omega.modules.lsp.available_code_action").setup(bufnr)
+            local disable_code_action = { "ruff", "tinymist" }
+
+            -- print(client.name)
+            if
+                client.server_capabilities.codeActionProvider and not vim.tbl_contains(disable_code_action, client.name)
+            then
+                require("omega.modules.lsp.available_code_action").setup(bufnr, client)
             end
             if client.name == "tinymist" then
                 -- vim.lsp.semantic_tokens.stop(bufnr, client.id)
@@ -80,12 +87,19 @@ local function lsp_config()
         end),
     })
 
-    vim.lsp.enable({ "tailwindcss", "ts_ls", "ty", "ruff", "cssls" })
+    vim.lsp.enable({
+        "tailwindcss",
+        "ts_ls",
+        -- "ty",
+        -- "ruff",
+        "cssls",
+    })
 
     vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
 
     -- jump to the first definition automatically if two definitions are on same line (for luals `local x = function()`)
     vim.lsp.handlers["textDocument/definition"] = function(_, result, ctx)
+        print("hi")
         if not result or vim.tbl_isempty(result) then
             return
         end
@@ -165,15 +179,8 @@ lsp_config()
 local lsp = {
     {
         "mrcjkb/rustaceanvim",
-        lazy = false, -- This plugin is already lazy
+        lazy = false,
         init = function()
-            vim.g.rustaceanvim = {
-                server = {
-                    on_attach = function(client, bufnr)
-                        require("omega.modules.lsp.on_attach").setup(client, bufnr)
-                    end,
-                },
-            }
             for _, method in ipairs({ "textDocument/diagnostic", "workspace/diagnostic" }) do
                 local default_diagnostic_handler = vim.lsp.handlers[method]
                 vim.lsp.handlers[method] = function(err, result, context, config)
@@ -184,6 +191,10 @@ local lsp = {
                 end
             end
         end,
+    },
+    {
+        "mrcjkb/haskell-tools.nvim",
+        lazy = false,
     },
     {
         "max397574/typst-tools.nvim",
@@ -206,8 +217,9 @@ local lsp = {
         "chomosuke/typst-preview.nvim",
         ft = "typst",
         opts = {
-            open_cmd = 'open -a Firefox "%s"',
-            follow_cursor = false,
+            open_cmd = 'open -a qutebrowser "%s"',
+            -- open_cmd = 'open -a Firefox "%s"',
+            follow_cursor = true,
             dependencies_bin = {
                 ["tinymist"] = "tinymist",
             },

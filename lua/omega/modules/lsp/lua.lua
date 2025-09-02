@@ -1,55 +1,4 @@
-local function on_attach(client, bufnr)
-    require("omega.modules.lsp.on_attach").setup(client, bufnr)
-end
-
 local root_pattern = require("omega.modules.lsp.util").root_pattern
-
-local settings = {
-    on_attach = on_attach,
-    flags = {
-        debounce_text_changes = 150,
-    },
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = {
-                    "vim",
-                    "omega",
-                    "hs",
-                    "lvim",
-                    "neorg",
-                },
-            },
-            completion = {
-                callSnippet = "Replace",
-                displayContext = 5,
-                showWord = "Enable",
-            },
-            hint = {
-                enable = true,
-                paramType = true,
-                setType = true,
-                paramName = true,
-                arrayIndex = "Enable",
-            },
-            hover = {
-                expandAlias = false,
-            },
-            type = {
-                castNumberToInteger = true,
-            },
-            workspace = {
-                checkThirdParty = false,
-                maxPreload = 1000,
-                preloadFileSize = 1000,
-                library = {
-                    vim.fn.stdpath("config") .. "/lua/omega/types",
-                    vim.fn.stdpath("config") .. "/lua",
-                },
-            },
-        },
-    },
-}
 
 local root_files = {
     ".luarc.json",
@@ -86,7 +35,6 @@ local function setup()
                 autostart = true,
                 single_file_support = true,
                 log_level = vim.lsp.protocol.MessageType.Warning,
-                -- settings = settings,
             })
         end,
     })

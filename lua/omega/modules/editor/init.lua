@@ -96,7 +96,10 @@ return {
         },
     },
     {
-        "folke/trouble.nvim",
+        -- TODO: perhaps eventually switch back to non-forked one
+        -- "folke/trouble.nvim",
+        "h-michael/trouble.nvim",
+        branch = "fix/decoration-provider-api",
         cmd = { "Trouble" },
         opts = {},
 
@@ -166,6 +169,5 @@ return {
     require("omega.modules.editor.snippets"),
     require("omega.modules.editor.treesitter"),
     require("omega.modules.editor.which_key"),
-    require("omega.modules.editor.terminal"),
     require("omega.modules.editor.autopairs"),
 }

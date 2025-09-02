@@ -8,19 +8,20 @@ local function remove_sign()
     vim.fn.sign_unplace("ca_available")
 end
 
-local function update_sign(bufnr)
+local function update_sign(bufnr, client)
+    remove_sign()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     if #clients == 0 then
         return
     end
-    local params = vim.lsp.util.make_range_params(0, clients[1].offset_encoding or "utf-8")
+    local params = vim.lsp.util.make_range_params(0, client.offset_encoding or "utf-8")
 
     local line = params.range.start.line
-    local context = { diagnostics = vim.diagnostic.get(bufnr, { lnum = line }) }
+    local diags = vim.lsp.diagnostic.from(vim.diagnostic.get(bufnr, { lnum = line }))
+
     ---@diagnostic disable-next-line: inject-field
-    params.context = context
-    vim.lsp.buf_request_all(bufnr, "textDocument/codeAction", params, function(results)
-        remove_sign()
+    params.context = { diagnostics = diags }
+    client:request("textDocument/codeAction", params, function(results)
         if not results or not results[1] then
             return
         end
@@ -35,14 +36,14 @@ local function update_sign(bufnr)
             return
         end
         place_sign(line, bufnr)
-    end)
+    end, bufnr)
 end
 
-function ca_available.setup(bufnr)
+function ca_available.setup(bufnr, client)
     local augroup = vim.api.nvim_create_augroup("CodeAction_available", {})
     vim.api.nvim_create_autocmd("CursorHold", {
         callback = function(args)
-            update_sign(args.buf)
+            update_sign(args.buf, client)
         end,
         buffer = bufnr,
         group = augroup,

@@ -8,6 +8,7 @@ local snacks = {
 
 ---@type snacks.Config
 snacks.opts = {
+    input = { enabled = false },
     indent = {
         enabled = true,
         chunk = { enabled = false },
@@ -40,7 +41,34 @@ snacks.opts = {
                     Snacks.picker.grep({ glob = selected })
                 end)
             end,
+            add_file = function(picker)
+                Snacks.input.disable()
+                local Tree = require("snacks.explorer.tree")
+                vim.ui.input({
+                    prompt = 'Add a new file or directory (directories end with a "/")> ',
+                }, function(value)
+                    local uv = vim.uv
+                    if not value or value:find("^%s$") then
+                        return
+                    end
+                    local path = svim.fs.normalize(picker:dir() .. "/" .. value)
+                    local is_file = value:sub(-1) ~= "/"
+                    local dir = is_file and vim.fs.dirname(path) or path
+                    if is_file and uv.fs_stat(path) then
+                        Snacks.notify.warn("File already exists:\n- `" .. path .. "`")
+                        return
+                    end
+                    vim.fn.mkdir(dir, "p")
+                    if is_file then
+                        io.open(path, "w"):close()
+                    end
+                    Tree:open(dir)
+                    Tree:refresh(dir)
+                    require("snacks.explorer.actions").update(picker, { target = path })
+                end)
+            end,
         },
+        image = { enabled = false },
         sources = {
             explorer = {
                 layout = {
@@ -62,6 +90,13 @@ snacks.opts = {
                         },
                         { win = "list", border = "none", wo = { signcolumn = "yes:1" } },
                         { win = "preview", title = "{preview}", height = 0.4, border = "top" },
+                    },
+                },
+                win = {
+                    list = {
+                        keys = {
+                            ["a"] = "add_file",
+                        },
                     },
                 },
             },

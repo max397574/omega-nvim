@@ -24,8 +24,10 @@ require("lazy").setup({
         path = "~/4_ComputerScience/1_Programming/neovim_plugins/",
     },
 })
+vim.cmd.packadd("nvim.undotree")
 
 require("omega.options")
 require("omega.autocommands")
 require("omega.commands")
 require("omega.keymappings")
+require("textobject_dollar")

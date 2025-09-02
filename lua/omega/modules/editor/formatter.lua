@@ -1,13 +1,25 @@
 return {
     "stevearc/conform.nvim",
     opts = {
+        formatters = {
+            rustfmt = {
+                options = {
+                    default_edition = "2024",
+                    nightly = true,
+                },
+            },
+        },
         formatters_by_ft = {
             lua = { "stylua" },
+            asm = { "asmfmt" },
             yaml = { "yamlfmt" },
-            rust = { "rustfmt" },
-            python = { "ruff_format" },
+            rust = { "rustfmt", "dioxus" },
+            -- python = { "ruff_format" },
             markdown = { "prettier" },
             typst = { "typstyle" },
+            c = { "clang-format" },
+            ocaml = { "ocamlformat" },
+            haskell = { "ormolu" },
         },
     },
     init = function()

@@ -1,5 +1,7 @@
 local map = vim.keymap.set
 
+map("n", "_", "~hi_<esc>l")
+
 map("i", "<m-cr>", "<cr>", { desc = "Return" })
 
 map({ "v", "n" }, "<leader>y", '"+y', { silent = true, desc = "Yank to clipboard" })
