@@ -10,7 +10,7 @@ vim.defer_fn(function()
     opt.mouse = "nv"
     opt.ignorecase = true
     opt.smartcase = true
-    opt.updatetime = 250
+    opt.updatetime = 350
     opt.shortmess:append("c")
     opt.formatoptions = vim.opt.formatoptions
         + "r" -- continue comments after return

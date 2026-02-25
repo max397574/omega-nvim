@@ -16,7 +16,6 @@ local function search_ancestors(startpath, func)
     end
     local guard = 100
     for path in vim.fs.parents(startpath) do
-        -- Prevent infinite recursion if our algorithm breaks
         guard = guard - 1
         if guard == 0 then
             return

@@ -1,5 +1,6 @@
 local M = {}
 
+-- I admit: vibecoded, cba to write such dumb code
 function M.select_inner_dollar(outer)
     local line = vim.api.nvim_get_current_line()
     local row, col0 = unpack(vim.api.nvim_win_get_cursor(0)) -- col0 is 0-based

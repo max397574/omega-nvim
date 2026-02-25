@@ -3,7 +3,6 @@
 local config = require("omega.config")
 local snacks = {
     "snacks.nvim",
-    -- dev = true,
 }
 
 ---@type snacks.Config
@@ -69,40 +68,7 @@ snacks.opts = {
             end,
         },
         image = { enabled = false },
-        sources = {
-            explorer = {
-                layout = {
-                    preview = "main",
-                    layout = {
-                        backdrop = false,
-                        width = 40,
-                        min_width = 40,
-                        height = 0,
-                        position = "left",
-                        border = "right",
-                        box = "vertical",
-                        {
-                            win = "input",
-                            height = 1,
-                            border = "rounded",
-                            title = "{title} {live} {flags}",
-                            title_pos = "center",
-                        },
-                        { win = "list", border = "none", wo = { signcolumn = "yes:1" } },
-                        { win = "preview", title = "{preview}", height = 0.4, border = "top" },
-                    },
-                },
-                win = {
-                    list = {
-                        keys = {
-                            ["a"] = "add_file",
-                        },
-                    },
-                },
-            },
-        },
     },
-    explorer = {},
     statuscolumn = {
         folds = {
             open = true,
@@ -113,33 +79,11 @@ snacks.opts = {
 
 -- stylua: ignore
 snacks.keys = {
-    { "<leader><leader>", function() Snacks.picker.smart() end, desc = "Smart open", },
-
     { "<leader>ff", function() Snacks.picker.files() end, desc = "Find file", },
     { "<leader>/", function() Snacks.picker.grep() end, desc = "Live Grep", },
-    { "<leader>.", function() Snacks.explorer.open({ layout = { preset = "sidebar" } }) end, desc = "File Browser", },
-    { "<leader>,", function() Snacks.picker.buffers() end, desc = "File Browser", },
     { "<leader>hh", function() Snacks.picker.help() end, desc = "Help Pages" },
-    { "<c-s>", function() Snacks.picker.lines() end, desc = "Current buffer fuzzy find" },
-
-    -- Search
-    { '<leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
-    { '<leader>s/', function() Snacks.picker.search_history() end, desc = "Search History" },
-    { "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
-    { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Command History" },
-    { "<leader>sC", function() Snacks.picker.commands() end, desc = "Commands" },
-    { "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
-    { "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics" },
-    { "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
-    { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Highlights" },
     { "<leader>si", function() Snacks.picker.icons() end, desc = "Icons" },
-    { "<leader>sj", function() Snacks.picker.jumps() end, desc = "Jumps" },
-    { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
-    { "<leader>sl", function() Snacks.picker.loclist() end, desc = "Location List" },
     { "<leader>sM", function() Snacks.picker.man() end, desc = "Man Pages" },
-    { "<leader>sm", function() Snacks.picker.marks() end, desc = "Marks" },
-    { "<leader>sR", function() Snacks.picker.resume() end, desc = "Resume" },
-    { "<leader>sq", function() Snacks.picker.qflist() end, desc = "Quickfix List" },
     { "<leader>su", function() Snacks.picker.undo() end, desc = "Undotree" },
     { "<leader>sp", function() Snacks.picker() end, desc = "Pickers" },
     {
@@ -171,86 +115,5 @@ snacks.keys = {
         desc = "Search in dir",
     },
 }
-
--- stylua: ignore
-table.insert(snacks.keys, { "<leader>Ps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Bufer" })
-
----@param opts snacks.Config
-function snacks.config(_, opts)
-    Snacks.toggle.profiler():map("<leader>Pp")
-    Snacks.toggle.profiler_highlights():map("<leader>Ph")
-
-    if config.ui.picker.borders == "half_block_to_edge" or config.ui.picker.borders == "up_to_edge" then
-        opts.picker.layout = {
-            cycle = true,
-            layout = {
-                -- backdrop = false,
-                box = "horizontal",
-                dim = false,
-                width = 0.8,
-                min_width = 120,
-                height = 0.8,
-                {
-                    box = "vertical",
-                    border = (config.ui.picker.borders == "half_block_to_edge" and {
-                        "🬕",
-                        "🬂",
-                        { "▌", "SnacksPickerBorderCenter" },
-                        { "▌", "SnacksPickerBorderCenter" },
-                        { "▌", "SnacksPickerBorderCenter" },
-                        "🬭",
-                        "🬲",
-                        "▌",
-                    } or {
-                        { "🮈", "SnacksPickerBorderCenter" },
-                        "▔",
-                        { "▍", "SnacksPickerBorderCenter" },
-                        { "▍", "SnacksPickerBorderCenter" },
-                        { "▍", "SnacksPickerBorderCenter" },
-                        "▁",
-                        { "🮈", "SnacksPickerBorderCenter" },
-                        { "🮈", "SnacksPickerBorderCenter" },
-                    }),
-                    -- title = "{title} {live} {flags}",
-                    title = { { " {title} {live} {flags}", "SnacksPickerBoxTitle" } },
-                    { win = "input", height = 1, border = { "", "", "", "", "", "─", " ", "" } },
-                    { win = "list", border = "none" },
-                },
-                {
-                    win = "preview",
-                    -- title = "{preview}",
-                    title = { { "󰈔 {preview} ", "SnacksPickerPreviewTitle" } },
-                    wo = {
-                        relativenumber = false,
-                        signcolumn = "no",
-                        statuscolumn = "",
-                    },
-                    border = (config.ui.picker.borders == "half_block_to_edge" and {
-                        { "▐", "SnacksPickerBorderCenter" },
-                        "🬂",
-                        "🬨",
-                        "▐",
-                        "🬷",
-                        "🬭",
-                        { "▐", "SnacksPickerBorderCenter" },
-                        { "▐", "SnacksPickerBorderCenter" },
-                    } or {
-                        { "🮈", "SnacksPickerBorderCenter" },
-                        "▔",
-                        { "▍", "SnacksPickerBorderCenter" },
-                        { "▍", "SnacksPickerBorderCenter" },
-                        { "▍", "SnacksPickerBorderCenter" },
-                        "▁",
-                        { "🮈", "SnacksPickerBorderCenter" },
-                        { "🮈", "SnacksPickerBorderCenter" },
-                    }),
-
-                    width = 0.5,
-                },
-            },
-        }
-    end
-    require("snacks").setup(opts)
-end
 
 return snacks

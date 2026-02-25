@@ -15,7 +15,7 @@ return {
             yaml = { "yamlfmt" },
             rust = { "rustfmt", "dioxus" },
             -- python = { "ruff_format" },
-            markdown = { "prettier" },
+            -- markdown = { "prettier" },
             typst = { "typstyle" },
             c = { "clang-format" },
             ocaml = { "ocamlformat" },
@@ -29,8 +29,6 @@ return {
             callback = function()
                 require("conform").formatters.typstyle = {
                     command = "typstyle",
-                    -- args = { "$FILENAME", "-i", "-l", "80", "--wrap-text" },
-                    -- args = { "$FILENAME", "--wrap-text", "-l", "80" },
                     args = { "--wrap-text", "-l", "80" },
                     stdin = true,
                 }

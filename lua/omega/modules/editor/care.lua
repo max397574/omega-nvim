@@ -1,8 +1,8 @@
 return {
     "max397574/care.nvim",
-    enabled = require("omega.config").modules.completion == "care",
+    -- enabled = require("omega.config").modules.completion == "care",
+    enabled = false,
     lazy = false,
-    -- event = "InsertEnter",
     dependencies = {
         "max397574/care-cmp",
         "saadparwaiz1/cmp_luasnip",

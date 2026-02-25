@@ -88,6 +88,7 @@ ls.add_snippets("typst", {
     s("env", fmt('#environment("{}")[{}]', { i(1), i(0) })),
     s("lemma", fmt('#lemma("{}")[{}]', { i(1), i(0) })),
     s("theorem", fmt('#theorem("{}")[{}]', { i(1), i(0) })),
+    s("frame", fmt('$limits(cal(F))_->""_{}${}', { i(1), i(0) })),
     s(
         "fntable",
         fmt(

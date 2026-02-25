@@ -19,12 +19,14 @@ require("lazy").setup({
         lazy = true,
         version = false,
     },
+    ---@diagnostic disable-next-line: assign-type-mismatch
     dev = {
         patterns = { "max397574" },
         path = "~/4_ComputerScience/1_Programming/neovim_plugins/",
     },
 })
 vim.cmd.packadd("nvim.undotree")
+vim.cmd.packadd("nohlsearch")
 
 require("omega.options")
 require("omega.autocommands")

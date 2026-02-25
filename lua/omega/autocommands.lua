@@ -1,13 +1,12 @@
 local autocmd = vim.api.nvim_create_autocmd
 
-autocmd({ "BufAdd", "BufEnter", "tabnew" }, {
+autocmd({ "BufAdd", "BufEnter", "TabNew" }, {
     callback = function(args)
         if vim.t.bufs == nil then
             vim.t.bufs = {}
         end
         local bufs = vim.t.bufs
 
-        -- check for duplicates
         if
             vim.bo[args.buf].buflisted
             and (args.event == "BufEnter" or args.buf ~= vim.api.nvim_get_current_buf())
@@ -52,19 +51,6 @@ autocmd({ "BufNewFile", "BufRead", "TabEnter", "TermOpen" }, {
     end,
 })
 
--- -- show cursor line only in active window
-autocmd({ "InsertLeave", "WinEnter", "CmdlineLeave" }, {
-    pattern = "*",
-    command = "set cursorline",
-    desc = "Enable cursorline",
-})
-autocmd({ "InsertEnter", "WinLeave", "CmdlineEnter" }, {
-    pattern = "*",
-    command = "set nocursorline",
-    desc = "Disable cursorline",
-})
-
--- Create directories inside which buffer is recursively
 autocmd("BufWritePre", {
     callback = function()
         local dir = vim.fn.expand("<afile>:p:h")
@@ -72,19 +58,14 @@ autocmd("BufWritePre", {
             vim.fn.mkdir(dir, "p")
         end
     end,
-    desc = "Create directories inside which buffer is recursively",
 })
 
--- Go to last position in buffer
 autocmd({ "BufRead" }, {
-    pattern = "*",
     callback = function()
         require("omega.utils").last_place()
     end,
-    desc = "Go to last position in buffer",
 })
 
--- Don't move cursor on yank
 local last_cursor
 autocmd("CursorMoved", {
     callback = function()
@@ -136,7 +117,6 @@ autocmd({ "TextYankPost" }, {
         vim.highlight.on_yank({ higrou = "IncSearch", timeout = 500 })
     end,
     group = vim.api.nvim_create_augroup("highlight_yank", {}),
-    desc = "Highlight yanked text",
 })
 
 autocmd({ "FileType" }, {
@@ -145,7 +125,6 @@ autocmd({ "FileType" }, {
         vim.keymap.set("n", "q", function()
             local buf = vim.api.nvim_get_current_buf()
             vim.cmd.close()
-            -- for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
             local bufs = vim.t.bufs
             if bufs then
                 for i, bufnr in ipairs(bufs) do
@@ -156,14 +135,12 @@ autocmd({ "FileType" }, {
                     end
                 end
             end
-            -- end
         end, {
             noremap = true,
             silent = true,
             buffer = true,
         })
     end,
-    desc = "Map q to close some buffers",
 })
 
 autocmd("OptionSet", {
@@ -189,9 +166,9 @@ autocmd("FileType", {
     desc = "Set formatoptions",
 })
 
-autocmd("User", {
-    pattern = "OmegaNewTheme",
-    callback = function(args)
-        require("colorscheme_switcher").new_scheme(args.data)
-    end,
-})
+-- autocmd("User", {
+--     pattern = "OmegaNewTheme",
+--     callback = function(args)
+--         require("colorscheme_switcher").new_scheme(args.data)
+--     end,
+-- })

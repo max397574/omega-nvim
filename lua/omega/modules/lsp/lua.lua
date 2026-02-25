@@ -23,10 +23,15 @@ local function setup()
                 if root then
                     return root
                 end
-                return vim.fs.find(
+                local root_dirs = vim.fs.find(
                     ".git",
-                    { type = "directory", path = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf)) }
-                ) or vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
+                    { type = "directory", path = vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf)), upward = true }
+                )
+                if root_dirs and #root_dirs > 0 then
+                    return root_dirs[1]
+                else
+                    return vim.fs.dirname(vim.api.nvim_buf_get_name(args.buf))
+                end
             end
             vim.lsp.start({
                 name = "lua_ls",

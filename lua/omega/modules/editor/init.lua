@@ -1,8 +1,6 @@
 return {
     {
         "max397574/better-escape.nvim",
-        -- "Sam-programs/better-escape.nvim",
-        -- branch = "multiple_keys",
         event = "VeryLazy",
         opts = {
             mappings = {
@@ -52,47 +50,8 @@ return {
         -- stylua: ignore
         keys = {
             { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end },
-            { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
             "d",
             "y"
-        },
-        specs = {
-            {
-                "folke/snacks.nvim",
-                opts = {
-                    picker = {
-                        win = {
-                            input = {
-                                keys = {
-                                    ["ß"] = { "flash", mode = { "n", "i" } },
-                                    ["s"] = { "flash" },
-                                },
-                            },
-                        },
-                        actions = {
-                            flash = function(picker)
-                                require("flash").jump({
-                                    pattern = "^",
-                                    label = { after = { 0, 0 } },
-                                    search = {
-                                        mode = "search",
-                                        exclude = {
-                                            function(win)
-                                                return vim.bo[vim.api.nvim_win_get_buf(win)].filetype
-                                                    ~= "snacks_picker_list"
-                                            end,
-                                        },
-                                    },
-                                    action = function(match)
-                                        local idx = picker.list:row2idx(match.pos[1])
-                                        picker.list:_move(idx, true, true)
-                                    end,
-                                })
-                            end,
-                        },
-                    },
-                },
-            },
         },
     },
     {
@@ -163,11 +122,11 @@ return {
             vim.api.nvim_set_hl(0, "NvimSurroundHighlight", { link = "CurSearch" })
         end,
     },
-    { "MagicDuck/grug-far.nvim", opts = {}, cmd = { "GrugFar" } },
+    { "nvim-treesitter/nvim-treesitter", lazy = false, build = ":TSUpdate", branch = "main" },
     require("omega.modules.editor.formatter"),
     require("omega.modules.editor.care"),
+    require("omega.modules.editor.blink"),
     require("omega.modules.editor.snippets"),
-    require("omega.modules.editor.treesitter"),
     require("omega.modules.editor.which_key"),
     require("omega.modules.editor.autopairs"),
 }

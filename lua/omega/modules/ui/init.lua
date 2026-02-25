@@ -13,51 +13,6 @@ return {
         end,
     },
     {
-        "OXY2DEV/markview.nvim",
-        -- lazy = false,
-        enabled = false,
-        -- setup = function()
-        --     vim.g.markview_cmp_loaded = true
-        -- end,
-        config = function()
-            local presets = require("markview.presets").headings
-
-            require("markview").setup({
-                typst = {
-                    headings = presets.glow,
-                    heading = {
-                        enable = true,
-                        sign = false,
-                    },
-                    code_blocks = { enable = false },
-                    code_spans = { enable = false },
-
-                    escapes = { enable = false },
-                    symbols = { enable = false },
-
-                    labels = { enable = false },
-                    list_items = { enable = false },
-
-                    math_blocks = { enable = false },
-                    math_spans = { enable = false },
-
-                    raw_blocks = { enable = false },
-                    raw_spans = { enable = false },
-
-                    reference_links = { enable = false },
-                    terms = { enable = false },
-                    url_links = { enable = false },
-
-                    subscripts = { enable = false },
-                    superscripts = { enable = false },
-                },
-                preview = {
-                    icon_provider = "devicons",
-                },
-            })
-        end,
-    },
-    {
         "chrisgrieser/nvim-origami",
         event = "VeryLazy",
         opts = {
@@ -81,14 +36,6 @@ return {
         lazy = false,
         opts = {},
     },
-    -- {
-    --     "folke/tokyonight.nvim",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         vim.cmd([[colorscheme tokyonight-storm]])
-    --     end,
-    -- },
     {
         "rcarriga/nvim-notify",
         init = function()
