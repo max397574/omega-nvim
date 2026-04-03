@@ -1,4 +1,5 @@
 local blink = {
+    -- "max397574/blink.cmp",
     "saghen/blink.cmp",
     version = "1.*",
     lazy = false,
@@ -86,6 +87,18 @@ local function get_highlight_for_hex(hex)
     return hl
 end
 
+local bc = "@cmp.border"
+local border = {
+    { "🬕", bc },
+    { "🬂", bc },
+    { "🬨", bc },
+    { "▐", bc },
+    { "🬷", bc },
+    { "🬭", bc },
+    { "🬲", bc },
+    { "▌", bc },
+}
+
 ---@module 'blink.cmp'
 ---@type blink.cmp.Config
 blink.opts = {
@@ -101,21 +114,41 @@ blink.opts = {
         },
         menu = {
             draw = {
-                columns = { { "item_idx" }, { "label", "color_block" }, { "kind_icon_blended" }, { "source_name" } },
+                align_to = "none",
+                columns = {
+                    { "item_idx" },
+                    { "label", "color_block", gap = 1 },
+                    { "kind_icon_blended" },
+                    { "space", "source_name", "space" },
+                },
                 components = {
                     item_idx = {
                         text = function(ctx)
                             return ctx.idx > #labels and " " or labels[ctx.idx]
                         end,
-                        highlight = "Comment",
+                        highlight = "Special",
                     },
                     label = {
                         text = function(ctx)
                             return ctx.item.label
                         end,
                         highlight = function(ctx)
-                            return ctx.deprecated and "Comment" or "@care.entry"
+                            return ctx.deprecated and "@cmp.deprecated" or "@cmp.entry"
                         end,
+                        width = {
+                            fill = false,
+                        },
+                    },
+                    space = {
+                        text = function()
+                            return ""
+                        end,
+                        highlight = function()
+                            return "@cmp.menu"
+                        end,
+                        width = {
+                            fill = true,
+                        },
                     },
                     color_block = {
                         text = function(ctx)
@@ -130,24 +163,50 @@ blink.opts = {
                             if not color then
                                 return nil
                             end
-                            return get_highlight_for_hex(color) or "@care.entry"
+                            return get_highlight_for_hex(color) or "@cmp.entry"
                         end,
                     },
                     kind_icon_blended = {
                         text = function(ctx)
-                            return ctx.kind .. " " .. ctx.kind_icon .. " "
+                            return " " .. ctx.kind_icon .. " "
                         end,
                         highlight = function(ctx)
-                            return ("@care.type.blended.%s"):format(ctx.kind)
+                            return ("@cmp.type.blended.%s"):format(ctx.kind)
+                        end,
+                    },
+                    source_name = {
+                        text = function(ctx)
+                            return " (" .. ctx.source_name .. ") "
+                        end,
+                        highlight = function(ctx)
+                            return ("@cmp.type.%s"):format(ctx.kind)
                         end,
                     },
                 },
             },
+            border = border,
         },
     },
     cmdline = { enabled = false },
-    -- experimental
     signature = { enabled = true },
+    sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+        providers = {
+            lsp = {
+                fallbacks = { "buffer" },
+                opts = { tailwind_color_icon = "󰏘 " },
+            },
+        },
+    },
 }
+
+function blink.config(_, opts)
+    local hl = function(...)
+        vim.api.nvim_set_hl(0, ...)
+    end
+
+    require("blink.cmp").setup(opts)
+    hl("BlinkCmpMenuSelection", { link = "Visual" })
+end
 
 return blink
