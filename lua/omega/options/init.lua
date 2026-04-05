@@ -41,6 +41,17 @@ vim.defer_fn(function()
     opt.foldmethod = "expr" -- use treesitter for folding
     opt.foldtext = ""
     opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(ev)
+            local client = vim.lsp.get_client_by_id(ev.data.client_id)
+            if client and client:supports_method("textDocument/foldingRange") then
+                local win = vim.api.nvim_get_current_win()
+                vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+                vim.wo[win][0].foldtext = "v:lua.vim.lsp.foldtext()"
+            end
+        end,
+    })
     opt.grepprg = "rg --vimgrep --no-heading --smart-case"
     opt.grepformat:append("%f:%l:%c:%m")
 end, 1)

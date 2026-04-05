@@ -124,7 +124,6 @@ return {
     },
     { "nvim-treesitter/nvim-treesitter", lazy = false, build = ":TSUpdate", branch = "main" },
     require("omega.modules.editor.formatter"),
-    require("omega.modules.editor.care"),
     require("omega.modules.editor.blink"),
     require("omega.modules.editor.snippets"),
     require("omega.modules.editor.which_key"),
