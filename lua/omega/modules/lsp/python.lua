@@ -35,8 +35,8 @@ local subcommand_tbl = {
         end,
     },
     run = {
-        impl = function()
-            M.run_in_split()
+        impl = function(args)
+            M.run_in_split(args)
         end,
     },
 }
@@ -54,13 +54,15 @@ local function python_cmd(opts)
 end
 
 --- Gets command with which file can be run
-function M.get_run_command()
+function M.get_run_command(args)
+    args = args and (" " .. table.concat(args, " ")) or ""
     if has_inline_metadata() then
-        return "uv run --script " .. exp("%:t")
+        return "uv run --script " .. exp("%:t") .. args
     elseif not vim.tbl_isempty(vim.fs.find("pyproject.toml", { upward = true })) then
-        return "uv run " .. exp("%:t")
+        return "uv run " .. exp("%:t") .. args
     else
-        return "uv run python  " .. exp("%:t")
+        -- also works with venvs I think
+        return "uv run python  " .. exp("%:t") .. args
     end
 end
 
@@ -89,9 +91,9 @@ function M.add_dependency(dependency)
     end
 end
 
-function M.run_in_split()
+function M.run_in_split(args)
     vim.cmd("botright split")
-    vim.cmd("terminal " .. M.get_run_command())
+    vim.cmd("terminal " .. M.get_run_command(args))
     vim.keymap.set("n", "q", function()
         vim.cmd.bd()
     end, { buffer = true })
@@ -161,6 +163,9 @@ function M.setup()
         pattern = "python",
         callback = function(_)
             M.start_lsp()
+            vim.keymap.set("n", "<localleader>r", function()
+                M.run_in_split()
+            end, { buf = 0 })
         end,
     })
 

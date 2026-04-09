@@ -82,6 +82,7 @@ local function lsp_config()
         "tailwindcss",
         "ts_ls",
         "cssls",
+        "svelte",
     })
 
     vim.api.nvim_set_hl(0, "DiagnosticHeader", { link = "Special" })
@@ -170,11 +171,18 @@ local lsp = {
         lazy = false,
     },
     require("omega.modules.lsp.lua_types"),
-    {
-        "max397574/typst-preview_terminal.nvim",
-        ft = "typst",
-        opts = {},
-    },
+    -- {
+    --     "max397574/typst-preview_terminal.nvim",
+    --     ft = "typst",
+    --     config = function()
+    --         vim.keymap.set("n", "<localLeader>ps", function()
+    --             require("typst-preview").start()
+    --         end)
+    --         vim.keymap.set("n", "<localLeader>pS", function()
+    --             require("typst-preview").stop()
+    --         end)
+    --     end,
+    -- },
     -- {
     --     "max397574/typst-preview_browser.nvim",
     --     ft = "typst",

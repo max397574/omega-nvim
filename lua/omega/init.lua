@@ -33,3 +33,5 @@ require("omega.autocommands")
 require("omega.commands")
 require("omega.keymappings")
 require("textobject_dollar")
+
+-- require("vim._core.ui2").enable({})

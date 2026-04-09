@@ -1,13 +1,15 @@
 local blink = {
     -- "max397574/blink.cmp",
     "saghen/blink.cmp",
+    -- enabled = false,
     version = "1.*",
     lazy = false,
 }
 
-local labels = { "q", "w", "r", "t", "z", "i" }
+local labels = { "q", "w", "r", "t", "z" }
 local keymaps = {
     preset = "none",
+    ["<c-i>"] = false,
     ["<c-j>"] = {
         function(cmp)
             cmp.select_next()
@@ -41,6 +43,7 @@ local keymaps = {
             end
         end,
     },
+
     ["<c-d>"] = {
         function(cmp)
             return cmp.scroll_documentation_up(4)
@@ -187,7 +190,8 @@ blink.opts = {
             border = border,
         },
     },
-    cmdline = { enabled = false },
+    cmdline = { enabled = false, keymap = { preset = "none" } },
+    term = { enabled = false, keymap = { preset = "none" } },
     signature = { enabled = true },
     sources = {
         default = { "lsp", "path", "snippets", "buffer" },

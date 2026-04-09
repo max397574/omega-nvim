@@ -43,6 +43,7 @@ map("n", "<C-U>", function()
         vim.api.nvim_win_set_cursor(0, cursor)
     end, 1)
 end)
+map("i", "<C-U>", "<ESC>b~hea", { silent = true })
 
 map("n", "<leader>qn", function()
     vim.cmd.cnext()

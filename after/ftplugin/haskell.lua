@@ -23,3 +23,16 @@ end, opts)
 vim.keymap.set("n", "<leader>rq", ht.repl.quit, opts)
 
 vim.bo[bufnr].shiftwidth = 2
+
+local function run_in_split()
+    vim.cmd("botright split")
+    vim.cmd("terminal ghci " .. vim.fn.expand("%"))
+    vim.cmd.startinsert()
+    vim.keymap.set("n", "q", function()
+        vim.cmd.bd()
+    end, { buffer = true })
+end
+
+vim.keymap.set("n", "<localleader>r", function()
+    run_in_split()
+end, opts)

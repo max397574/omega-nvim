@@ -80,6 +80,16 @@ end
 
 ls.add_snippets("typst", {
     s(math_auto_snip("Rr"), fmt("RR", {})),
+    s({
+        trig = "(%a)%1%1",
+        snippetType = "autosnippet",
+        regTrig = true,
+        wordTrig = false,
+    }, {
+        f(function(_, snip)
+            return "bdu(" .. snip.captures[1] .. ")"
+        end),
+    }),
 })
 
 ls.add_snippets("typst", {

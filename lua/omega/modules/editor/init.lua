@@ -22,6 +22,14 @@ return {
                             end, 1)
                         end,
                     },
+                    ["k"] = {
+                        ["j"] = function()
+                            vim.defer_fn(function()
+                                vim.o.ul = vim.o.ul
+                                require("luasnip").expand()
+                            end, 1)
+                        end,
+                    },
                 },
             },
         },
@@ -123,6 +131,22 @@ return {
         end,
     },
     { "nvim-treesitter/nvim-treesitter", lazy = false, build = ":TSUpdate", branch = "main" },
+    {
+        "nvim-mini/mini.files",
+        config = function()
+            require("mini.files").setup({ options = {
+                permanent_delete = false,
+            } })
+        end,
+        keys = {
+            {
+                "<leader>.",
+                function()
+                    MiniFiles.open()
+                end,
+            },
+        },
+    },
     require("omega.modules.editor.formatter"),
     require("omega.modules.editor.blink"),
     require("omega.modules.editor.snippets"),

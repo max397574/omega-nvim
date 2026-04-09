@@ -20,6 +20,11 @@ return {
             c = { "clang-format" },
             ocaml = { "ocamlformat" },
             haskell = { "ormolu" },
+            html = { "prettier" },
+            css = { "prettier" },
+            typescript = { "prettier" },
+            svelte = { "prettier" },
+            janet = { "janet-format" },
         },
     },
     init = function()
