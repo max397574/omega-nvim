@@ -87,26 +87,13 @@ autocmd("FileType", {
     end,
 })
 
+-- Remove indent from copied text
 autocmd({ "TextYankPost" }, {
     callback = function()
         if vim.v.event.regname ~= "+" then
             return
         end
-        local contents = vim.split(vim.fn.getreg("+"), "\n")
-        local min_spaces = 10000
-        local new_contents = {}
-        if not contents or #contents == 0 then
-            return
-        end
-        for _, line in ipairs(contents) do
-            if #line ~= 0 then
-                min_spaces = math.min(min_spaces, #(line:match("^%s*")))
-            end
-        end
-        for _, line in ipairs(contents) do
-            table.insert(new_contents, line:sub(min_spaces + 1, -1))
-        end
-        vim.fn.setreg("+", table.concat(new_contents, "\n"))
+        vim.fn.setreg("+", vim.text.indent(0, vim.fn.getreg("+")))
     end,
     desc = "Strip indent from text yanked to clipboard",
 })
@@ -153,22 +140,25 @@ autocmd("OptionSet", {
 
 autocmd("FileType", {
     callback = function()
-        vim.opt.formatoptions = vim.opt.formatoptions
-            + "r" -- continue comments after return
-            + "c" -- wrap comments using textwidth
-            + "q" -- allow to format comments w/ gq
-            + "j" -- remove comment leader when joining lines when possible
-            - "t" -- don't autoformat
-            - "a" -- no autoformatting
-            - "o" -- don't continue comments after o/O
-            - "2" -- don't use indent of second line for rest of paragraph
+        vim.opt.formatoptions:append({
+            "r", -- continue comments after return
+            "c", -- wrap comments using textwidth
+            "q", -- allow to format comments w/ gq
+            "j", -- remove comment leader when joining lines when possible
+        })
+        vim.opt.formatoptions:remove({
+            "t", -- don't autoformat
+            "a", -- no autoformatting
+            "o", -- don't continue comments after o/O
+            "2", -- don't use indent of second line for rest of paragraph
+        })
     end,
     desc = "Set formatoptions",
 })
 
--- autocmd("User", {
---     pattern = "OmegaNewTheme",
---     callback = function(args)
---         require("colorscheme_switcher").new_scheme(args.data)
---     end,
--- })
+autocmd("User", {
+    pattern = "OmegaNewTheme",
+    callback = function(args)
+        require("colorscheme_switcher").new_scheme(args.data)
+    end,
+})

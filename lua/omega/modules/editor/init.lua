@@ -134,10 +134,12 @@ return {
     {
         "nvim-mini/mini.files",
         config = function()
-            require("mini.files").setup({ options = {
-                permanent_delete = false,
-            } })
+            require("mini.files").setup({
+                options = { permanent_delete = false },
+                mappings = { synchronize = "<CR>" },
+            })
         end,
+        lazy = false,
         keys = {
             {
                 "<leader>.",

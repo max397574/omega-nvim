@@ -119,6 +119,8 @@ return {
         opts = {},
     },
     { "onsails/lspkind.nvim", lazy = false, opts = {} },
+    { "max397574/colorscheme_switcher" },
+    -- { "max397574/ki-bind.nvim", lazy = false, opts = {} },
     -- {
     --     "stevearc/oil.nvim",
     --     ---@module 'oil'

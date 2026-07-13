@@ -12,15 +12,19 @@ vim.defer_fn(function()
     opt.smartcase = true
     opt.updatetime = 350
     opt.shortmess:append("c")
-    opt.formatoptions = vim.opt.formatoptions
-        + "r" -- continue comments after return
-        + "c" -- wrap comments using textwidth
-        + "q" -- allow to format comments w/ gq
-        + "j" -- remove comment leader when joining lines when possible
-        - "t" -- don't autoformat
-        - "a" -- no autoformatting
-        - "o" -- don't continue comments after o/O
-        - "2" -- don't use indent of second line for rest of paragraph
+    vim.opt.formatoptions:append({
+        "r", -- continue comments after return
+        "c", -- wrap comments using textwidth
+        "q", -- allow to format comments w/ gq
+        "j", -- remove comment leader when joining lines when possible
+    })
+    vim.opt.formatoptions:remove({
+        "t", -- don't autoformat
+        "a", -- no autoformatting
+        "o", -- don't continue comments after o/O
+        "2", -- don't use indent of second line for rest of paragraph
+    })
+
     opt.jumpoptions:append("view")
     opt.virtualedit = "block" -- allow visual mode to go over end of lines
     opt.expandtab = true -- expand tabs to spaces

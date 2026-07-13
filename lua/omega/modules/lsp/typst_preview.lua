@@ -54,7 +54,9 @@ function M.compile(page_nr, in_path, out_path, callback)
             else
                 print("Compilation failed (see :messages)")
                 print(obj.stderr)
-                M.clear_preview()
+                vim.schedule(function()
+                    M.clear_preview()
+                end)
             end
         end
     )
