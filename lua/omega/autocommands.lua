@@ -61,9 +61,7 @@ autocmd("BufWritePre", {
 })
 
 autocmd({ "BufRead" }, {
-    callback = function()
-        require("omega.utils").last_place()
-    end,
+    callback = || -> require("omega.utils").last_place(),
 })
 
 local last_cursor
@@ -82,9 +80,7 @@ autocmd("TextYankPost", {
 })
 
 autocmd("FileType", {
-    callback = function()
-        pcall(vim.treesitter.start)
-    end,
+    callback = || -> pcall(vim.treesitter.start),
 })
 
 -- Remove indent from copied text

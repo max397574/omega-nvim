@@ -11,24 +11,16 @@ local keymaps = {
     preset = "none",
     ["<c-i>"] = false,
     ["<c-j>"] = {
-        function(cmp)
-            cmp.select_next()
-        end,
+        |cmp| -> cmp.select_next(),
     },
     ["<c-k>"] = {
-        function(cmp)
-            cmp.select_prev()
-        end,
+        |cmp| -> cmp.select_prev(),
     },
     ["<c-space>"] = {
-        function(cmp)
-            cmp.show()
-        end,
+        |cmp| -> cmp.show(),
     },
     ["<CR>"] = {
-        function(cmp)
-            return cmp.select_and_accept()
-        end,
+        |cmp| -> cmp.select_and_accept(),
         "fallback",
     },
     ["<c-f>"] = {
@@ -61,9 +53,7 @@ local keymaps = {
 for i, label in ipairs(labels) do
     ---@diagnostic disable-next-line: assign-type-mismatch
     keymaps["<c-" .. label .. ">"] = {
-        function(cmp)
-            cmp.accept({ index = i })
-        end,
+        |cmp| -> cmp.accept({ index = i }),
     }
 end
 
@@ -75,7 +65,7 @@ local function get_color(ctx)
     local doc = ctx.item.documentation and (ctx.item.documentation.value or ctx.item.documentation or nil) or nil
     if doc and doc:find("#%x%x%x%x%x%x") then
         local start, finish = doc:find("#%x%x%x%x%x%x")
-        if start and finish then
+        if start && finish then
             return doc:sub(start, finish)
         end
     end
@@ -143,12 +133,8 @@ blink.opts = {
                         },
                     },
                     space = {
-                        text = function()
-                            return ""
-                        end,
-                        highlight = function()
-                            return "@cmp.menu"
-                        end,
+                        text = || -> "",
+                        highlight = || -> "@cmp.menu",
                         width = {
                             fill = true,
                         },
@@ -170,20 +156,12 @@ blink.opts = {
                         end,
                     },
                     kind_icon_blended = {
-                        text = function(ctx)
-                            return " " .. ctx.kind_icon .. " "
-                        end,
-                        highlight = function(ctx)
-                            return ("@cmp.type.blended.%s"):format(ctx.kind)
-                        end,
+                        text = |ctx| -> " " .. ctx.kind_icon .. " ",
+                        highlight = |ctx| -> ("@cmp.type.blended.%s"):format(ctx.kind),
                     },
                     source_name = {
-                        text = function(ctx)
-                            return " (" .. ctx.source_name .. ") "
-                        end,
-                        highlight = function(ctx)
-                            return ("@cmp.type.%s"):format(ctx.kind)
-                        end,
+                        text = |ctx| -> " (" .. ctx.source_name .. ") ",
+                        highlight = |ctx| -> ("@cmp.type.%s"):format(ctx.kind),
                     },
                 },
             },

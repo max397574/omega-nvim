@@ -26,36 +26,24 @@ if ok then
         })
         vim.api.nvim_create_autocmd("BufWritePost", {
             pattern = "*.typ",
-            callback = function()
-                preview.render()
-            end,
+            callback = || -> preview.render(),
             group = "TypstPreview",
         })
         vim.api.nvim_create_autocmd("QuitPre", {
             pattern = "*.typ",
-            callback = function()
-                preview.clear_preview()
-            end,
+            callback = || -> preview.clear_preview(),
             group = "TypstPreview",
         })
     end
 
-    vim.keymap.set("n", "<localleader>j", function()
-        preview.next_page()
-    end, { buf = 0 })
+    vim.keymap.set("n", "<localleader>j", || -> preview.next_page(), { buf = 0 })
 
-    vim.keymap.set("n", "<localleader>k", function()
-        preview.previous_page()
-    end, { buf = 0 })
+    vim.keymap.set("n", "<localleader>k", || -> preview.previous_page(), { buf = 0 })
 
-    vim.keymap.set("n", "<localleader>r", function()
-        preview.render()
-    end, { buf = 0 })
+    vim.keymap.set("n", "<localleader>r", || -> preview.render(), { buf = 0 })
     vim.keymap.set("n", "<localLeader>p", function()
         setup_preview()
         preview.render()
     end, { buf = 0 })
-    vim.keymap.set("n", "<localleader>c", function()
-        preview.clear_preview()
-    end, { buf = 0 })
+    vim.keymap.set("n", "<localleader>c", || -> preview.clear_preview(), { buf = 0 })
 end

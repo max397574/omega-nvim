@@ -10,9 +10,7 @@ map("i", "<M-CR>", "<CR>")
 
 map({ "v", "n" }, "<leader>y", '"+y', { silent = true })
 
-map("n", "<leader>W", function()
-    vim.cmd.w()
-end)
+map("n", "<leader>W", || -> vim.cmd.w())
 
 map("n", "<leader>io", function()
     local lines = {}
@@ -45,12 +43,8 @@ map("n", "<C-U>", function()
 end)
 map("i", "<C-U>", "<ESC>b~hea", { silent = true })
 
-map("n", "<leader>qn", function()
-    vim.cmd.cnext()
-end)
-map("n", "<leader>qp", function()
-    vim.cmd.cprev()
-end)
+map("n", "<leader>qn", || -> vim.cmd.cnext())
+map("n", "<leader>qp", || -> vim.cmd.cprev())
 
 map("n", "j", [[(v:count > 1 ? "m'" . v:count : '') . 'j']], { expr = true, desc = "Add j with count to jumplist" })
 map("n", "k", [[(v:count > 1 ? "m'" . v:count : '') . 'k']], { expr = true, desc = "Add k with count to jumplist" })
@@ -78,13 +72,9 @@ map("n", "<leader>tr", function()
     require("omega.modules.ui.tabline").rename_tab()
 end, { desc = "Tab Rename" })
 
-map("n", "<leader>tn", function()
-    vim.cmd.tabnext()
-end, { desc = "Tab Next" })
+map("n", "<leader>tn", || -> vim.cmd.tabnext(), { desc = "Tab Next" })
 
-map("n", "<leader>tp", function()
-    vim.cmd.tabprevious()
-end, { desc = "Tab Previous" })
+map("n", "<leader>tp", || -> vim.cmd.tabprevious(), { desc = "Tab Previous" })
 
 map("n", "<leader>td", function()
     require("omega.modules.ui.tabline").close_tab()

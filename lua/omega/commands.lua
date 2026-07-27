@@ -44,9 +44,7 @@ vim.api.nvim_create_user_command("TypstWatch", function()
     end, {})
 
     vim.api.nvim_create_autocmd("VimLeavePre", {
-        callback = function()
-            watch_job:kill(9)
-        end,
+        callback = || -> watch_job:kill(9),
     })
 end, {})
 

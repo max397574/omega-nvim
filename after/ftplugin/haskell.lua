@@ -3,7 +3,7 @@ if not ok then
     return
 end
 local bufnr = vim.api.nvim_get_current_buf()
-local opts = { noremap = true, silent = true, buffer = bufnr }
+local opts = { remap = false, silent = true, buffer = bufnr }
 -- haskell-language-server relies heavily on codeLenses,
 -- so auto-refresh (see advanced configuration) is enabled by default
 vim.keymap.set("n", "<leader>cl", vim.lsp.codelens.run, opts)
@@ -17,9 +17,7 @@ vim.keymap.set("n", "<leader>rr", ht.repl.toggle, opts)
 vim.keymap.set("n", "<leader>rf", function()
     ht.repl.toggle(vim.api.nvim_buf_get_name(0))
 end, opts)
-vim.keymap.set("n", "<leader>rl", function()
-    ht.repl.reload()
-end, opts)
+vim.keymap.set("n", "<leader>rl", || -> ht.repl.reload(), opts)
 vim.keymap.set("n", "<leader>rq", ht.repl.quit, opts)
 
 vim.bo[bufnr].shiftwidth = 2
@@ -33,6 +31,4 @@ local function run_in_split()
     end, { buffer = true })
 end
 
-vim.keymap.set("n", "<localleader>r", function()
-    run_in_split()
-end, opts)
+vim.keymap.set("n", "<localleader>r", || -> run_in_split(), opts)
