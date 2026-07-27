@@ -113,7 +113,7 @@ local subcommand_tbl = {
 local function ocaml_cmd(opts)
     local fargs = opts.fargs
     local subcommand_key = fargs[1]
-    local args = #fargs > 1 and vim.list_slice(fargs, 2, #fargs) or {}
+    local args = #fargs > 1 ? vim.list_slice(fargs, 2, #fargs) : {}
     local subcommand = subcommand_tbl[subcommand_key]
     if not subcommand then
         vim.notify("Ocaml: Unknown command: " .. subcommand_key, vim.log.levels.ERROR)

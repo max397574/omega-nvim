@@ -117,7 +117,7 @@ blink.opts = {
                 components = {
                     item_idx = {
                         text = function(ctx)
-                            return ctx.idx > #labels and " " or labels[ctx.idx]
+                            return ctx.idx > #labels ? " " : labels[ctx.idx]
                         end,
                         highlight = "Special",
                     },
@@ -126,7 +126,7 @@ blink.opts = {
                             return ctx.item.label
                         end,
                         highlight = function(ctx)
-                            return ctx.deprecated and "@cmp.deprecated" or "@cmp.entry"
+                            return ctx.deprecated ? "@cmp.deprecated" : "@cmp.entry"
                         end,
                         width = {
                             fill = false,

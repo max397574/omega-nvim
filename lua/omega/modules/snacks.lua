@@ -52,7 +52,7 @@ snacks.opts = {
                     end
                     local path = svim.fs.normalize(picker:dir() .. "/" .. value)
                     local is_file = value:sub(-1) ~= "/"
-                    local dir = is_file and vim.fs.dirname(path) or path
+                    local dir = is_file ? vim.fs.dirname(path) : path
                     if is_file and uv.fs_stat(path) then
                         Snacks.notify.warn("File already exists:\n- `" .. path .. "`")
                         return

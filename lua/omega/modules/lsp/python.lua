@@ -44,7 +44,7 @@ local subcommand_tbl = {
 local function python_cmd(opts)
     local fargs = opts.fargs
     local subcommand_key = fargs[1]
-    local args = #fargs > 1 and vim.list_slice(fargs, 2, #fargs) or {}
+    local args = #fargs > 1 ? vim.list_slice(fargs, 2, #fargs) : {}
     local subcommand = subcommand_tbl[subcommand_key]
     if not subcommand then
         vim.notify("Python: Unknown command: " .. subcommand_key, vim.log.levels.ERROR)
@@ -55,7 +55,7 @@ end
 
 --- Gets command with which file can be run
 function M.get_run_command(args)
-    args = args and (" " .. table.concat(args, " ")) or ""
+    args = args ? (" " .. table.concat(args, " ")) : ""
     if has_inline_metadata() then
         return "uv run --script " .. exp("%:t") .. args
     elseif not vim.tbl_isempty(vim.fs.find("pyproject.toml", { upward = true })) then
@@ -128,7 +128,7 @@ function M.start_lsp()
         name = "ty"
         cmd = { "uvx", "ty", "server" }
         root_dir = vim.fs.root(0, { "ty.toml", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git" })
-            or vim.fn.getcwd()
+            ?? vim.fn.getcwd()
     end
 
     M.ty_lsp_id = vim.lsp.start({

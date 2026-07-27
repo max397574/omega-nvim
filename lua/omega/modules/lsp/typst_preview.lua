@@ -27,7 +27,7 @@ local function get_cursor_pos_page(callback)
                     if obj2.code == 0 and obj2.stdout and #obj.stdout > 0 then
                         local total =
                             ---@diagnostic disable-next-line: param-type-mismatch
-                            tonumber(vim.trim((obj2.stdout:sub(1, 1) == "[" and obj2.stdout:sub(2, -2) or obj2.stdout)))
+                            tonumber(vim.trim((obj2.stdout:sub(1, 1) == "[" ? obj2.stdout:sub(2, -2) : obj2.stdout)))
                         M.total_pages = total
                     end
                     callback(math.ceil((cursor_row / #lines) * M.total_pages))

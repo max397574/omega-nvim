@@ -161,7 +161,7 @@ local function check(filename)
     local message = ""
     local type = nil
     if same then
-        message = "Test Case passed ✓" .. (elapsed ~= "" and "\n" .. elapsed or "")
+        message = "Test Case passed ✓" .. (elapsed ~= "" ? "\n" .. elapsed : "")
         type = "success"
     else
         diff_strings(real_output, expected_output)

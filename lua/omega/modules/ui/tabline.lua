@@ -20,7 +20,7 @@ function tabline.rename_tab()
 end
 
 function tabline.next_buf()
-    local buffers = vim.t.bufs or {}
+    local buffers = vim.t.bufs ?? {}
     for idx, buf in ipairs(buffers) do
         if api.nvim_get_current_buf() == buf then
             if idx == #buffers then
@@ -35,7 +35,7 @@ function tabline.next_buf()
 end
 
 function tabline.prev_buf()
-    local buffers = vim.t.bufs or {}
+    local buffers = vim.t.bufs ?? {}
     for idx, buf in ipairs(buffers) do
         if api.nvim_get_current_buf() == buf then
             if idx == 1 then
@@ -50,7 +50,7 @@ function tabline.prev_buf()
 end
 
 function tabline.close_tab()
-    local buffers = vim.t.bufs or {}
+    local buffers = vim.t.bufs ?? {}
     cmd.tabclose()
     for _, buf in ipairs(buffers) do
         cmd.bd(buf)
@@ -66,7 +66,7 @@ function tabline.close_buf(bufnr)
     tabline.prev_buf()
     cmd.bd(bufnr)
     local new_bufs = {}
-    for _, buf in ipairs(vim.t.bufs or {}) do
+    for _, buf in ipairs(vim.t.bufs ?? {}) do
         if buf ~= bufnr then
             table.insert(new_bufs, buf)
         end
@@ -118,7 +118,7 @@ local function get_file_info(name, bufnr)
     if name == " No Name " then
         local padding = "       "
         local selected = api.nvim_get_current_buf() == bufnr
-        name = (selected and "%#TablineBufferSelected#" or "%#TablineBufferVisible#") .. name
+        name = (selected ? "%#TablineBufferSelected#" : "%#TablineBufferVisible#") .. name
         return padding .. name .. padding
     end
     if not devicons then
@@ -131,21 +131,21 @@ local function get_file_info(name, bufnr)
     local selected = api.nvim_get_current_buf() == bufnr
     local padding = string.rep(
         " ",
-        config.max_width - #(#name > config.max_width and name:sub(1, config.max_width - 3) .. "..." or name)
+        config.max_width - #(#name > config.max_width ? (name:sub(1, config.max_width - 3) .. "...") : name)
     )
-    icon = (selected and fg_bg_highlight(hl, "TablineBufferSelected") or fg_bg_highlight(hl, "TablineBufferVisible"))
+    icon = (selected ? fg_bg_highlight(hl, "TablineBufferSelected") : fg_bg_highlight(hl, "TablineBufferVisible"))
         .. " "
         .. icon
-    name = (selected and "%#TablineBufferSelected#" or "%#TablineBufferVisible#")
+    name = (selected ? "%#TablineBufferSelected#" : "%#TablineBufferVisible#")
         .. " "
-        .. (#name > config.max_width and name:sub(1, config.max_width - 3) .. "..." or name)
+        .. (#name > config.max_width ? (name:sub(1, config.max_width - 3) .. "...") : name)
         .. " "
     return icon .. name .. padding
 end
 
 local function bufferlist()
     local buffers = ""
-    for _, bufnr in ipairs(vim.t.bufs or {}) do
+    for _, bufnr in ipairs(vim.t.bufs ?? {}) do
         local name = (#api.nvim_buf_get_name(bufnr) ~= 0) and fn.fnamemodify(api.nvim_buf_get_name(bufnr), ":t")
             or vim.bo[bufnr].buftype == "quickfix" and " Quickfix "
             or " No Name "
@@ -179,7 +179,7 @@ local function tablist()
     for i = 1, number_of_tabs, 1 do
         local selected = i == fn.tabpagenr()
         local tab_hl = (selected and "%#TablineTabSelected# ") or "%#TablineTab# "
-        local name = tabnames[i] or tostring(i)
+        local name = tabnames[i] ?? tostring(i)
         result = result .. ("%" .. i .. "@GotoTab@" .. tab_hl .. name .. " ")
         result = (selected and result .. "%#TablineTabClose#" .. "%@CloseTab@  %X") or result
     end

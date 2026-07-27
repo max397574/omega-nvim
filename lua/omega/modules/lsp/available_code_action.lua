@@ -14,7 +14,7 @@ local function update_sign(bufnr, client)
     if #clients == 0 then
         return
     end
-    local params = vim.lsp.util.make_range_params(0, client.offset_encoding or "utf-8")
+    local params = vim.lsp.util.make_range_params(0, client.offset_encoding ?? "utf-8")
 
     local line = params.range.start.line
     local diags = vim.lsp.diagnostic.from(vim.diagnostic.get(bufnr, { lnum = line }))

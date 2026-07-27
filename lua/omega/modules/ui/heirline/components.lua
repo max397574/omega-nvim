@@ -73,9 +73,7 @@ local function icon_component(main_provider, color, icon)
                 provider = left_separator,
                 hl = (function()
                     if type(color) == "function" then
-                        return function()
-                            return blended_separator(color())
-                        end
+                        return || -> blended_separator(color())
                     else
                         return blended_separator(color)
                     end
@@ -85,9 +83,7 @@ local function icon_component(main_provider, color, icon)
                 provider = icon,
                 hl = (function()
                     if type(color) == "function" then
-                        return function()
-                            return blended_color(color())
-                        end
+                        return || -> blended_color(color())
                     else
                         return blended_color(color)
                     end
@@ -97,12 +93,10 @@ local function icon_component(main_provider, color, icon)
                 provider = right_separator,
                 hl = (function()
                     if type(color) == "function" then
-                        return function()
-                            return {
+                        return || -> {
                                 fg = color_utils.blend_colors(color(), background_color, 0.15),
                                 bg = background_color,
                             }
-                        end
                     else
                         return {
                             fg = color_utils.blend_colors(color, background_color, 0.15),
@@ -121,12 +115,10 @@ local function icon_component(main_provider, color, icon)
                 provider = main_provider,
                 hl = (function()
                     if type(color) == "function" then
-                        return function()
-                            return {
+                        return || -> {
                                 fg = color(),
                                 bg = background_color,
                             }
-                        end
                     else
                         return {
                             fg = color,
@@ -159,9 +151,7 @@ local function simple_component(main_provider, color, sep_left, sep_right)
         component[1].hl = (function()
             if statusline_theme == "blended" then
                 if type(color) == "function" then
-                    return function()
-                        return blended_separator(color())
-                    end
+                    return || -> blended_separator(color())
                 else
                     return blended_separator(color)
                 end
@@ -173,9 +163,7 @@ local function simple_component(main_provider, color, sep_left, sep_right)
         hl = (function()
             if statusline_theme == "blended" then
                 if type(color) == "function" then
-                    return function()
-                        return blended_color(color())
-                    end
+                    return || -> blended_color(color())
                 else
                     return blended_color(color)
                 end
@@ -188,9 +176,7 @@ local function simple_component(main_provider, color, sep_left, sep_right)
         component[3].hl = (function()
             if statusline_theme == "blended" then
                 if type(color) == "function" then
-                    return function()
-                        return blended_separator(color())
-                    end
+                    return || -> blended_separator(color())
                 else
                     return blended_separator(color)
                 end
@@ -215,9 +201,7 @@ components.lsp_progress = {
     flexible = priorities.lsp,
     -- TODO
     -- update={"LspProgress"},
-    update = function()
-        return true
-    end,
+    update = || -> true,
     condition = conditions.lsp_attached,
     hl = (function()
         if statusline_theme == "blended" then
@@ -291,9 +275,10 @@ local function progress_bar()
     return sbar[i]
 end
 
-components.progress_bar = icon_component(function()
-    return " " .. progress_bar() .. " "
-end, theme.colors.purple, "%3(%P%)")
+components.progress_bar = icon_component(
+    || -> " " .. progress_bar() .. " ",
+    theme.colors.purple, "%3(%P%)"
+)
 
 components.coords = (function()
     local coords = {
@@ -302,9 +287,7 @@ components.coords = (function()
         empty,
     }
     -- TODO
-    coords[1] = icon_component(function()
-        return "%4(%l%):%2c"
-    end, theme.colors.orange, "  ")
+    coords[1] = icon_component(|| -> "%4(%l%):%2c", theme.colors.orange, "  ")
     return coords
 end)()
 
@@ -312,9 +295,7 @@ components.mode_indicator = {
     init = function(self)
         self.mode = vim.fn.mode(1)
     end,
-    condition = function()
-        return vim.bo.buftype == ""
-    end,
+    condition = || -> vim.bo.buftype == "",
     {
         simple_component(function(self)
             return "%2(" .. data.mode_icons[self.mode:sub(1, 1)] .. "%)"
@@ -332,13 +313,9 @@ components.word_count = {
     {
         -- Adds spacing so things don't shift around
         {
-            provider = function()
-                return string.rep(" ", 5 - #tostring(word_counter()))
-            end,
+            provider = || -> string.rep(" ", 5 - #tostring(word_counter())),
         },
-        simple_component(function()
-            return word_counter() .. " "
-        end, function()
+        simple_component(|| -> word_counter() .. " ", function()
             return data.mode_colors[vim.fn.mode(1):sub(1, 1)] or theme.colors.blue
         end, true, false),
     },
@@ -359,28 +336,24 @@ components.file_name = (function()
         hl = {
             bg = background_color,
         },
-        condition = function()
-            return not conditions.buffer_matches({
+        condition = || -> not conditions.buffer_matches({
                 buftype = { "nofile", "hidden" },
                 filetype = { "NvimTree", "dashboard" },
-            })
-        end,
+            }) ,
 
         {
             provider = left_separator,
             -- TODO
-            hl = (function()
+            hl = (|| -> do
                 if statusline_theme == "blended" then
                     return blended_separator(theme.colors.blue)
                 end
             end)(),
         },
         {
-            provider = function(self)
-                return self.icon and self.icon
-            end,
+            provider = |self| -> self.icon and self.icon,
             -- TODO
-            hl = (function()
+            hl = (|| -> do
                 if statusline_theme == "blended" then
                     return {
                         fg = theme.colors.blue,
@@ -392,7 +365,7 @@ components.file_name = (function()
         {
             provider = right_separator,
             -- TODO
-            hl = (function()
+            hl = (|| -> do
                 if statusline_theme == "blended" then
                     return {
                         fg = color_utils.blend_colors(theme.colors.blue, background_color, 0.15),
@@ -410,27 +383,21 @@ components.file_name = (function()
         {
             flexible = priorities.current_path,
             -- TODO
-            hl = (function()
+            hl = (|| -> do
                 if statusline_theme == "blended" then
                     return { fg = theme.colors.blue, bg = background_color }
                 end
             end)(),
             {
-                provider = function(self)
-                    return self.current_path
-                end,
+                provider = |self| -> self.current_path,
             },
             {
-                provider = function(self)
-                    return vim.fn.pathshorten(self.current_path, 2)
-                end,
+                provider = |self| -> vim.fn.pathshorten(self.current_path, 2),
             },
             empty,
         },
         {
-            provider = function(self)
-                return self.filename
-            end,
+            provider = |self| -> self.filename,
             -- TODO
             hl = (function()
                 if statusline_theme == "blended" then
@@ -440,26 +407,26 @@ components.file_name = (function()
         },
         {
             {
-                provider = function()
+                provider = || -> do
                     if vim.bo.modified then
                         return " 󰏫 "
                     end
                 end,
                 -- TODO
-                hl = (function()
+                hl = (|| -> do
                     if statusline_theme == "blended" then
                         return { fg = theme.colors.blue, bg = background_color }
                     end
                 end)(),
             },
             {
-                provider = function()
+                provider = || -> do
                     if not vim.bo.modifiable or vim.bo.readonly then
                         return "  "
                     end
                 end,
                 -- TODO
-                hl = (function()
+                hl = (|| -> do
                     if statusline_theme == "blended" then
                         return { fg = theme.colors.blue, bg = background_color }
                     end
@@ -469,7 +436,7 @@ components.file_name = (function()
         {
             provider = right_separator,
             -- TODO
-            hl = (function()
+            hl = (|| -> do
                 if statusline_theme == "blended" then
                     return {
                         fg = background_color,
@@ -488,18 +455,16 @@ components.current_dir = (function()
             self.pwd = vim.fn.fnamemodify(vim.fn.getcwd(0), ":~")
         end,
 
-        condition = function()
-            if vim.bo.buftype == "" then
-                return true
-            end
-        end,
+        condition = || -> vim.bo.buftype == "" ? true : nil,
         {},
         empty,
     }
     -- TODO
-    current_dir[1] = icon_component(function(self)
-        return self.pwd
-    end, theme.colors.green, " ")
+    current_dir[1] = icon_component(
+        |self| -> self.pwd,
+        theme.colors.green,
+        " "
+    )
     return current_dir
 end)()
 
@@ -511,14 +476,6 @@ components.diagnostics = {
         info_icon = " ",
         hint_icon = " ",
     },
-    -- TODO
-    -- on_click = {
-    --     callback = function()
-    --         require("trouble").toggle({ mode = "document_diagnostics" })
-    --     end,
-    --     name = "heirline_diagnostics",
-    -- },
-
     init = function(self)
         self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
         self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
@@ -527,27 +484,19 @@ components.diagnostics = {
     end,
 
     {
-        provider = function(self)
-            return self.errors > 0 and (self.error_icon .. self.errors .. " ")
-        end,
+        provider = |self| -> self.errors > 0 ? (self.error_icon .. self.errors .. " ") : nil,
         hl = { fg = utils.get_highlight("DiagnosticError").fg },
     },
     {
-        provider = function(self)
-            return self.warnings > 0 and (self.warn_icon .. self.warnings .. " ")
-        end,
+        provider = |self| -> self.warnings > 0 ? (self.warn_icon .. self.warnings .. " ") : nil,
         hl = { fg = utils.get_highlight("DiagnosticWarn").fg },
     },
     {
-        provider = function(self)
-            return self.info > 0 and (self.info_icon .. self.info .. " ")
-        end,
+        provider = |self| -> self.info > 0 ? (self.info_icon .. self.info .. " ") : nil,
         hl = { fg = utils.get_highlight("DiagnosticInfo").fg },
     },
     {
-        provider = function(self)
-            return self.hints > 0 and (self.hint_icon .. self.hints)
-        end,
+        provider = |self| -> self.hints > 0 ? (self.hint_icon .. self.hints) : nil,
         hl = { fg = utils.get_highlight("DiagnosticHint").fg },
     },
 }
